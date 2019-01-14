@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic');
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif !important;
+  /* Margin bottom by footer height */
+  margin-bottom: 135px;
+  background-color: rgba(0,68,148,.03)!important;
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-bottom: 155px;
+  }
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Error pages have whole background white */
+.background-color-white {
+  background-color: #fff !important;
+}
+
+/* LOADING SPINNER */
+.loading-overlay {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1020;
+  background: rgba(255, 255, 255, 0.5);
+  width: 100%;
+  padding: 50% 0;
+}

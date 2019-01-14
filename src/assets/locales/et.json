@@ -1,0 +1,14 @@
+{
+  "header": {
+    "description":"",
+    "search":"Otsi mineraali või kivimit"
+  },
+  "main": {
+    "greeting":"Mineraalid, kivimid, maavarad"
+  },
+  "search": {
+    "worldwide":"Worldwide",
+    "only_estonia":"Only Estonia"
+  }
+
+}

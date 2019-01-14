@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="Mineraalide, kivimite ja maavarade portaal">
+    <meta name="author" content="Tallinna Tehnikaülikool Geoloogia Instituut, OS">
+
+    <!-- Chrome, Firefox OS and Opera address bar color -->
+    <meta name="theme-color" content="#004393">
+    <!-- Windows Phone address bar color -->
+    <meta name="msapplication-navbutton-color" content="#004393">
+    <!-- iOS Safari address bar color -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#004393">
+
+    <base href="/" />
+
+    <title>Mineraalid, kivimid, maavarad</title>
+
+    <link rel="manifest" href="static/manifest.json">
+
+    <link rel="preconnect" href="http://geokogud.info">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
+
+  </head>
+  <body>
+
+    <noscript>This web page needs Javascript to work properly!</noscript>
+
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+
+    <!-- Service worker -->
+    <%= htmlWebpackPlugin.options.serviceWorkerLoader %>
+    <script>
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker
+          .register('/service-worker.js')
+          .then(function() { console.log("Service Worker Registered"); });
+      }
+    </script>
+
+    <!-- Matomo -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//geocollections.info/statistikat/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '19']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Matomo Code -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+
+  </body>
+</html>
