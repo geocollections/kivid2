@@ -25,6 +25,7 @@ Vue.config.productionTip = false;
 
 // Gets translations from json files
 const messages = {
+  ru: require('@/assets/locales/ru.json'),
   en: require('@/assets/locales/en.json'),
   et: require('@/assets/locales/et.json'),
 };
@@ -50,7 +51,7 @@ Vue.http.interceptors.push((request, next) => {
   request.headers.set('X-CSRFTOKEN', csrftoken)
 
   next();
-})
+});
 
 /* eslint-disable no-new */
 new Vue({
@@ -71,7 +72,15 @@ new Vue({
   },
   components: { App },
 });
-
+Vue.filter('getLangCode', function (value) {
+  let code = 'ENG';
+  switch (value) {
+    case 'et': code = 'EST'; break;
+    case 'ru': code = 'RUS'; break;
+    default: break;
+  }
+  return code;
+});
 Vue.filter('formatDate', function (value) {
   if (value) {
     return moment(String(value)).format('ddd, MMMM Do YYYY, HH:mm')

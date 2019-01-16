@@ -31,9 +31,9 @@
               <a href="/search" class="nav-link"><i class="fas fa-search-plus"></i></a>
               <!--or <i class="fas fa-search"></i><span class="badge badge-primary badge-pill badge-info ml-1" style="font-size: 0.7rem "><i class="fas fa-cog"></i></span></a>-->
             </form>
-            <b-nav-item-dropdown  right>
-              <template slot="button-content" >{{langCode}}</template>
-              <b-dropdown-item  @click="changeLang('ee')" :class="$localStorage.kivid_lang === 'et'? 'font-weight-bold' : ''" class="p-2">EST</b-dropdown-item>
+            <b-nav-item-dropdown  right v-if="isMounted">
+              <template slot="button-content" >{{$localStorage.get('kivid_lang') | getLangCode}}</template>
+              <b-dropdown-item  @click="changeLang('et')" :class="$localStorage.kivid_lang === 'et'? 'font-weight-bold' : ''" class="p-2">EST</b-dropdown-item>
               <b-dropdown-item  @click="changeLang('en')" :class="$localStorage.kivid_lang === 'en'? 'font-weight-bold' : ''" class="p-2">ENG</b-dropdown-item>
               <b-dropdown-item  @click="changeLang('ru')" :class="$localStorage.kivid_lang === 'ru'? 'font-weight-bold' : ''" class="p-2">RUS</b-dropdown-item>
             </b-nav-item-dropdown>
@@ -46,10 +46,10 @@
 </template>
 <script>
   import VueMultiselect from 'vue-multiselect'
-
   import {
 
   } from '../../api'
+
   export default {
     name: "app-header",
     components:  {
@@ -58,17 +58,6 @@
 
     data ()  {
       return {isMounted : false, scroll:false, searchResults: [], isLoading: false, selectedItem: null}
-    },
-    computed: {
-      langCode () {
-        let code = 'ENG';
-        switch (this.$localStorage.get('kivid_lang')) {
-          case 'et': code = 'EST'; break;
-          case 'ru': code = 'RUS'; break;
-          default: break;
-        }
-        return code;
-      },
     },
     mounted: function(){
       this.isMounted = true;
@@ -98,10 +87,10 @@
         return `${item.name}`
       },
       changeLang(lang) {
-        if (this.langCode === lang) return;
+        if (this.$localStorage.get('kivid_lang') === lang) return;
         this.$i18n.locale = lang;
-        this.$localStorage.kivid_lang.set('kivid_lang', lang);
-        this.$cookies.set('fossils_lang',lang)
+        this.$localStorage.set('kivid_lang', lang);
+        // this.$cookies.set('fossils_lang',lang)
         // this.$router.push({ path: this.$router.currentRoute.path});
       },
       handleScroll (e) {

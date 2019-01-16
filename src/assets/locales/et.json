@@ -6,6 +6,26 @@
   "main": {
     "greeting":"Mineraalid, kivimid, maavarad"
   },
+  "item": {
+    "type":"Tüüp/tase",
+    "composition":"Koostis",
+    "description":"Kirjeldus",
+    "in_estonia":"Eestis",
+    "usage":"Kasutus",
+    "additionalInfo":"Lisainfo",
+    "sarv":"Otsi vasteid Eesti geokogude portaalist",
+    "sarvPics":"Pildiotsing",
+    "features":"Omadused",
+    "synonyms":"Sünonüümid",
+    "classification":"Klassifikatsioon",
+    "references":"Kirjandusviiteid",
+    "localities":"Valitud leiukohad",
+    "typeI":"Dana mineraalide klassifikatsioon, versioon 8",
+    "typeII":"Vääriskivide klassifikatsioon",
+    "typeIII":"Mineraalide klassifikatsioon (Strunz'i baasil)",
+    "tab_overview":"Üldinfo",
+    "tabs_specimens":"Eksemplaarid"
+  },
   "search": {
     "worldwide":"Worldwide",
     "only_estonia":"Only Estonia"

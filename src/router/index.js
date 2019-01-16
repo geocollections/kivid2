@@ -8,9 +8,9 @@ Vue.use(Router);
 Vue.use(Meta);
 
 export default new Router({
-  mode: 'history',
-  fallback: false,
-  scrollBehavior: () => ({ y: 0 }),
+  // mode: 'history',
+  // fallback: false,
+  // scrollBehavior: () => ({ y: 0 }),
   routes: [
     {path: '/:id', name: 'ItemPage', component: ItemPage},
     {path: '/', name: 'FrontPage', component: FrontPage},

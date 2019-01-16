@@ -40,22 +40,22 @@
     <div class="row m-2">
       <div class="col-md-12">
           |
-          <a href="/3">mineraalid</a> |
-          <a href="/799">vääriskivid</a> |
+          <a href="#/3">mineraalid</a> |
+          <a href="#/799">vääriskivid</a> |
           <br>
           |
-          <a href="/113">tardkivimid</a> |
-          <a href="/21">setted </a> |
-          <a href="/6">settekivimid</a> |
-          <a href="/114">moondekivimid</a> |
+          <a href="#/113">tardkivimid</a> |
+          <a href="#/21">setted </a> |
+          <a href="#/6">settekivimid</a> |
+          <a href="#/114">moondekivimid</a> |
 
 
           <br>
           |
-          <a href="/">maagid</a> |
-          <a href="/796">põlevmaavarad</a> |
-          <a href="/">tööstustoormed</a> |
-          <a href="/">ehitusmaavarad</a> |
+          <a href="#/">maagid</a> |
+          <a href="#/796">põlevmaavarad</a> |
+          <a href="#/">tööstustoormed</a> |
+          <a href="#/">ehitusmaavarad</a> |
 
           <br>
           <div style="padding: 5px 0; font-size: 0.8em;">Viimati muudetud kirjed: <a href="/23">aleuriit</a> | <a href="/9">aleuroliit</a> | <a href="/564">tšaroiit</a> | <a href="/1071">zuniit</a> | <a href="/601">sepioliit</a> | </div>

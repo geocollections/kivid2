@@ -44,3 +44,6 @@ export default {
   }
 
 </style>
+<style src="../static/js/leaflet-1.3.4/leaflet.css"></style>
+<style src="../static/js/leaflet-fullscreen/leaflet.fullscreen.css"></style>
+<style src="../static/js/leaflet-coordinates-0.1.5/leaflet.coordinates.css"></style>

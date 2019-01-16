@@ -1,0 +1,13 @@
+{
+  "header": {
+    "description":"",
+    "search":"Search mineral or rock"
+  },
+  "main": {
+    "greeting":"Minerals, rocks, mineral resources"
+  },
+  "search": {
+    "worldwide":"Maailm",
+    "only_estonia":"Ainult Eesti"
+  }
+}
