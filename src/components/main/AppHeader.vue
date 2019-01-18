@@ -14,23 +14,7 @@
         <b-collapse is-nav id="nav_collapse">
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-            <form class="form-inline my-lg-0 mr-5">
-              <vue-multiselect class="align-middle" style=" width: 20em !important;"
-                               id="search"
-                               :custom-label="displayResults" track-by="code"
-                               :placeholder="$t('header.search')"
-                               :options="searchResults"
-                               :searchable="true"
-                               :loading="isLoading"
-                               :max-height="600"
-                               :show-no-results="false"
-                               :show-labels="false"
-                               @select="onSelect" @search-change="doSearch">
-                <template slot="noResult"><b>NoRes</b></template>
-              </vue-multiselect> &ensp;
-              <a href="/search" class="nav-link"><i class="fas fa-search-plus"></i></a>
-              <!--or <i class="fas fa-search"></i><span class="badge badge-primary badge-pill badge-info ml-1" style="font-size: 0.7rem "><i class="fas fa-cog"></i></span></a>-->
-            </form>
+            <rock-search></rock-search>
             <b-nav-item-dropdown  right v-if="isMounted">
               <template slot="button-content" >{{$localStorage.get('kivid_lang') | getLangCode}}</template>
               <b-dropdown-item  @click="changeLang('et')" :class="$localStorage.kivid_lang === 'et'? 'font-weight-bold' : ''" class="p-2">EST</b-dropdown-item>
@@ -45,19 +29,16 @@
   </header>
 </template>
 <script>
-  import VueMultiselect from 'vue-multiselect'
-  import {
 
-  } from '../../api'
+  import RockSearch from "./RockSearch";
 
   export default {
     name: "app-header",
     components:  {
-      VueMultiselect
+      RockSearch
     },
-
     data ()  {
-      return {isMounted : false, scroll:false, searchResults: [], isLoading: false, selectedItem: null}
+      return {isMounted : false, scroll:false}
     },
     mounted: function(){
       this.isMounted = true;
@@ -69,23 +50,6 @@
       window.addEventListener('scroll', this.handleScroll);
     },
     methods: {
-      doSearch(value) {
-        if(value.length < 3)  this.searchResults = [];
-        if(value.length > 2) {
-          this.isLoading = true;
-          // fetchearch(value).then((response) => {
-          //   this.isLoading = false;
-          //   this.searchResults = response.results
-          // });
-        }
-      },
-      onSelect (value) {
-        this.selectedItem = null;
-        location.replace('/'+value.id)
-      },
-      displayResults: function (item) {
-        return `${item.name}`
-      },
       changeLang(lang) {
         if (this.$localStorage.get('kivid_lang') === lang) return;
         this.$i18n.locale = lang;
@@ -100,9 +64,6 @@
   }
 </script>
 <style>
-  .multiselect {
-    line-height: 1.0;
-  }
   #mainNav {
     background-color : white;
     box-shadow: 0 0 50px #9c9d9e;

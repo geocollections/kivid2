@@ -107,7 +107,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="isDefinedAndNotEmpty(rock.properties)">
               <div class="card rounded-0" style="width: 100%">
                 <div class="card-header">{{$t('item.features')}}</div>
                 <div class="card-body"  style="text-align: left">
@@ -231,17 +231,17 @@
       },
       loadFullRockInfo() {
         fetchRock(this.rock.id, this.mode).then((response) => {
-          if(response.results.length === 0) {
-            this.error = true
-          }
-          this.rock = Object.assign(this.rock,response.results[0]);
+          if(this.isDefinedAndNotEmpty(response.results)) {
+            this.rock = Object.assign(this.rock,response.results[0])
+          } else this.error = true;
         });
         fetchRockImages(this.rock.id, this.mode).then((response) => {
-          this.rock.images = this.composeImageUrls(response.results);
+          this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
+           this.composeImageUrls(response.results) : [];
         });
         // fetchGroupImages()
         fetchRockProperties(this.rock.id, this.mode).then((response) => {
-          this.rock.properties = response.results;
+          this.rock.properties = this.handleResponse(response);
         });
         // getparents
         // getchildren($id);
@@ -250,24 +250,28 @@
         // getminerals($id);
         // getrocksbymineral($id);
         fetchRockSynonyms(this.rock.id, this.mode).then((response) => {
-          this.rock.synonyms = response.results;
+          this.rock.synonyms = this.handleResponse(response);
         });
         fetchRockReferences(this.rock.id, this.mode).then((response) => {
-          this.rock.references = response.results;
+          this.rock.references = this.handleResponse(response);
         });
 
         fetchRockTreeByRockId(this.rock.id, this.mode).then((response) => {
-          this.rock.classifications = response.results;
-          if(response.results.length === 0) return;
-          this.setActiveClfTab(response.results[0].rock_classification_id);
-          this.composeTree()
+          if(this.isDefinedAndNotNull(response.results)) {
+            this.rock.classifications = this.handleResponse(response);
+            this.setActiveClfTab(this.rock.classifications[0].rock_classification_id);
+            this.composeTree()
+          }
         });
         fetchRockLocalities(this.rock.id, this.mode).then((response) => {
-          this.rock.localities = response.results;
+          this.rock.localities = this.handleResponse(response);
         });
         cntSpecimenCollection(this.rock.id).then((response) => {
           this.rock.specimenCollectionCnt = response.count;
         });
+      },
+      handleResponse: function(response) {
+        return this.isDefinedAndNotEmpty(response.results) ? response.results : [];
       },
       getCurrentClassification: function (list, itemID) {
         return list.filter(function (val, i) {

@@ -8,16 +8,7 @@
     <div class="row m-2">
       <div class="col-md-4"></div>
       <div class="col-md-4">
-        <vue-multiselect class="align-middle" v-model="searchItem" deselect-label="Can't remove this value"
-                         select-label="" track-by="taxan_id" label="taxon"  :placeholder="$t('header.search')"
-                         :options="searchResults" :searchable="true" @search-change="autocompliteSearch"
-                         :allow-empty="true"  :show-no-results="false" :loading="isLoading" :max-height="600"
-                         :open-direction="'bottom'">
-          <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.taxon }}</strong> </template>
-          <template slot="noResult"><b>NoResults</b></template>
-          <template slot="clear" slot-scope="props">
-            <div class="multiselect__clear" v-if="true" @mousedown.prevent.stop="clearAll(props.search)"></div></template>
-        </vue-multiselect>
+        <rock-search></rock-search>
       </div>
       <div class="col-md-4"></div>
     </div>
@@ -68,28 +59,13 @@
 
 <script>
   import VueMultiselect from 'vue-multiselect'
+  import RockSearch from "../components/main/RockSearch";
   export default {
     name: "front-page",
-    components: {VueMultiselect},
+    components: {RockSearch, VueMultiselect},
     metaInfo: {
       title: 'EUROCORE Data Portal'
     },
-    data(){
-      return {
-        searchItem: null,
-        searchResults:[],
-        isLoading: false,
-        isSearchInEst: true
-      }
-    },
-    methods: {
-      autocompliteSearch() {
-        return null
-      },
-      clearAll() {
-        return null
-      }
-    }
   }
 </script>
 
@@ -100,6 +76,7 @@
 }
 .btn-secondary:not(:disabled):not(.disabled).active {
     background-color: #F05F40 !important;
-  border-color:#eb3812 !important;
+    border-color:#eb3812 !important;
+    z-index: 1 !important;
   }
 </style>
