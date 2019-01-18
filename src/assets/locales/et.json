@@ -1,10 +1,10 @@
 {
   "header": {
     "description":"",
-    "search":"Search mineral or rock"
+    "search":"Otsi mineraali või kivimit"
   },
   "main": {
-    "greeting":"Minerals, rocks, mineral resources"
+    "greeting":"Mineraalid, kivimid, maavarad"
   },
   "item": {
     "type":"Tüüp/tase",
