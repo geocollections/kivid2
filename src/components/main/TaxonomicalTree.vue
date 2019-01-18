@@ -6,7 +6,7 @@
       <tr  v-for="item in taxonomicTree.nodes">
         <td>
           <span v-for="i in convertToNumber(item.i)" >&ensp;</span>
-          <a :href="'/'+item.id" v-if="item.id !== $parent.rock.id" v-translate="{ et: item.label, en: item.label_en }"></a>
+          <a :href="'/#/'+item.id" v-if="item.id !== $parent.rock.id" v-translate="{ et: item.label, en: item.label_en }"></a>
           <span class="node_in_tree_selected" v-if="item.id === $parent.rock.id" v-translate="{ et: item.label, en: item.label_en }"></span>
         </td>
       </tr>
