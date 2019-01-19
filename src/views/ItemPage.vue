@@ -8,6 +8,11 @@
           <h6><i>{{rock.name_en}}</i></h6>
         </div>
       </div>
+      <div class="col-md-12">  
+        <div class="row" v-if="isDefinedAndNotEmpty(rock.images)" >
+          <lingallery ref="lingallery" :items="rock.images"/>
+        </div>
+      </div>
       <tabs v-on:tab-changed="setActiveTab"></tabs>
       <!--<tab-gallery v-if="$store.state.activeTab === 'gallery'"></tab-gallery>-->
       <tab-specimens v-if="activeTab === 'specimens'"></tab-specimens>
@@ -96,9 +101,7 @@
             </div>
           </div>
           <div class="col-lg-4">
-            <div class="row" v-if="isDefinedAndNotEmpty(rock.images)" >
-              <lingallery ref="lingallery" :items="rock.images"/>
-            </div>
+
             <div class="row" v-if="isDefinedAndNotEmpty(rock.localities)">
               <div class="card rounded-0" style="width: 100%">
                 <div class="card-header">{{$t('item.localities')}}</div>

@@ -39,7 +39,7 @@ export default {
     },
     width: {
       type: Number,
-      default: 600
+      default: 1600
     },
     height: {
       type: Number,
