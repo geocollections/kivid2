@@ -16,10 +16,9 @@
       <tabs v-on:tab-changed="setActiveTab"></tabs>
       <!--<tab-gallery v-if="$store.state.activeTab === 'gallery'"></tab-gallery>-->
       <tab-specimens v-if="activeTab === 'specimens'"></tab-specimens>
-      <div v-if="activeTab  === 'overview'">
-        <div class="row">
+        <div class="row" v-if="activeTab  === 'overview'">
           <div class="col-lg-8">
-            <div class="row">
+            <div class="row m-1">
               <div class="card rounded-0" style="width: 100%">
                 <div class="card-body"  style="text-align: left">
                   <table class='table' id="basicInfoTable">
@@ -58,7 +57,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" v-if="isClassificationTreeLoaded">
+            <div class="row m-1" v-if="isClassificationTreeLoaded">
               <div class="card rounded-0" style="width: 100%" v-if="isDefinedAndNotEmpty(rock.classifications)">
                 <div class="card-header">{{$t('item.classification')}}</div>
                 <div class="card-body"  style="text-align: left">
@@ -74,7 +73,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" v-if="isDefinedAndNotEmpty(rock.references)">
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.references)">
               <div class="card rounded-0" style="width: 100%">
                 <div class="card-header">{{$t('item.references')}}</div>
                 <div class="card-body"  style="text-align: left">
@@ -102,7 +101,7 @@
           </div>
           <div class="col-lg-4">
 
-            <div class="row" v-if="isDefinedAndNotEmpty(rock.localities)">
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.localities)">
               <div class="card rounded-0" style="width: 100%">
                 <div class="card-header">{{$t('item.localities')}}</div>
                 <div class="card-body no-padding">
@@ -110,7 +109,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" v-if="isDefinedAndNotEmpty(rock.properties)">
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.properties)">
               <div class="card rounded-0" style="width: 100%">
                 <div class="card-header">{{$t('item.features')}}</div>
                 <div class="card-body"  style="text-align: left">
@@ -123,7 +122,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" >
+            <div class="row m-1" >
               <div class="card rounded-0" style="width: 100%" v-if="isDefinedAndNotEmpty(rock.synonyms)">
                 <div class="card-header">{{$t('item.synonyms')}}</div>
                 <div class="card-body"  style="text-align: left">
@@ -136,11 +135,9 @@
           </div>
         </div>
 
-      </div>
-
     </div>
     <div class="row" v-else>
-      <div class="col-md-12">
+      <div class="col-md-12  m-1">
         <h3>ID {{$router.currentRoute.params.id}}: kirje ei ole kättesaadav</h3>
       </div>
     </div>
