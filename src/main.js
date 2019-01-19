@@ -5,7 +5,7 @@ import VueResource from 'vue-resource' // https://github.com/pagekit/vue-resourc
 import App from './App'
 import router from './router' // https://router.vuejs.org/en/
 import BootstrapVue from 'bootstrap-vue' // https://bootstrap-vue.js.org/docs
-import './assets/css/styles.css'
+import '../static/css/styles.css'
 import VueSession from 'vue-session' // https://www.npmjs.com/package/vue-session
 import moment from 'moment' // https://momentjs.com/
 import VueLocalStorage from 'vue-localstorage' // VueLocalStorage for using local storage
