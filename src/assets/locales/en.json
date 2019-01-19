@@ -4,7 +4,8 @@
     "search":"Search mineral or rock"
   },
   "main": {
-    "greeting":"Minerals, rocks, mineral resources"
+    "greeting":"Minerals, rocks, mineral resources",
+    "overlay":"Loading..."
   },
   "item": {
     "type":"Type/level",

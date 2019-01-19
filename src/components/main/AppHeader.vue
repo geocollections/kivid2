@@ -14,7 +14,9 @@
         <b-collapse is-nav id="nav_collapse">
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-            <rock-search></rock-search>
+            <form class="form-inline my-lg-0 mr-5" style="width: 300px">
+              <rock-search></rock-search>
+            </form>
             <b-nav-item-dropdown  right v-if="isMounted">
               <template slot="button-content" >{{$localStorage.get('kivid_lang') | getLangCode}}</template>
               <b-dropdown-item  @click="changeLang('et')" :class="$localStorage.kivid_lang === 'et'? 'font-weight-bold' : ''" class="p-2">EST</b-dropdown-item>

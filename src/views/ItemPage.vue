@@ -1,5 +1,5 @@
 <template>
-  <div class="item-page">
+  <div class="page-container item-page" >
     <div v-if="!error">
 
       <div class="row">
@@ -13,7 +13,7 @@
       <tab-specimens v-if="activeTab === 'specimens'"></tab-specimens>
       <div v-if="activeTab  === 'overview'">
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-lg-8">
             <div class="row">
               <div class="card rounded-0" style="width: 100%">
                 <div class="card-body"  style="text-align: left">
@@ -194,6 +194,7 @@
         return this.isCurrentClfSistersLoaded && this.isCurrenClfHierarchyLoaded}
     },
     created() {
+      this.$emit('page-loaded',true);
       this.loadFullRockInfo()
     },
     methods: {
@@ -231,6 +232,7 @@
       },
       loadFullRockInfo() {
         fetchRock(this.rock.id, this.mode).then((response) => {
+          this.$emit('page-loaded',false);
           if(this.isDefinedAndNotEmpty(response.results)) {
             this.rock = Object.assign(this.rock,response.results[0])
           } else this.error = true;
@@ -326,11 +328,27 @@
     max-width: 1024px;
     text-align: left;
   }
+  .col-lg-8 {
+    padding-right:0.1rem !important;
+  }
+  .col-lg-4 {
+    padding-left:0.1rem !important;
+  }
   .row {
     margin-top:20px;
   }
   .no-padding {
     padding: 0;
   }
-
+  .card-header {
+    color: #999;
+    font-size: smaller;
+    font-weight: bold;
+  }
+  .card-footer {
+    background-color: transparent;
+  }
+  .card {
+    margin-bottom: 4px;
+  }
 </style>

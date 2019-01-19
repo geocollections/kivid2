@@ -13,7 +13,8 @@
       <div class="col-md-4"></div>
     </div>
     <div class="row m-2">
-      <div class="col-md-12">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <label class="btn  btn-xs btn-secondary active">
             <input type="radio" name="options" id="option1" autocomplete="off" checked> {{$t('search.worldwide')}}
@@ -23,6 +24,7 @@
           </label>
         </div>
       </div>
+      <div class="col-md-4"></div>
     </div>
     <div class="row m-2">
       <div class="col-md-12" style="height: 200px;width: 150px">
@@ -43,7 +45,7 @@
 
           <br>
           |
-          <a href="#/">maagid</a> |
+          <a href="#/793">maagid</a> |
           <a href="#/796">põlevmaavarad</a> |
           <a href="#/">tööstustoormed</a> |
           <a href="#/">ehitusmaavarad</a> |
@@ -66,6 +68,9 @@
     metaInfo: {
       title: 'EUROCORE Data Portal'
     },
+    created() {
+      this.$emit('page-loaded',false);
+    }
   }
 </script>
 

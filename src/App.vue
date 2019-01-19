@@ -1,9 +1,10 @@
 <template>
   <div id="app">
+    <spinner v-show="showSpinner" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
     <app-header v-if="$router.currentRoute.name !== 'FrontPage'"/>
-    <div id="main" class="container">
-      <router-view/>
-    </div>
+    <section class="container-fluid mt-5 mb-5" >
+      <router-view class="page-container" v-on:page-loaded="isSpinnerShown"/>
+    </section>
     <app-footer/>
   </div>
 </template>
@@ -11,13 +12,20 @@
 <script>
 import AppHeader from "./components/main/AppHeader";
 import AppFooter from "./components/main/AppFooter";
-
+import Spinner from 'vue-simple-spinner'
 export default {
   components: {
-    'app-header': AppHeader,
-    'app-footer': AppFooter
+    AppHeader,
+    AppFooter,
+    Spinner,
   },
-  name: 'App'
+  name: 'App',
+  data() { return  { showSpinner: true }},
+  methods: {
+    isSpinnerShown: function(isShown) {
+      this.showSpinner = isShown;
+    }
+  }
 }
 </script>
 
@@ -28,7 +36,13 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     width: inherit;
   }
+  .page-container {
+    padding: 0 !important;
+  }
+  section {
+    padding-top: 3rem;
 
+  }
   #main {
     background-color: #fff!important;
     padding: 120px 15px 0;

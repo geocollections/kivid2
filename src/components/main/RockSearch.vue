@@ -1,5 +1,5 @@
 <template>
-  <form class="form-inline my-lg-0 mr-5">
+
     <vue-multiselect class="align-middle" deselect-label="Can't remove this value"
                      select-label=""
                      :custom-label="displayResults"
@@ -24,7 +24,6 @@
                      <!--@select="onSelect" @search-change="doSearch">-->
       <!--<template slot="noResult"><b>NoRes</b></template>-->
     <!--</vue-multiselect> &ensp;-->
-  </form>
 </template>
 
 <script>
@@ -47,7 +46,7 @@
               this.isLoading = true;
               fetchSearch(value).then((response) => {
                 this.isLoading = false;
-                this.searchResults = response ? response.results : []
+                this.searchResults = response.results ? response.results : []
               });
             }
           },
@@ -70,6 +69,7 @@
   .multiselect {
     line-height: 1.0;
     z-index: 999 !important;
+    width: 100%
   }
 
 </style>

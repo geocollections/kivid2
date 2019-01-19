@@ -168,4 +168,150 @@
         padding:0;
         margin:0;
     }
+
+    /* pagination */
+    .pagination > li > a,
+    .pagination > li > span {
+      color: #F05F40;
+    }
+    .pagination > .active > a,
+    .pagination > .active > a:focus,
+    .pagination > .active > a:hover,
+    .pagination > .active > span,
+    .pagination > .active > span:focus,
+    .pagination > .active > span:hover {
+      color: white;
+      background-color: #ee4b28;
+      border-color: #ed431f;
+    }
+    .pagination > .disabled > a,
+    .pagination > .disabled > a:focus,
+    .pagination > .disabled > a:hover,
+    .pagination > .disabled > span,
+    .pagination > .disabled > span:focus,
+    .pagination > .disabled > span:hover
+    .pagination > li > a,
+    .pagination > li > span {
+      color: #F05F40;
+    }
+    .pagination > li > a:focus,
+    .pagination > li > a:hover,
+    .pagination > li > span:focus,
+    .pagination > li > span:hover {
+      color: #eb3812;
+
+    }
+    /* search table*/
+
+    .thead-default th {
+      background-color: #eceeef;
+      color:#464a4c;
+    }
+    #table-search td {
+      color: #292b2c;
+    }
+    #table-search td:first-child {
+      font-weight:700;
+    }
+    #table-search tr > th > span,
+    #table-search tr > th > em {
+      font-size: small !important;
+    }
+    #table-search tr > th > em > .btn{
+      color:#464a4c;
+      text-decoration: none;
+      font-style: italic;
+    }
+    #table-search tr > th,
+    #table-search tr > th > .btn{
+      color:#464a4c;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: small;
+    }
+    #table-search tr > th > .btn:hover{
+      color: #270807;
+    }
+    #table-search tr > td > a {
+      color:#eb3812;
+    }
+    #table-search tr > td > a:hover {
+      color:#FF2F00;
+    }
+
+    table tr > td:first-child {
+      font-weight: 700;
+    }
+
+    #table-search {
+      empty-cells: show;
+    }
+    @media screen and (min-width : 439px) and (max-width : 800px) {
+
+
+      #table-search tr > th > .btn{
+        color:#464a4c;
+        text-decoration: none;
+        font-size: x-small;
+      }
+    }
+
+    @media only screen and (max-width: 439px) {
+
+      .table-responsive {
+        border: 0px;
+      }
+
+      /* Force table to not be like tables anymore */
+      #table-search table,
+      #table-search thead,
+      #table-search tbody,
+      #table-search th,
+      #table-search td,
+      #table-search tr {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      /* Hide table headers (but not display: none;, for accessibility) */
+      #table-search thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      #table-search tr { border: 1px solid #ccc; }
+
+      #table-search td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        /*padding-left: 50%;*/
+        padding: 0.4rem !important;
+        white-space: normal;
+        text-align: left;
+      }
+
+      #table-search td:empty {
+        padding-top: 20px;
+      }
+      #table-search td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+      }
+
+      /*
+      Label the data
+      */
+      #table-search td:before { content: attr(data-title); }
+    }
 </style>

@@ -1,28 +1,43 @@
 @import url('https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic');
-
-html {
-  position: relative;
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin-right: 0;
+  padding: 0;
   min-height: 100%;
+  display: table;
 }
 
 body {
-  font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif !important;
-  /* Margin bottom by footer height */
-  margin-bottom: 135px;
-  background-color: rgba(0,68,148,.03)!important;
+  font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
+  overflow-x:hidden;
+  height: 100%;
+  webkit-tap-highlight-color: #222222;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  margin: 0;
+  padding-bottom: 15rem;
+  min-height: 100%;
 }
 
-@media (max-width: 768px) {
-  body {
-    margin-bottom: 155px;
-  }
+a {
+  -webkit-transition: all 0.35s;
+  -moz-transition: all 0.35s;
+  transition: all 0.35s;
+  color: #F05F40;
+  outline: none;
 }
 
-a:hover {
+a:hover,
+a:focus {
+  color: #eb3812;
   text-decoration: none;
 }
 
-/* Error pages have whole background white */
+
+/* Error pages have whole background white NOT USED*/
+
 .background-color-white {
   background-color: #fff !important;
 }
@@ -37,4 +52,39 @@ a:hover {
   background: rgba(255, 255, 255, 0.5);
   width: 100%;
   padding: 50% 0;
+}
+
+
+img {
+  max-width: 100%;
+  height: auto;
+  width: auto\9; /* ie8 */
+}
+
+/*search navigation tab*/
+@media screen and (min-width : 0px) and (max-width : 362px) {
+  .navbar-brand {
+    font-size: 11px;
+  }
+}
+@media screen and (min-width : 363px) and (max-width : 439px) {
+  .navbar-brand {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width : 439px) and (max-width : 800px) {
+
+  .col-md-6 {
+    padding-right: 0.2rem !important;
+    padding-left: 0.2rem !important;
+    margin-left: 0.2rem !important;
+    padding-top: 0.2rem ;
+  }
+
+  .col-lg-8,
+  .col-lg-4{
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
 }
