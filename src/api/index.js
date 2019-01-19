@@ -62,5 +62,6 @@ export function fetchSpecimenCollection (id,mode,searchParameters) {
   return fetch(`solr/specimen/?q=rock_id:${id}&rows=${searchParameters.specimens.paginateBy}&start=${start}&sort=${orderBy}&format=json`)
 }
 export function fetchSearch (name,mode) {
-  return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)
+  //return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)
+  return fetch(`rock/?sql=simple_rock_search&keyword=${name}${applyMode(mode)}&format=json`)	
 }

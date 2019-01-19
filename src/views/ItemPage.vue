@@ -322,6 +322,8 @@
   .item-page {
     max-width: 1280px !important;
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
   #basicInfoTable {
     width: 100%;

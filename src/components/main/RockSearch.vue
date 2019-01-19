@@ -56,7 +56,7 @@
             this.$router.replace({ path: `/${id}` })
           },
           displayResults: function (item) {
-            return `${item.name} (${item.name_en})`
+            return `${item.name} | ${item.name_en} ${item.synonym}`
           },
           clearAll() {
             return null

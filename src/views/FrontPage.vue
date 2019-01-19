@@ -27,7 +27,10 @@
       <div class="col-md-4"></div>
     </div>
     <div class="row m-2">
-      <div class="col-md-12" style="height: 200px;width: 150px">
+      <div class="col-md-12">
+      <a href="/#/232">
+      <img src="https://files.geocollections.info/medium/9d/b5/9db5b4d9-7e83-471f-a2dd-cf2f440064f1.jpg" alt="kaltsiit" style="max-width: 750px; width: 100%;"/>
+      </a>
       </div>
     </div>
     <div class="row m-2">
@@ -51,7 +54,7 @@
           <a href="#/">ehitusmaavarad</a> |
 
           <br>
-          <div style="padding: 5px 0; font-size: 0.8em;">Viimati muudetud kirjed: <a href="/23">aleuriit</a> | <a href="/9">aleuroliit</a> | <a href="/564">tšaroiit</a> | <a href="/1071">zuniit</a> | <a href="/601">sepioliit</a> | </div>
+          <div style="padding: 5px 0; font-size: 0.8em;">Viimati muudetud kirjed: <a href="#/23">aleuriit</a> | <a href="#/9">aleuroliit</a> | <a href="#/564">tšaroiit</a> | <a href="#/1071">zuniit</a> | <a href="#/601">sepioliit</a> | </div>
       </div>
     </div>
 
@@ -77,7 +80,9 @@
 <style scoped>
 .front-page {
   max-width: 1280px !important;
-  text-align: center
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 .btn-secondary:not(:disabled):not(.disabled).active {
     background-color: #F05F40 !important;
