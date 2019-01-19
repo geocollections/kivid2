@@ -4,7 +4,8 @@
     "search":"Otsi mineraali või kivimit"
   },
   "main": {
-    "greeting":"Mineraalid, kivimid, maavarad"
+    "greeting":"Mineraalid, kivimid, maavarad",
+    "overlay":"Please wait..."
   },
   "item": {
     "type":"Tüüp/tase",
@@ -24,11 +25,23 @@
     "typeII":"Vääriskivide klassifikatsioon",
     "typeIII":"Mineraalide klassifikatsioon (Strunz'i baasil)",
     "tab_overview":"Üldinfo",
-    "tabs_specimens":"Eksemplaarid"
+    "tabs_specimens":"Eksemplarid"
   },
   "search": {
-    "worldwide":"Worldwide",
-    "only_estonia":"Only Estonia"
+    "worldwide":"Maailm",
+    "only_estonia":"Ainult Eesti",
+    "specimen": {
+      "id": "ID",
+      "number": "Specimen number",
+      "depth_m": "Depth (m)",
+      "stratigraphy": "Stratigraphy",
+      "collector": "Collector",
+      "locality": "Locality",
+      "name_part_element": "Name Part/element",
+      "status": "Status",
+      "images": "Images",
+      "old_specimen_number": "Old nr.",
+      "lithostratigraphy": "Lithostratigraphy"
+    }
   }
-
 }

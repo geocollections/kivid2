@@ -5,7 +5,7 @@
   },
   "main": {
     "greeting":"Minerals, rocks, mineral resources",
-    "overlay":"Loading..."
+    "overlay":"Please wait..."
   },
   "item": {
     "type":"Type/level",
@@ -28,8 +28,8 @@
     "tabs_specimens":"Specimens"
   },
   "search": {
-    "worldwide":"Maailm",
-    "only_estonia":"Ainult Eesti",
+    "worldwide":"Worldwide",
+    "only_estonia":"Only Estonia",
     "specimen": {
       "id": "ID",
       "number": "Specimen number",
