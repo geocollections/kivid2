@@ -18,10 +18,10 @@
               <rock-search></rock-search>
             </form>
             <b-nav-item-dropdown  right v-if="isMounted">
-              <template slot="button-content" >{{$localStorage.get('kivid_lang') | getLangCode}}</template>
-              <b-dropdown-item  @click="changeLang('et')" :class="$localStorage.kivid_lang === 'et'? 'font-weight-bold' : ''" class="p-2">EST</b-dropdown-item>
-              <b-dropdown-item  @click="changeLang('en')" :class="$localStorage.kivid_lang === 'en'? 'font-weight-bold' : ''" class="p-2">ENG</b-dropdown-item>
-              <b-dropdown-item  @click="changeLang('ru')" :class="$localStorage.kivid_lang === 'ru'? 'font-weight-bold' : ''" class="p-2">RUS</b-dropdown-item>
+              <template slot="button-content" >{{$i18n.locale | getLangCode}}</template>
+              <b-dropdown-item  @click="changeLang('et')" :class="$i18n.locale === 'et'? 'font-weight-bold' : ''" class="p-2">EST</b-dropdown-item>
+              <b-dropdown-item  @click="changeLang('en')" :class="$i18n.locale === 'en'? 'font-weight-bold' : ''" class="p-2">ENG</b-dropdown-item>
+              <b-dropdown-item  @click="changeLang('ru')" :class="$i18n.locale === 'ru'? 'font-weight-bold' : ''" class="p-2">RUS</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
@@ -38,6 +38,9 @@
     name: "app-header",
     components:  {
       RockSearch
+    },
+    computed: {
+      currentLang() { return this.$localStorage.get('kivid_lang') ? this.$localStorage.get('kivid_lang') : '' }
     },
     data ()  {
       return {isMounted : false, scroll:false}
@@ -56,6 +59,8 @@
         if (this.$localStorage.get('kivid_lang') === lang) return;
         this.$i18n.locale = lang;
         this.$localStorage.set('kivid_lang', lang);
+
+        console.log(this.$localStorage.get('kivid_lang'))
         // this.$cookies.set('fossils_lang',lang)
         // this.$router.push({ path: this.$router.currentRoute.path});
       },
