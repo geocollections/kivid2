@@ -6,7 +6,17 @@
   "main": {
     "greeting":"Minerals, rocks, mineral resources",
     "overlay":"Please wait...",
-    "lastChanged":"Last modified records"
+    "lastChanged":"Last modified records",
+    "minerals":"Mineraalid",
+    "gemstones":"Пemstones",
+    "igneousRocks":"Igneous rocks",
+    "sediments":"Sediments",
+    "sedimentaryRocks":"Sedimentary rocks",
+    "metamorphicRocks":"Metamorphic rocks",
+    "ores":"Ores",
+    "combustibleRocks":"Combustible rocks",
+    "industrialRawMaterials":"Industrial raw materials",
+    "buildingSupplies":"Building supplies"
   },
   "item": {
     "type":"Type/level",

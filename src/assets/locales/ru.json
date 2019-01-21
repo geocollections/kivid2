@@ -6,7 +6,17 @@
   "main": {
     "greeting":"Минералы, горные породы, полезные ископаемые",
     "overlay":"Страница загружается...",
-    "lastChanged":"Последние изменения в записях"
+    "lastChanged":"Последние изменения в записях",
+    "minerals":"Минералы",
+    "gemstones":"Драгоценные камни",
+    "igneousRocks":"Магматические породы",
+    "sediments":"sediments",
+    "sedimentaryRocks":"Осадочные породы",
+    "metamorphicRocks":"Метаморфические породы",
+    "ores":"Руда",
+    "combustibleRocks":"Горюций камень",
+    "industrialRawMaterials":"Промышленное сырье",
+    "buildingSupplies":"Строительные материалы"
   },
   "item": {
     "type":"Тип/уровень",

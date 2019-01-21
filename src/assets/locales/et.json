@@ -6,7 +6,17 @@
   "main": {
     "greeting":"Mineraalid, kivimid, maavarad",
     "overlay":"Please wait...",
-    "lastChanged":"Viimati muudetud kirjed"
+    "lastChanged":"Viimati muudetud kirjed",
+    "minerals":"Mineraalid",
+    "gemstones":"Vääriskivid",
+    "igneousRocks":"Sardkivimid",
+    "sediments":"Setted",
+    "sedimentaryRocks":"Settekivimid",
+    "metamorphicRocks":"Moondekivimid",
+    "ores":"Maagid",
+    "combustibleRocks":"Põlevmaavarad",
+    "industrialRawMaterials":"Tööstustoormed",
+    "buildingSupplies":"Ehitusmaavarad"
   },
   "item": {
     "type":"Tüüp/tase",

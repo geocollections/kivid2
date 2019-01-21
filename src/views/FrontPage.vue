@@ -36,21 +36,21 @@
     <div class="row m-2">
       <div class="col-md-12">
           |
-          <router-link :to="'/'+3">mineraalid</router-link> |
-          <router-link :to="'/'+799">vääriskivid</router-link> |
+          <router-link :to="'/'+3">{{$t('main.minerals')}}</router-link> |
+          <router-link :to="'/'+799">{{$t('main.gemstones')}}</router-link> |
           <br>
           |
-          <router-link :to="'/'+113">tardkivimid</router-link> |
-          <router-link :to="'/'+21">setted</router-link> |
-          <router-link :to="'/'+6">settekivimid</router-link> |
-          <router-link :to="'/'+114">moondekivimid</router-link> |
+          <router-link :to="'/'+113">{{$t('main.igneousRocks')}}</router-link> |
+          <router-link :to="'/'+21">{{$t('main.sediments')}}</router-link> |
+          <router-link :to="'/'+6">{{$t('main.sedimentaryRocks')}}</router-link> |
+          <router-link :to="'/'+114">{{$t('main.metamorphicRocks')}}</router-link> |
 
           <br>
           |
-          <router-link :to="'/'+793">maagid</router-link> |
-          <router-link :to="'/'+796">põlevmaavarad</router-link> |
-          <router-link :to="'/'">tööstustoormed</router-link> |
-          <router-link :to="'/'">ehitusmaavarad</router-link> |
+          <router-link :to="'/'+793">{{$t('main.ores')}}</router-link> |
+          <router-link :to="'/'+796">{{$t('main.combustibleRocks')}}</router-link> |
+          <router-link :to="'/'">{{$t('main.industrialRawMaterials')}}</router-link> |
+          <router-link :to="'/'">{{$t('main.buildingSupplies')}}</router-link> |
 
           <br>
           <div style="padding: 5px 0; font-size: 0.8em;" v-if="lastChangedRocks && lastChangedRocks.length > 0">{{$t('main.lastChanged')}}:
