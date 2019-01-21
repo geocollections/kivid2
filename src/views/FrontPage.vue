@@ -2,7 +2,7 @@
   <div class="front-page">
     <div class="row">
       <div class="col-md-12" style="text-align: right; margin-top: -5rem !important;">
-        <lang-buttons></lang-buttons>
+        <lang-buttons/>
       </div>
     </div>
     <div class="row">
@@ -13,21 +13,14 @@
     <div class="row m-2">
       <div class="col-md-4"></div>
       <div class="col-md-4">
-        <rock-search></rock-search>
+        <rock-search/>
       </div>
       <div class="col-md-4"></div>
     </div>
     <div class="row m-2">
       <div class="col-md-4"></div>
       <div class="col-md-4">
-        <div class="btn-group btn-group-toggle">
-          <label class="btn  btn-xs btn-secondary" :class="selectedMode === 'in_global' ? 'active': ''">
-            <input type="radio" name="options" id="one" value="in_global" v-model="selectedMode">{{$t('search.worldwide')}}
-          </label>
-          <label class="btn  btn-xs btn-secondary"  :class="selectedMode === 'in_estonia' ? 'active': ''">
-            <input type="radio" name="options" id="two" value="in_estonia" v-model="selectedMode">{{$t('search.only_estonia')}}
-          </label>
-        </div>
+        <mode-buttons/>
       </div>
       <div class="col-md-4"></div>
     </div>
@@ -76,14 +69,15 @@
   import VueMultiselect from 'vue-multiselect'
   import RockSearch from "../components/main/RockSearch";
   import LangButtons from "../components/main/LangButtons";
+  import ModeButtons from "../components/main/ModeButtons";
   export default {
     name: "front-page",
-    components: {LangButtons, RockSearch, VueMultiselect},
+    components: {ModeButtons, LangButtons, RockSearch, VueMultiselect},
     metaInfo: {
       title: 'EUROCORE Data Portal'
     },
     data() {
-      return { lastChangedRocks: [],selectedMode:this.$localStorage.get('kivid_mode')}
+      return { lastChangedRocks: []}
     },
     created() {
       this.$emit('page-loaded',false);
@@ -91,11 +85,6 @@
       fetchLastChangedRocks(this.mode).then((response) => {
         this.lastChangedRocks = response.results ? response.results : [];
       });
-    },
-    watch: {
-      selectedMode: function(mode){
-        this.$localStorage.set('kivid_mode', mode);
-      }
     }
   }
 </script>
@@ -107,9 +96,5 @@
   margin-left: auto;
   margin-right: auto;
 }
-.btn-secondary:not(:disabled):not(.disabled).active {
-    background-color: #F05F40 !important;
-    border-color:#eb3812 !important;
-    z-index: 1 !important;
-  }
+
 </style>

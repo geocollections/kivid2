@@ -1,7 +1,6 @@
 <template>
   <div class="page-container item-page" >
     <div v-if="!error">
-
       <div class="row">
         <div class="col-md-12">
           <h1>{{capitalizeFirstLetter(rock.name)}}</h1>
@@ -171,7 +170,7 @@
         fileUrl:'https://files.geocollections.info',
         geocollectionUrl: "http://geocollections.info",
         error : false,
-        mode: this.$localStorage.get('mode'),
+        mode: this.$localStorage.get('kivid_mode'),
         rock : {
           id: this.$router.currentRoute.params.id,
           images: [],
