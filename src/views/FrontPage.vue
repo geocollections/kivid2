@@ -20,12 +20,12 @@
     <div class="row m-2">
       <div class="col-md-4"></div>
       <div class="col-md-4">
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn  btn-xs btn-secondary active">
-            <input type="radio" name="options" id="option1" autocomplete="off" checked> {{$t('search.worldwide')}}
+        <div class="btn-group btn-group-toggle">
+          <label class="btn  btn-xs btn-secondary" :class="selectedMode === 'in_global' ? 'active': ''">
+            <input type="radio" name="options" id="one" value="in_global" v-model="selectedMode">{{$t('search.worldwide')}}
           </label>
-          <label class="btn  btn-xs btn-secondary">
-            <input type="radio" name="options" id="option3" autocomplete="off"> {{$t('search.only_estonia')}}
+          <label class="btn  btn-xs btn-secondary"  :class="selectedMode === 'in_estonia' ? 'active': ''">
+            <input type="radio" name="options" id="two" value="in_estonia" v-model="selectedMode">{{$t('search.only_estonia')}}
           </label>
         </div>
       </div>
@@ -83,7 +83,7 @@
       title: 'EUROCORE Data Portal'
     },
     data() {
-      return { lastChangedRocks: []}
+      return { lastChangedRocks: [],selectedMode:this.$localStorage.get('kivid_mode')}
     },
     created() {
       this.$emit('page-loaded',false);
@@ -92,7 +92,11 @@
         this.lastChangedRocks = response.results ? response.results : [];
       });
     },
-
+    watch: {
+      selectedMode: function(mode){
+        this.$localStorage.set('kivid_mode', mode);
+      }
+    }
   }
 </script>
 
