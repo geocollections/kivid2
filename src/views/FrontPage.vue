@@ -54,7 +54,10 @@
           <a href="#/">ehitusmaavarad</a> |
 
           <br>
-          <div style="padding: 5px 0; font-size: 0.8em;">Viimati muudetud kirjed: <a href="#/23">aleuriit</a> | <a href="#/9">aleuroliit</a> | <a href="#/564">tšaroiit</a> | <a href="#/1071">zuniit</a> | <a href="#/601">sepioliit</a> | </div>
+          <div style="padding: 5px 0; font-size: 0.8em;" v-if="lastChangedRocks && lastChangedRocks.length > 0">{{$t('main.lastChanged')}}:
+            <span v-for="item in lastChangedRocks">
+              <a :href="'#/'+item.id" v-translate="{ et: item.name, en: item.name_en }"></a>  |
+            </span></div>
       </div>
     </div>
 
@@ -63,6 +66,9 @@
 </template>
 
 <script>
+  import {
+    fetchLastChangedRocks
+  } from '../api'
   import VueMultiselect from 'vue-multiselect'
   import RockSearch from "../components/main/RockSearch";
   export default {
@@ -71,8 +77,16 @@
     metaInfo: {
       title: 'EUROCORE Data Portal'
     },
+    data() {
+      return { lastChangedRocks: []}
+    },
     created() {
       this.$emit('page-loaded',false);
+      fetchLastChangedRocks()
+      fetchLastChangedRocks(this.mode).then((response) => {
+        this.lastChangedRocks = response.results ? response.results : [];
+      });
+
     }
   }
 </script>

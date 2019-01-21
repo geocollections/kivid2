@@ -65,3 +65,7 @@ export function fetchSearch (name,mode) {
   //return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)
   return fetch(`rock/?sql=simple_rock_search&keyword=${name}${applyMode(mode)}&format=json`)	
 }
+export function fetchLastChangedRocks (mode) {
+  //return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)
+  return fetch(`rock/?fields=id,name,name_en,date_changed&paginate_by=5&page=1&order_by=-date_changed${applyMode(mode)}&format=json`)
+}

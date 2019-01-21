@@ -5,7 +5,8 @@
   },
   "main": {
     "greeting":"Minerals, rocks, mineral resources",
-    "overlay":"Please wait..."
+    "overlay":"Please wait...",
+    "lastChanged":"Last modified records"
   },
   "item": {
     "type":"Type/level",
@@ -39,9 +40,7 @@
       "locality": "Locality",
       "name_part_element": "Name Part/element",
       "status": "Status",
-      "images": "Images",
-      "old_specimen_number": "Old nr.",
-      "lithostratigraphy": "Lithostratigraphy"
+      "images": "Images"
     }
   }
 }
