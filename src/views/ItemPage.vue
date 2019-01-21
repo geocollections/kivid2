@@ -17,7 +17,7 @@
       <!--<tab-gallery v-if="$store.state.activeTab === 'gallery'"></tab-gallery>-->
       <tab-specimens v-if="activeTab === 'specimens'"></tab-specimens>
         <div class="row" v-if="activeTab  === 'overview'">
-          <div class="col-lg-8">
+          <div class="col-md-8">
             <div class="row m-1">
               <div class="card rounded-0" style="width: 100%">
                 <div class="card-body"  style="text-align: left">
@@ -99,7 +99,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-md-4">
 
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.localities)">
               <div class="card rounded-0" style="width: 100%">
@@ -138,7 +138,7 @@
     </div>
     <div class="row" v-else>
       <div class="col-md-12  m-1">
-        <h3>ID {{$router.currentRoute.params.id}}: kirje ei ole kättesaadav</h3>
+        <h3>ID {{$route.currentRoute.params.id}}: kirje ei ole kättesaadav</h3>
       </div>
     </div>
     <!--{{rock}}-->
@@ -309,6 +309,14 @@
           this.composeTree()
         },
         deep: true
+      },
+      '$route.params.id': {
+        handler: function (id) {
+          this.$router.push({ path: `/${id}`});
+          // reload
+          this.$router.go(this.$router.currentRoute)
+        },
+        deep: true
       }
 
     },
@@ -330,10 +338,10 @@
     max-width: 1024px;
     text-align: left;
   }
-  .col-lg-8 {
+  .col-md-8 {
     padding-right:0.1rem !important;
   }
-  .col-lg-4 {
+  .col-md-4 {
     padding-left:0.1rem !important;
   }
   .row {

@@ -81,6 +81,7 @@ Vue.filter('getLangCode', function (value) {
   }
   return code;
 });
+
 Vue.filter('formatDate', function (value) {
   if (value) {
     return moment(String(value)).format('ddd, MMMM Do YYYY, HH:mm')

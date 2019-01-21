@@ -28,35 +28,34 @@
     </div>
     <div class="row m-2">
       <div class="col-md-12">
-      <a href="/#/232">
+      <router-link :to="'/'+232">
       <img src="https://files.geocollections.info/medium/9d/b5/9db5b4d9-7e83-471f-a2dd-cf2f440064f1.jpg" alt="kaltsiit" style="max-width: 750px; width: 100%;"/>
-      </a>
+      </router-link>
       </div>
     </div>
     <div class="row m-2">
       <div class="col-md-12">
           |
-          <a href="#/3">mineraalid</a> |
-          <a href="#/799">vääriskivid</a> |
+          <router-link :to="'/'+3">mineraalid</router-link> |
+          <router-link :to="'/'+799">vääriskivid</router-link> |
           <br>
           |
-          <a href="#/113">tardkivimid</a> |
-          <a href="#/21">setted </a> |
-          <a href="#/6">settekivimid</a> |
-          <a href="#/114">moondekivimid</a> |
-
+          <router-link :to="'/'+113">tardkivimid</router-link> |
+          <router-link :to="'/'+21">setted</router-link> |
+          <router-link :to="'/'+6">settekivimid</router-link> |
+          <router-link :to="'/'+114">moondekivimid</router-link> |
 
           <br>
           |
-          <a href="#/793">maagid</a> |
-          <a href="#/796">põlevmaavarad</a> |
-          <a href="#/">tööstustoormed</a> |
-          <a href="#/">ehitusmaavarad</a> |
+          <router-link :to="'/'+793">maagid</router-link> |
+          <router-link :to="'/'+796">põlevmaavarad</router-link> |
+          <router-link :to="'/'">tööstustoormed</router-link> |
+          <router-link :to="'/'">ehitusmaavarad</router-link> |
 
           <br>
           <div style="padding: 5px 0; font-size: 0.8em;" v-if="lastChangedRocks && lastChangedRocks.length > 0">{{$t('main.lastChanged')}}:
             <span v-for="item in lastChangedRocks">
-              <a :href="'#/'+item.id" v-translate="{ et: item.name, en: item.name_en }"></a>  |
+              <router-link :to="'/'+item.id" v-translate="{ et: item.name, en: item.name_en }"></router-link>  |
             </span></div>
       </div>
     </div>
