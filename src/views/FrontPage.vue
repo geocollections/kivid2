@@ -1,6 +1,11 @@
 <template>
   <div class="front-page">
     <div class="row">
+      <div class="col-md-12" style="text-align: right; margin-top: -5rem !important;">
+        <lang-buttons></lang-buttons>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-md-12">
         <h1>{{$t('main.greeting')}}</h1>
       </div>
@@ -70,9 +75,10 @@
   } from '../api'
   import VueMultiselect from 'vue-multiselect'
   import RockSearch from "../components/main/RockSearch";
+  import LangButtons from "../components/main/LangButtons";
   export default {
     name: "front-page",
-    components: {RockSearch, VueMultiselect},
+    components: {LangButtons, RockSearch, VueMultiselect},
     metaInfo: {
       title: 'EUROCORE Data Portal'
     },
@@ -85,8 +91,8 @@
       fetchLastChangedRocks(this.mode).then((response) => {
         this.lastChangedRocks = response.results ? response.results : [];
       });
+    },
 
-    }
   }
 </script>
 
