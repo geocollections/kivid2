@@ -13,14 +13,13 @@
         </div>
       </div>
       <tabs v-on:tab-changed="setActiveTab"></tabs>
-      <!--<tab-gallery v-if="$store.state.activeTab === 'gallery'"></tab-gallery>-->
       <tab-specimens v-if="activeTab === 'specimens'"></tab-specimens>
         <div class="row" v-if="activeTab  === 'overview'">
           <div class="col-md-8">
             <div class="row m-1">
               <div class="card rounded-0" style="width: 100%">
                 <div class="card-body"  style="text-align: left">
-                  <table class='table' id="basicInfoTable">
+                  <table class='table' id="basicInfoTable" v-if="basicInfoLoaded">
                     <tbody>
                     <tr v-if="isDefinedAndNotNull(rock.rocktype) || isDefinedAndNotNull(rock.rockrank)">
                       <th>{{$t('item.type')}}</th><td>{{rock.rocktype}} | {{rock.rockrank}}</td>
@@ -155,7 +154,8 @@
     fetchRockTree,
     fetchHierarchy,
     fetchRockLocalities,
-    cntSpecimenCollection
+    cntSpecimenCollection,
+    fetchPhotoGallery
   } from '../api'
   import Lingallery from "../components/main/Lingallery";
   import TaxonomicalTree from "../components/main/TaxonomicalTree";
@@ -181,6 +181,7 @@
           tree: {nodes: []},
           specimenCollectionCnt: 1
         },
+        basicInfoLoaded: false,
         activeTab: 'overview',
         activeClfTab: '',
         currentClf: {},
@@ -222,8 +223,8 @@
         if (images.length > 0) {
           let this_ = this;
           images.forEach(function(el) {
-            el.thumbnail = this_.fileUrl + '/small/' + el.attachment__filename.substring(0, 2) + '/' + el.attachment__filename.substring(2, 4) + '/' + el.attachment__filename;
-            el.src = this_.fileUrl + '/large/' + el.attachment__filename.substring(0, 2) + '/' + el.attachment__filename.substring(2, 4) + '/' + el.attachment__filename;
+            el.thumbnail = el.preview ? el.preview : this_.fileUrl + '/small/' + el.attachment__filename.substring(0, 2) + '/' + el.attachment__filename.substring(2, 4) + '/' + el.attachment__filename;
+            el.src = el.large ? el.large : this_.fileUrl + '/large/' + el.attachment__filename.substring(0, 2) + '/' + el.attachment__filename.substring(2, 4) + '/' + el.attachment__filename;
             el.caption = this_.setFancyBoxCaption(el);
           });
           return images
@@ -234,6 +235,7 @@
           this.$emit('page-loaded',false);
           if(this.isDefinedAndNotEmpty(response.results)) {
             this.rock = Object.assign(this.rock,response.results[0])
+            this.basicInfoLoaded = true;
           } else this.error = true;
         });
         fetchRockImages(this.rock.id, this.mode).then((response) => {
@@ -299,6 +301,12 @@
           this.currentClfSisters = response.results;
           this.isCurrentClfSistersLoaded = true;
         });
+        if(this.rock.images.length === 0) {
+          fetchPhotoGallery(this.currentClf.parent_string, this.mode).then((response) => {
+            this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
+              this.composeImageUrls(response.results) : [];
+          });
+        }
       }
 
     },

@@ -69,3 +69,6 @@ export function fetchLastChangedRocks (mode) {
   //return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)
   return fetch(`rock/?fields=id,name,name_en,date_changed&paginate_by=5&page=1&order_by=-date_changed${applyMode(mode)}&format=json`)
 }
+export function fetchPhotoGallery (parentString,mode) {
+  return fetch(`rock/?sql=rock_photo_gallery&keyword=${parentString}&page=1&paginate_by=25&format=json`)
+}
