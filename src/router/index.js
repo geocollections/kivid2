@@ -8,7 +8,7 @@ Vue.use(Router);
 Vue.use(Meta);
 
 export default new Router({
-  // mode: 'history',
+  mode: 'history',
   // fallback: false,
   // scrollBehavior: () => ({ y: 0 }),
   routes: [

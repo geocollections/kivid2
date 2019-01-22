@@ -33,10 +33,12 @@
 <script>
 
   import RockSearch from "./RockSearch";
+  import ModeButtons from "./ModeButtons";
 
   export default {
     name: "app-header",
     components:  {
+      ModeButtons,
       RockSearch
     },
     computed: {
