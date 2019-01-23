@@ -1,8 +1,8 @@
 <template>
   <li class="node-tree">
-    <button type="button" class="btn btn-outline-primary btn-circle" :class="node.id === currentRockId ? 'btn-selected': ''" style="font-size: xx-small;" v-on:click.prevent="navigate(node.id)"><font-awesome-icon :icon="icon" /></button>
-    <a class="label ml-2" :href="'/'+node.id" v-if="node.id !== currentRockId" v-translate="{ et: capitalizeFirstLetter(node.label), en: capitalizeFirstLetter(node.label_en) }"></a>
-    <span class="label selected ml-2" v-if="node.id === currentRockId" v-translate="{ et:capitalizeFirstLetter(node.label), en: capitalizeFirstLetter(node.label_en) }"></span>
+    <!--<button type="button" class="btn btn-outline-primary btn-circle" :class="node.id === currentRockId ? 'btn-selected': ''" style="font-size: xx-small;" v-on:click.prevent="navigate(node.id)"><font-awesome-icon :icon="icon" /></button>-->
+    <a class="label" :href="'/'+node.id" v-if="node.id !== currentRockId" v-translate="{ et: capitalizeFirstLetter(node.label), en: capitalizeFirstLetter(node.label_en) }"></a>
+    <span class="label selected" v-if="node.id === currentRockId" v-translate="{ et:capitalizeFirstLetter(node.label), en: capitalizeFirstLetter(node.label_en) }"></span>
     <ul v-if="node.children && node.children.length">
       <node v-for="(child,idx) in node.children" :key="idx" :node="child" :current-rock-id="currentRockId"></node>
     </ul>

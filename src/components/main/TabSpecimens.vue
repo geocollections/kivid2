@@ -24,20 +24,12 @@
             <table class="table table-bordered table-hover mobile-padding-fix" style="font-size: smaller;" id="table-search">
                 <thead class="thead-default">
                 <tr>
-                    <th><sort-field value = "specimen_number" name="search.specimen.number"></sort-field></th>
-                    <!--<th><sort-field value = "specimen_number_old" name="search.specimen.old_specimen_number"></sort-field></th>-->
-                    <th><sort-field value = "taxon" name="search.specimen.name_part_element"></sort-field></th>
-                    <th><sort-field value = "locality,locality_en" name="search.specimen.locality"></sort-field></th>
-                    <th><sort-field value = "depth" name="search.specimen.depth_m"></sort-field></th>
-                    <th>
-                    <sort-field value = "stratigraphy,stratigraphy_en" name="search.specimen.stratigraphy"/>
-                    <!--|-->
-                    <!--<em>-->
-                    <!--<sort-field value="lithostratigraphy,lithostratigraphy_en" name="search.specimen.lithostratigraphy"/>-->
-                    <!--</em>-->
-                    </th>
-                    <!--<th><sort-field value = "collector_full_name" name="search.specimen.collector"></sort-field></th>-->
-                    <th><sort-field value = "original_status,original_status_en" name="search.specimen.status"></sort-field></th>
+                    <th><sort-field value = "specimen_number" name="search.specimen.number" :searchParameters="searchParameters"></sort-field></th>
+                    <th><sort-field value = "taxon" name="search.specimen.name_part_element" :searchParameters="searchParameters"></sort-field></th>
+                    <th><sort-field value = "locality,locality_en" name="search.specimen.locality" :searchParameters="searchParameters"></sort-field></th>
+                    <th><sort-field value = "depth" name="search.specimen.depth_m" :searchParameters="searchParameters"></sort-field></th>
+                    <th><sort-field value = "stratigraphy,stratigraphy_en" name="search.specimen.stratigraphy" :searchParameters="searchParameters"/></th>
+                    <th><sort-field value = "original_status,original_status_en" name="search.specimen.status" :searchParameters="searchParameters"></sort-field></th>
                     <th>{{ $t('search.specimen.images') }}</th>
                 </tr>
                 </thead>
@@ -158,7 +150,8 @@
                     count: 0,
                     results: []
                 }
-            }
+            },
+
         },
         watch: {
             'searchParameters.specimens': {
