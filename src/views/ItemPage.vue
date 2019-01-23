@@ -60,7 +60,7 @@
                 <div class="card-header">{{$t('item.classification')}}</div>
                 <div class="card-body">
                   <div class="m-1 mt-3">
-                    <ul class="nav nav-tabs tab-links" style="flex-wrap: nowrap !important;font-size: x-small">
+                    <ul class="nav nav-tabs tab-links" style="flex-wrap: nowrap !important;font-size: small">
                       <li class="nav-item" v-for="cls in rock.classifications">
                         <a href="#" v-on:click.prevent="setActiveClfTab(cls.rock_classification_id)" class="nav-link"
                            :class="{ active: activeClfTab === cls.rock_classification_id }" v-translate="{ et: cls.rock_classification__name, en: cls.rock_classification__name_en }"></a>
@@ -243,7 +243,6 @@
         return string ? string.charAt(0).toUpperCase() + string.slice(1):'';
       },
       navigate: function(id) {
-        console.log(id)
         this.$router.push({ path: `/${id}`});
         // reload
         this.$router.go(this.$router.currentRoute)

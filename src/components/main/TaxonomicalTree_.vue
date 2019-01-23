@@ -1,7 +1,22 @@
 <template>
-  <div class="clt mt-2" >
-    <tree :tree-data="tree" :current-rock-id="$parent.rock.id"></tree>
+  <div>
+    <ul class="ml-0">
+      <li style="list-style-type: none">
+        <table>
+          <tbody class="hierarchy_tree">
+          <tr  v-for="item in taxonomicTree.nodes">
+            <td>
+              <span v-for="i in convertToNumber(item.i)" >&ensp;</span>
+              <a :href="'/'+item.id" v-if="item.id !== $parent.rock.id" v-translate="{ et: item.label, en: item.label_en }"></a>
+              <span class="node_in_tree_selected" v-if="item.id === $parent.rock.id" v-translate="{ et: item.label, en: item.label_en }"></span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
   </div>
+
 </template>
 
 <script>
@@ -11,7 +26,7 @@
       components: {Tree},
       data() {
         return {
-          tree: {}
+          taxonomicTree: {nodes: []}
         }
       },
       computed: {
@@ -27,9 +42,9 @@
           let hierarchy = this.reorderHierarchy();
           if (hierarchy === undefined) return;
           this.addTopRock();
-          let level = 0,prevNode;
-          level,prevNode = this.addHierarchy(hierarchy,level);
-          this.addSisters(this.reorderSisters(),level,prevNode)
+          let level = 0;
+          level = this.addHierarchy(hierarchy,level);
+          this.addSisters(this.reorderSisters(),level)
         },
         reorderSisters: function(){
           return this.lang === 'et' ?
@@ -37,12 +52,13 @@
             this.sisters.sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
         },
         addTopRock: function() {
-          this.tree = (
+          let node = (
             { i:0, id:this.$parent.currentClf.rock_classification__hierarchy_top_rock_id,
               label: this.$parent.currentClf.rock_classification__hierarchy_top_rock__name,
               label_en: this.$parent.currentClf.rock_classification__hierarchy_top_rock__name_en,
-             children: []
+             nodes: []
             });
+          this.taxonomicTree.nodes.push(node)
         },
         convertToNumber: function(str) { return parseInt(str) },
         //reorder hierarchy according to hierarchy string
@@ -60,55 +76,21 @@
           return newArr
         },
         addHierarchy: function(filteredList,level) {
-          let node,prevNode;
           for(let idx in filteredList) {
             level += 1;
-            prevNode = node ? node : this.tree;
-            if(filteredList[idx].rock_id === prevNode.id) continue
-            node = {i:level, id:filteredList[idx].rock_id, label: filteredList[idx].rock__name, label_en: filteredList[idx].rock__name_en,children:[]};
-            prevNode.children = [node]
+            let node = {i:level, id:filteredList[idx].rock_id, label: filteredList[idx].rock__name, label_en: filteredList[idx].rock__name_en,siblings:[]};
+            this.taxonomicTree.nodes.push(node)
           }
-          if (node === undefined) node = this.tree
-          return level,node
+          return level
         },
-        addSisters: function(orderedSisters,level,prevNode) {
+        addSisters: function(orderedSisters,level) {
           level += 1;
           for(let idx in orderedSisters) {
             let node = {i: level, label: orderedSisters[idx].rock__name, label_en: orderedSisters[idx].rock__name_en,
-               id: this.sisters[idx].rock_id,children:[]};
-            prevNode.children.push(node)
+               id: this.sisters[idx].rock_id,siblings:[]};
+            this.taxonomicTree.nodes.push(node)
           }
         },
       }
     }
 </script>
-<style>
-  .clt, .clt ul, .clt li {
-    position: relative;
-  }
-
-  .clt ul {
-    list-style: none;
-    padding-left: 32px;
-  }
-  .clt li::before, .clt li::after {
-    content: "";
-    position: absolute;
-    left: -12px;
-  }
-  .clt li::before {
-    border-top: 1px solid #26a69a;
-    top: 9px;
-    width: 8px;
-    height: 0;
-  }
-  .clt li::after {
-    border-left: 1px solid #26a69a;
-    height: 100%;
-    width: 0px;
-    top: 2px;
-  }
-  .clt ul > li:last-child::after {
-    height: 8px;
-  }
-</style>
