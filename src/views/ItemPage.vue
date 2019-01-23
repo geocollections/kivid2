@@ -253,8 +253,6 @@
           ',height=' + params.height, scrollbars)
       },
       setFancyBoxCaption: function(el) {
-        console.log(el)
-
         let text = "",
           autor = this.isDefinedAndNotNull(el.attachment__author__agent) ?
             this.$t('fancybox.author')+": <strong>"+el.attachment__author__agent +"</strong>":"" ,
@@ -270,16 +268,6 @@
             "<div><button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/specimen/"+el.attachment__specimen_id+"')\">"+this.$t('fancybox.detailView')+"</button></div>":"" ;
         text += "<div>"+autor+agent+"</div>"+date+licence+detailView;
         return text;
-
-
-        // let text="",infoBtn = "", imgBtn = "", additionalInfo = {imageName: el.link_taxon, infoId:el.specimen_id, imageId: el.attachment_id, navigateId: el.link_id};
-
-        // text += "<div><button type=\"button\" class=\"btn btn-xs  btn-primary\" onclick=\"window.open('"+this.kividUrl+"/"+additionalInfo.navigateId+"')\">Read more</button></div>" ;
-        let someName = 'Autor: '+el.attachment__author__agent + ' '+ el.attachment__date_created +' ('+el.attachment__copyright_agent__agent+')';
-        if (el.image__specimen_id !== null) infoBtn = "<button type=\"button\" class=\"btn btn-sm  btn-info\" onclick=\"window.open('"+this.geocollectionUrl+"/specimen/"+el.attachment__specimen_id+"')\">INFO</button>"
-        if(el.id !== null) imgBtn = " <button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/file/"+el.id+"')\">IMAGE</button>"
-        text += "<div class='mt-3'>"+someName+"<span></span>&ensp;&ensp;" + infoBtn + imgBtn + "</div>";
-        return text
       },
       composeImageUrls(images){
         if(images === undefined || images === {} || images.length === 0) return ;
@@ -324,10 +312,17 @@
         fetchRockReferences(this.rock.id, this.mode).then((response) => {
           this.rock.references = this.handleResponse(response);
         });
-
+        console.log(this.rock)
         fetchRockTreeByRockId(this.rock.id, this.mode).then((response) => {
           if(this.isDefinedAndNotNull(response.results)) {
             this.rock.classifications = this.handleResponse(response);
+            if(this.rock.images.length === 0) {
+              fetchPhotoGallery(this.rock.classifications[0].parent_string, this.mode).then((response) => {
+                this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
+                  this.composeImageUrls(response.results) : [];
+              });
+            }
+            if(!this.isDefinedAndNotNull(response.results[0].parent__name)) return;
             this.setActiveClfTab(this.rock.classifications[0].rock_classification_id);
             this.composeTree()
           }
@@ -367,12 +362,6 @@
           this.currentClfSisters = response.results;
           this.isCurrentClfSistersLoaded = true;
         });
-        if(this.rock.images.length === 0) {
-          fetchPhotoGallery(this.currentClf.parent_string, this.mode).then((response) => {
-            this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
-              this.composeImageUrls(response.results) : [];
-          });
-        }
       }
 
     },
