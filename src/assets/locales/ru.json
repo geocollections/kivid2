@@ -36,7 +36,9 @@
     "typeII":"Классификация драгоценных камней",
     "typeIII":"Классификация минералов по Strunz'-у",
     "tab_overview":"Общая информация",
-    "tabs_specimens":"Экземпляры"
+    "tabs_specimens":"Экземпляры",
+    "minerals":"Минеральный состав",
+    "mineralsByRock":"Камни содержащие минерал"
   },
   "search": {
     "worldwide":"Весь мир",

@@ -36,7 +36,9 @@
     "typeII":"Vääriskivide klassifikatsioon",
     "typeIII":"Mineraalide klassifikatsioon (Strunz'i baasil)",
     "tab_overview":"Üldinfo",
-    "tabs_specimens":"Eksemplarid"
+    "tabs_specimens":"Eksemplarid",
+    "minerals":"Mineraalne koostis",
+    "mineralsByRock":"Mineraali sisaldavad kivimid"
   },
   "search": {
     "worldwide":"Maailm",

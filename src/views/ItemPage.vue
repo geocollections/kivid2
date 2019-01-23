@@ -17,9 +17,9 @@
         <div class="row" v-if="activeTab  === 'overview'">
           <div class="col-md-8">
             <div class="row m-1">
-              <div class="card rounded-0" style="width: 100%">
-                <div class="card-body"  style="text-align: left">
-                  <table class='table' id="basicInfoTable" v-if="basicInfoLoaded">
+              <div class="card rounded-0">
+                <div class="card-body">
+                  <table class='table basicInfoTable' v-if="basicInfoLoaded">
                     <tbody>
                     <tr v-if="isDefinedAndNotNull(rock.rocktype) || isDefinedAndNotNull(rock.rockrank)">
                       <th>{{$t('item.type')}}</th><td>{{rock.rocktype}} | {{rock.rockrank}}</td>
@@ -55,10 +55,10 @@
                 </div>
               </div>
             </div>
-            <div class="row m-1" v-if="isClassificationTreeLoaded">
-              <div class="card rounded-0" style="width: 100%" v-if="isDefinedAndNotEmpty(rock.classifications)">
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded">
+              <div class="card rounded-0">
                 <div class="card-header">{{$t('item.classification')}}</div>
-                <div class="card-body"  style="text-align: left">
+                <div class="card-body">
                   <div class="m-1 mt-3">
                     <ul class="nav nav-tabs tab-links" style="flex-wrap: nowrap !important;font-size: x-small">
                       <li class="nav-item" v-for="cls in rock.classifications">
@@ -71,10 +71,29 @@
                 </div>
               </div>
             </div>
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.minerals)">
+              <div class="card rounded-0">
+                <div class="card-header">{{$t('item.minerals')}}</div>
+                <div class="card-body">
+                    <table class='table basicInfoTable' >
+                      <tbody>
+                        <tr v-for="item in rock.minerals">
+                          <td>
+                            <a v-on:click.prevent="navigate(item.mineral__id)" href="#" v-translate="{ et: item.mineral__name, en: item.mineral__name_en }"></a>
+                          </td>
+                          <td v-html="item.mineral__formula_html"></td>
+                          <td v-translate="{ et: item.description, en: item.description_en }"></td>
+                          <td v-translate="{ et: item.mineral_type__name, en: item.mineral_type__name_en }"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.references)">
-              <div class="card rounded-0" style="width: 100%">
+              <div class="card rounded-0">
                 <div class="card-header">{{$t('item.references')}}</div>
-                <div class="card-body"  style="text-align: left">
+                <div class="card-body">
                   <div :class="idx === rock.references.length -1 ? '' : 'my-3'" v-for=" reference,idx in rock.references" style="padding-left: 3em; text-indent: -3em;">
                     <a href="#" @click="openUrl({parent_url:'http://geocollections.info/reference',object:reference.reference_id, width:500,height:500})">
                       {{reference.reference__author}} {{reference.reference__year}}.
@@ -98,9 +117,8 @@
             </div>
           </div>
           <div class="col-md-4">
-
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.localities)">
-              <div class="card rounded-0" style="width: 100%">
+              <div class="card rounded-0">
                 <div class="card-header">{{$t('item.localities')}}</div>
                 <div class="card-body no-padding">
                   <map-component></map-component>
@@ -108,9 +126,9 @@
               </div>
             </div>
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.properties)">
-              <div class="card rounded-0" style="width: 100%">
+              <div class="card rounded-0">
                 <div class="card-header">{{$t('item.features')}}</div>
-                <div class="card-body"  style="text-align: left">
+                <div class="card-body">
                   <div v-for="item in rock.properties">
                     <span style="font-weight: bolder" v-translate="{ et: item.property, en: item.property_en }"></span>:
                     <span v-if="isDefinedAndNotNull(item.value_min) || isDefinedAndNotNull(item.value_max)">
@@ -120,13 +138,26 @@
                 </div>
               </div>
             </div>
-            <div class="row m-1" >
-              <div class="card rounded-0" style="width: 100%" v-if="isDefinedAndNotEmpty(rock.synonyms)">
+            <div class="row m-1"  v-if="isDefinedAndNotEmpty(rock.synonyms)">
+              <div class="card rounded-0">
                 <div class="card-header">{{$t('item.synonyms')}}</div>
-                <div class="card-body"  style="text-align: left">
+                <div class="card-body">
                   <div v-for="item in rock.synonyms">
                     <b>{{item.language__iso1}}</b>: {{item.name}}
                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.mineralsByRock)">
+              <div class="card rounded-0">
+                <div class="card-header">{{$t('item.mineralsByRock')}}</div>
+                <div class="card-body">
+                  <ul  class="ast-content-ul-list">
+                    <li class="mb-1" v-for="item in rock.mineralsByRock">
+                      <button type="button" class="btn btn-outline-primary btn-circle" style="font-size: xx-small;" v-on:click.prevent="navigate(item.rock__id)"><font-awesome-icon :icon="icon" /></button>
+                      <span class="ml-2" v-translate="{ et: capitalizeFirstLetter(item.rock__name), en: capitalizeFirstLetter(item.rock__name_en) }"></span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -155,8 +186,12 @@
     fetchHierarchy,
     fetchRockLocalities,
     cntSpecimenCollection,
-    fetchPhotoGallery
+    fetchPhotoGallery,
+    fetchMinerals,
+    fetchMineralsByRock
   } from '../api'
+  import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+  import faExternalLink from '@fortawesome/fontawesome-free-solid/faExternalLinkAlt'
   import Lingallery from "../components/main/Lingallery";
   import TaxonomicalTree from "../components/main/TaxonomicalTree";
   import MapComponent from "../components/main/MapComponent";
@@ -164,7 +199,7 @@
   import TabSpecimens from "../components/main/TabSpecimens";
   export default {
     name: "item-page",
-    components: {TabSpecimens, Tabs, MapComponent, TaxonomicalTree, Lingallery},
+    components: {TabSpecimens, Tabs, MapComponent, TaxonomicalTree, Lingallery,FontAwesomeIcon},
     data() {
       return {
         fileUrl:'https://files.geocollections.info',
@@ -176,6 +211,7 @@
           images: [],
           properties: [],
           references: [],
+          minerals: [],
           synonyms: [],
           classifications: [],
           tree: {nodes: []},
@@ -191,8 +227,10 @@
     },
     computed: {
       isClassificationTreeLoaded() {
-        return this.isCurrentClfSistersLoaded && this.isCurrenClfHierarchyLoaded}
+        return this.isCurrentClfSistersLoaded && this.isCurrenClfHierarchyLoaded},
+      icon() { return faExternalLink }
     },
+
     created() {
       this.$emit('page-loaded',true);
       this.loadFullRockInfo()
@@ -203,6 +241,12 @@
       isDefinedAndNotEmpty(value) { return !!value && value.length > 0 },
       capitalizeFirstLetter(string) {
         return string ? string.charAt(0).toUpperCase() + string.slice(1):'';
+      },
+      navigate: function(id) {
+        console.log(id)
+        this.$router.push({ path: `/${id}`});
+        // reload
+        this.$router.go(this.$router.currentRoute)
       },
       openUrl: function (params) {
         window.open(params.parent_url + '/' + params.object, '', 'width=' + params.width +
@@ -242,7 +286,6 @@
           this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
            this.composeImageUrls(response.results) : [];
         });
-        // fetchGroupImages()
         fetchRockProperties(this.rock.id, this.mode).then((response) => {
           this.rock.properties = this.handleResponse(response);
         });
@@ -250,8 +293,12 @@
         // getchildren($id);
         // getsiblings($id);
         //
-        // getminerals($id);
-        // getrocksbymineral($id);
+        fetchMinerals(this.rock.id, this.mode).then((response) => {
+          this.rock.minerals = this.handleResponse(response);
+        });
+        fetchMineralsByRock(this.rock.id, this.mode).then((response) => {
+          this.rock.mineralsByRock = this.handleResponse(response);
+        });
         fetchRockSynonyms(this.rock.id, this.mode).then((response) => {
           this.rock.synonyms = this.handleResponse(response);
         });
@@ -340,7 +387,7 @@
     margin-left: auto;
     margin-right: auto;
   }
-  #basicInfoTable {
+  .basicInfoTable {
     width: 100%;
     max-width: 1024px;
     text-align: left;
@@ -367,5 +414,34 @@
   }
   .card {
     margin-bottom: 4px;
+  }
+
+  div.card.rounded-0 {
+    width: 100%
+  }
+  div.card-body {
+    text-align: left
+  }
+  /* Unordered list style */
+  ul.ast-content-ul-list {
+    margin-left:-3rem;
+  }
+  ul.ast-content-ul-list li {
+    position: relative;
+    padding-left: 10px;
+    list-style: none;
+  }
+  .btn-circle {
+    width: 25px;
+    height: 25px;
+    padding: 5px 8px;
+    font-size: 12px;
+    border-radius: 50%;
+    color:#26a69a  !important;
+    border-color:#26a69a  !important;
+  }
+  .btn-circle:hover {
+    background-color:#26a69a  !important;
+    color:#ffffff  !important;
   }
 </style>

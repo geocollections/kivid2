@@ -36,7 +36,11 @@
     "typeII":"Vääriskivide klassifikatsioon",
     "typeIII":"Mineraalide klassifikatsioon (Strunz'i baasil)",
     "tab_overview":"Overview",
-    "tabs_specimens":"Specimens"
+    "tabs_specimens":"Specimens",
+    "minerals":"Mineral composition",
+    "mineralsByRock":"Mineral containing rocks"
+
+
   },
   "search": {
     "worldwide":"Worldwide",

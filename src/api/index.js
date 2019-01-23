@@ -72,3 +72,9 @@ export function fetchLastChangedRocks (mode) {
 export function fetchPhotoGallery (parentString,mode) {
   return fetch(`rock/?sql=rock_photo_gallery&keyword=${parentString}&page=1&paginate_by=25&format=json`)
 }
+export function fetchMinerals (id,mode) {
+  return fetch(`rock_mineral/?rock_id=${id}&format=json`)
+}
+export function fetchMineralsByRock (id,mode) {
+  return fetch(`rock_mineral/?mineral__id=${id}&format=json`)
+}
