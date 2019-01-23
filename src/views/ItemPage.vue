@@ -188,7 +188,8 @@
     cntSpecimenCollection,
     fetchPhotoGallery,
     fetchMinerals,
-    fetchMineralsByRock
+    fetchMineralsByRock,
+    fetchRockSiblings
   } from '../api'
   import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
   import faExternalLink from '@fortawesome/fontawesome-free-solid/faExternalLinkAlt'
@@ -223,12 +224,13 @@
         activeClfTab: '',
         currentClf: {},
         isCurrentClfSistersLoaded: false,
-        isCurrenClfHierarchyLoaded: false
+        isCurrenClfHierarchyLoaded: false,
+        isCurrentClfSiblingsLoaded: false
       }
     },
     computed: {
       isClassificationTreeLoaded() {
-        return this.isCurrentClfSistersLoaded && this.isCurrenClfHierarchyLoaded},
+        return this.isCurrentClfSistersLoaded && this.isCurrenClfHierarchyLoaded && this.isCurrentClfSiblingsLoaded},
       icon() { return faExternalLink }
     },
 
@@ -296,10 +298,6 @@
         fetchRockProperties(this.rock.id, this.mode).then((response) => {
           this.rock.properties = this.handleResponse(response);
         });
-        // getparents
-        // getchildren($id);
-        // getsiblings($id);
-        //
         fetchMinerals(this.rock.id, this.mode).then((response) => {
           this.rock.minerals = this.handleResponse(response);
         });
@@ -361,6 +359,12 @@
         fetchRockTree(this.activeClfTab, this.currentClf.parent_id, this.mode).then((response) => {
           this.currentClfSisters = response.results;
           this.isCurrentClfSistersLoaded = true;
+        });
+        //siblings
+        this.isCurrentClfSiblingsLoaded = true;
+        fetchRockSiblings(this.activeClfTab, this.currentClf.rock_id, this.mode).then((response) => {
+          this.currentClfSiblings = response.results;
+          this.isCurrentClfSiblingsLoaded = true;
         });
       }
 

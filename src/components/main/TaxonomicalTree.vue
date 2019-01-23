@@ -17,7 +17,8 @@
       computed: {
         lang() {return this.$localStorage.get('kivid_lang')},
         hierarchy() { return this.$parent.currenClfHierarchy},
-        sisters() { return this.$parent.currentClfSisters}
+        sisters() { return this.$parent.currentClfSisters},
+        siblings() { return this.$parent.currentClfSiblings}
       },
       created() {
         this.composeTaxonomicTree()
@@ -35,6 +36,11 @@
           return this.lang === 'et' ?
             this.sisters.sort((a,b) => (a.rock__name.toLowerCase() > b.rock__name.toLowerCase()) ? 1 : ((b.rock__name.toLowerCase() > a.rock__name.toLowerCase()) ? -1 : 0)) :
             this.sisters.sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
+        },
+        reorderSiblings: function(){
+          return this.lang === 'et' ?
+            this.siblings.sort((a,b) => (a.rock__name.toLowerCase() > b.rock__name.toLowerCase()) ? 1 : ((b.rock__name.toLowerCase() > a.rock__name.toLowerCase()) ? -1 : 0)) :
+            this.siblings.sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
         },
         addTopRock: function() {
           this.tree = (
@@ -76,9 +82,17 @@
           for(let idx in orderedSisters) {
             let node = {i: level, label: orderedSisters[idx].rock__name, label_en: orderedSisters[idx].rock__name_en,
                id: this.sisters[idx].rock_id,children:[]};
+            if(node.id === this.$parent.rock.id) this.addSiblings(this.reorderSiblings(), level,node);
             prevNode.children.push(node)
           }
         },
+        addSiblings: function(orderedSiblings,level, currentRock){
+          for(let idx in orderedSiblings) {
+            let node = {i: level, label: orderedSiblings[idx].rock__name, label_en: orderedSiblings[idx].rock__name_en,
+              id: this.siblings[idx].rock_id, children:[]};
+            currentRock.children.push(node)
+          }
+        }
       }
     }
 </script>

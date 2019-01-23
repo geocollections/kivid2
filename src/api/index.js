@@ -53,6 +53,9 @@ export function fetchHierarchy (id,hierarchyString,clsId) {
 export function fetchRockTree (clsId,parentId,mode) {
   return fetch(`rock_tree/?rock_classification_id=${clsId}&parent_id=${parentId}${applyMode(mode)}&rock__name__isnull=False&rock__name_en__isnull=False&format=json`)
 }
+export function fetchRockSiblings (clsId,id,mode) {
+  return fetch(`rock_tree/?rock_classification_id=${clsId}&parent_id=${id}${applyMode(mode)}&rock__name__isnull=False&rock__name_en__isnull=False&format=json`)
+}
 export function cntSpecimenCollection(id) {
   return fetch(`solr/specimen/?q=rock_id:${id}&rows=1&format=json`)
 }
