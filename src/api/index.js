@@ -59,7 +59,20 @@ export function cntSpecimenCollection(id) {
 export function fetchSpecimenCollection (id,mode,searchParameters) {
   let start = searchParameters.specimens.paginateBy*(searchParameters.specimens.page-1);
   let orderBy = searchParameters.specimens.order === 'ASCENDING' ? searchParameters.specimens.sortBy + ' asc': searchParameters.specimens.sortBy + ' desc';
-  return fetch(`solr/specimen/?q=rock_id:${id}&rows=${searchParameters.specimens.paginateBy}&start=${start}&sort=${orderBy}&format=json`)
+  let isFq = searchParameters.specimens.onlyImgs === true || searchParameters.specimens.git === true || searchParameters.specimens.tug === true || searchParameters.specimens.elm === true
+  let fq = '';
+  if (isFq === true) {
+    fq += '&fq=';
+    fq += searchParameters.specimens.onlyImgs === true ? 'image_preview_url:[%27%27 TO *]':'';
+    if(searchParameters.specimens.git === true || searchParameters.specimens.tug === true || searchParameters.specimens.elm === true) {
+      if (searchParameters.specimens.onlyImgs === true) fq += '%20AND%20';
+      fq += 'acronym:';
+      fq += searchParameters.specimens.git === true ? 'GIT%20or':'';
+      fq += searchParameters.specimens.tug === true ? 'TUG%20or':'';
+      fq += searchParameters.specimens.elm === true ? 'ELM%20or':'';
+    }
+  }
+  return fetch(`solr/specimen/?q=rock_id:${id}${fq}&rows=${searchParameters.specimens.paginateBy}&start=${start}&sort=${orderBy}&format=json`)
 }
 export function fetchSearch (name,mode) {
   //return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)

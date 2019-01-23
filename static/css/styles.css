@@ -88,3 +88,9 @@ img {
     padding-left: 0 !important;
   }
 }
+
+/*Pagination style*/
+a.page-link {color: #26a69a !important; }
+.page-item.active .page-link {border-color: #26a69a;background-color: #26a69a; color: #fff !important;}
+
+/*Pagination style ends */

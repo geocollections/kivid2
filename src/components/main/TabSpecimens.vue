@@ -4,10 +4,21 @@
           loading
             <!--<spinner  :show="loading"></spinner><span class="p-2">{{$t('messages.pageLoading')}}</span>-->
         </b-row>
-        <b-row class="m-1 table-responsive" v-if="$parent.isDefinedAndNotEmpty(response.results) && !loading">
-            <div class="col-xs-12 pagination-center">
-                <b-pagination
-                        size="sm" align="right" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy">
+      <div class="row ml-3">
+        <div class="col-xs-12">
+          <button type="button" class="btn btn-outline-primary btn-custom" :class="searchParameters.specimens.onlyImgs ? 'active' : ''" aria-pressed="true" style="font-size:small"
+                  v-on:click.prevent="searchParameters.specimens.onlyImgs = !searchParameters.specimens.onlyImgs"><font-awesome-icon :icon="icon" /> Ainult piltidedga</button>
+          <button type="button" class="btn btn-outline-primary btn-circle btn-git ml-4" style="font-size: xx-small;" :class="searchParameters.specimens.git ? 'active' : ''" aria-pressed="true"
+                  v-on:click.prevent="searchParameters.specimens.git = !searchParameters.specimens.git"><span style="margin-left: -0.4rem;">GIT</span></button>
+          <button type="button" class="btn btn-outline-primary btn-circle btn-tug" style="font-size: xx-small;" :class="searchParameters.specimens.tug ? 'active' : ''" aria-pressed="true"
+                  v-on:click.prevent="searchParameters.specimens.tug = !searchParameters.specimens.tug"><span style="margin-left: -0.4rem;">TUG</span></button>
+          <button type="button" class="btn btn-outline-primary btn-circle btn-elm" style="font-size: xx-small;" :class="searchParameters.specimens.elm ? 'active' : ''" aria-pressed="true"
+                  v-on:click.prevent="searchParameters.specimens.elm = !searchParameters.specimens.elm"><span style="margin-left: -0.5rem;">ELM</span></button>
+        </div>
+      </div>
+        <b-row class="m-1 table-responsive" v-if="$parent.isDefinedAndNotEmpty(response.results) && !loading" style="margin-top: -2rem !important;">
+            <div class="col-xs-6 pagination-center">
+              <b-pagination size="sm" align="right" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy">
                 </b-pagination>
             </div>
             <table class="table table-bordered table-hover mobile-padding-fix" style="font-size: smaller;" id="table-search">
@@ -107,21 +118,25 @@
     import {
         fetchSpecimenCollection
     } from '../../api'
+    import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+    import faExternalLink from '@fortawesome/fontawesome-free-solid/faCamera'
     import SortField from "./SortField";
     export default {
         name: "TabSpecimens",
-        components: {SortField},
+        components: {SortField,FontAwesomeIcon},
         data() {
             return {
               searchParameters: {
-                specimens: { page: 1, paginateBy: 10, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING"},
+                specimens: { page: 1, paginateBy: 10, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
+                onlyImgs: false,git: false,tug: false,elm: false},
               },
               loading: true, clientWidth : 800, response: this.setDefaultResponse()
             }
         },
         computed: {
             rock () {return this.$parent.rock},
-            isSmallScreenDevice () { return this.clientWidth < 439 }
+            isSmallScreenDevice () { return this.clientWidth < 439 },
+            icon() { return faExternalLink }
         },
         mounted () {
             window.addEventListener('resize', () => {
@@ -163,46 +178,31 @@
 </script>
 
 <style scoped>
-
+  .btn-custom {
+    color:#26a69a  !important;
+    border-color:#26a69a  !important;
+  }
+  .btn-custom:hover,.btn-custom.active {
+    background-color:#26a69a  !important;
+    color:#ffffff  !important;
+  }
+  .btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 7px 12px;
+    border-radius: 50%;
+    color:#26a69a  !important;
+    border-color:#26a69a  !important;
+  }
+  .btn-circle:hover,.btn-circle.active  {
+    background-color:#26a69a  !important;
+    color:#ffffff  !important;
+  }
     #table-search .btn{
         padding:0;
         margin:0;
     }
-
-    /* pagination */
-    .pagination > li > a,
-    .pagination > li > span {
-      color: #F05F40;
-    }
-    .pagination > .active > a,
-    .pagination > .active > a:focus,
-    .pagination > .active > a:hover,
-    .pagination > .active > span,
-    .pagination > .active > span:focus,
-    .pagination > .active > span:hover {
-      color: white;
-      background-color: #ee4b28;
-      border-color: #ed431f;
-    }
-    .pagination > .disabled > a,
-    .pagination > .disabled > a:focus,
-    .pagination > .disabled > a:hover,
-    .pagination > .disabled > span,
-    .pagination > .disabled > span:focus,
-    .pagination > .disabled > span:hover
-    .pagination > li > a,
-    .pagination > li > span {
-      color: #F05F40;
-    }
-    .pagination > li > a:focus,
-    .pagination > li > a:hover,
-    .pagination > li > span:focus,
-    .pagination > li > span:hover {
-      color: #eb3812;
-
-    }
     /* search table*/
-
     .thead-default th {
       background-color: #eceeef;
       color:#464a4c;
