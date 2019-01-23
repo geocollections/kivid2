@@ -55,7 +55,7 @@
                 </div>
               </div>
             </div>
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded">
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true">
               <div class="card rounded-0">
                 <div class="card-header">{{$t('item.classification')}}</div>
                 <div class="card-body">
@@ -230,7 +230,7 @@
     },
     computed: {
       isClassificationTreeLoaded() {
-        return this.isCurrentClfSistersLoaded && this.isCurrenClfHierarchyLoaded && this.isCurrentClfSiblingsLoaded},
+        return this.isCurrentClfSistersLoaded === true && this.isCurrenClfHierarchyLoaded === true && this.isCurrentClfSiblingsLoaded === true},
       icon() { return faExternalLink }
     },
 
@@ -310,7 +310,6 @@
         fetchRockReferences(this.rock.id, this.mode).then((response) => {
           this.rock.references = this.handleResponse(response);
         });
-        console.log(this.rock)
         fetchRockTreeByRockId(this.rock.id, this.mode).then((response) => {
           if(this.isDefinedAndNotNull(response.results)) {
             this.rock.classifications = this.handleResponse(response);
@@ -361,7 +360,7 @@
           this.isCurrentClfSistersLoaded = true;
         });
         //siblings
-        this.isCurrentClfSiblingsLoaded = true;
+        this.isCurrentClfSiblingsLoaded = false;
         fetchRockSiblings(this.activeClfTab, this.currentClf.rock_id, this.mode).then((response) => {
           this.currentClfSiblings = response.results;
           this.isCurrentClfSiblingsLoaded = true;

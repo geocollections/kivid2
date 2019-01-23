@@ -20,7 +20,7 @@
         sisters() { return this.$parent.currentClfSisters},
         siblings() { return this.$parent.currentClfSiblings}
       },
-      created() {
+      mounted() {
         this.composeTaxonomicTree()
       },
       methods: {

@@ -23,6 +23,6 @@
 <style>
   .tree-list ul {
     padding-left: 16px;
-    margin: 6px 0;
+    margin: 0px 0;
   }
 </style>
