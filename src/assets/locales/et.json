@@ -54,5 +54,11 @@
       "status": "Status",
       "images": "Images"
     }
+  },
+  "fancybox": {
+    "author": "Autor",
+    "date": "Kuupäev",
+    "licence": "Litsents",
+    "detailView": "Pildi detailvaade"
   }
 }

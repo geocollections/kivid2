@@ -56,5 +56,12 @@
       "status": "Status",
       "images": "Images"
     }
+  },
+  "fancybox": {
+    "author": "Author",
+    "date": "Date",
+    "licence": "Licence",
+    "detailView": "Picture detail view"
   }
+
 }

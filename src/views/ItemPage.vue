@@ -202,6 +202,7 @@
     components: {TabSpecimens, Tabs, MapComponent, TaxonomicalTree, Lingallery,FontAwesomeIcon},
     data() {
       return {
+        kividUrl: 'https://dev.kivid.info',
         fileUrl:'https://files.geocollections.info',
         geocollectionUrl: "http://geocollections.info",
         error : false,
@@ -252,13 +253,32 @@
           ',height=' + params.height, scrollbars)
       },
       setFancyBoxCaption: function(el) {
-        let text="",infoBtn = "", imgBtn = "", additionalInfo = {imageName: el.link_taxon, infoId:el.specimen_id, imageId: el.attachment_id, navigateId: el.link_id};
+        console.log(el)
 
-        text += "<div><button type=\"button\" class=\"btn btn-xs  btn-primary\" onclick=\"window.open('"+this.fossilsUrl+"/"+additionalInfo.navigateId+"?mode=in_baltoscandia&lang=en')\">Read more</button></div>" ;
-        let someName = 'Some name, '+el.attachment__author__agent;
-        if (el.image__specimen_id !== null) infoBtn = "<button type=\"button\" class=\"btn btn-sm  btn-info\" onclick=\"window.open('"+this.geocollectionUrl+"/specimen/"+el.image__specimen_id+"')\">INFO</button>"
-        if(el.id !== null) imgBtn = " <button type=\"button\" class=\"btn btn-sm btn-secondary\" onclick=\"window.open('"+this.geocollectionUrl+"/file/"+el.id+"')\">IMAGE</button>"
-        text += "<div class='mt-3'>someName<span></span>&ensp;&ensp;" + infoBtn + imgBtn + "</div>";
+        let text = "",
+          autor = this.isDefinedAndNotNull(el.attachment__author__agent) ?
+            this.$t('fancybox.author')+": <strong>"+el.attachment__author__agent +"</strong>":"" ,
+          agent = this.isDefinedAndNotNull(el.attachment__copyright_agent__agent) ?
+            " / <strong>"+el.attachment__copyright_agent__agent +"</strong>":"" ,
+          date = this.isDefinedAndNotNull(el.attachment__date_created) ?
+            "<div>" + this.$t('fancybox.date')+": <strong>"+el.attachment__date_created +"</strong></div>":
+            this.isDefinedAndNotNull(el.attachment__date_created_free) ?
+            "<div>" + this.$t('fancybox.date')+": <strong>"+el.attachment__date_created_free +"</strong></div>": "" ,
+          licence = this.isDefinedAndNotNull(el.attachment__licence__licence) ?
+            "<div>" + this.$t('fancybox.licence')+": <strong>"+el.attachment__licence__licence +"</strong></div>":"" ,
+          detailView = this.isDefinedAndNotNull(el.attachment__specimen_id) ?
+            "<div><button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/specimen/"+el.attachment__specimen_id+"')\">"+this.$t('fancybox.detailView')+"</button></div>":"" ;
+        text += "<div>"+autor+agent+"</div>"+date+licence+detailView;
+        return text;
+
+
+        // let text="",infoBtn = "", imgBtn = "", additionalInfo = {imageName: el.link_taxon, infoId:el.specimen_id, imageId: el.attachment_id, navigateId: el.link_id};
+
+        // text += "<div><button type=\"button\" class=\"btn btn-xs  btn-primary\" onclick=\"window.open('"+this.kividUrl+"/"+additionalInfo.navigateId+"')\">Read more</button></div>" ;
+        let someName = 'Autor: '+el.attachment__author__agent + ' '+ el.attachment__date_created +' ('+el.attachment__copyright_agent__agent+')';
+        if (el.image__specimen_id !== null) infoBtn = "<button type=\"button\" class=\"btn btn-sm  btn-info\" onclick=\"window.open('"+this.geocollectionUrl+"/specimen/"+el.attachment__specimen_id+"')\">INFO</button>"
+        if(el.id !== null) imgBtn = " <button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/file/"+el.id+"')\">IMAGE</button>"
+        text += "<div class='mt-3'>"+someName+"<span></span>&ensp;&ensp;" + infoBtn + imgBtn + "</div>";
         return text
       },
       composeImageUrls(images){
