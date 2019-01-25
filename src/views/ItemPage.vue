@@ -283,6 +283,14 @@
           return images
         }
       },
+      currentRockDoNotHaveAnyImageFetchImagesByParentString() {
+        if(this.rock.images.length === 0) {
+          fetchPhotoGallery(this.currentClf.parent_string, this.mode).then((response) => {
+            this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
+              this.composeImageUrls(response.results) : [];
+          });
+        }
+      },
       loadFullRockInfo() {
         fetchRock(this.rock.id, this.mode).then((response) => {
           this.$emit('page-loaded',false);
@@ -313,15 +321,24 @@
         fetchRockTreeByRockId(this.rock.id, this.mode).then((response) => {
           if(this.isDefinedAndNotNull(response.results)) {
             this.rock.classifications = this.handleResponse(response);
-            if(this.rock.images.length === 0) {
-              fetchPhotoGallery(this.rock.classifications[0].parent_string, this.mode).then((response) => {
-                this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
-                  this.composeImageUrls(response.results) : [];
+            //workaround!!!
+            // in some case as 1372 (data problem) parent_string is null and tree cannot be composed
+            if(this.rock.classifications[0].parent_string === null) {
+              fetchRockTreeByRockId(response.results[0].parent_id, this.mode).then((response) => {
+                if(this.isDefinedAndNotNull(response.results)) {
+                  this.setActiveClfTab(this.rock.classifications[0].rock_classification_id);
+                  this.currentClf.parent_string = response.results[0].parent_string;
+                  this.currentRockDoNotHaveAnyImageFetchImagesByParentString();
+                }
               });
+            } else {
+              this.setActiveClfTab(this.rock.classifications[0].rock_classification_id);
+              this.currentRockDoNotHaveAnyImageFetchImagesByParentString();
             }
-            if(!this.isDefinedAndNotNull(response.results[0].parent__name)) return;
-            this.setActiveClfTab(this.rock.classifications[0].rock_classification_id);
-            this.composeTree()
+
+            // if(!this.isDefinedAndNotNull(response.results[0].parent__name)) return;
+
+            // this.composeTree()
           }
         });
         fetchRockLocalities(this.rock.id, this.mode).then((response) => {
@@ -350,19 +367,22 @@
       composeTree: function () {
         this.isCurrenClfHierarchyLoaded = false;
         fetchHierarchy(this.rock.id,this.formatHierarchyString(this.currentClf.parent_string),this.activeClfTab).then((response) => {
-          this.currenClfHierarchy = response.results;
+          this.currenClfHierarchy = this.handleResponse(response);
+          console.log(this.currenClfHierarchy)
           this.isCurrenClfHierarchyLoaded = true;
         });
         //sisters
         this.isCurrentClfSistersLoaded = false;
         fetchRockTree(this.activeClfTab, this.currentClf.parent_id, this.mode).then((response) => {
-          this.currentClfSisters = response.results;
+          this.currentClfSisters = this.handleResponse(response);
+          console.log(this.currentClfSisters)
           this.isCurrentClfSistersLoaded = true;
         });
         //siblings
         this.isCurrentClfSiblingsLoaded = false;
         fetchRockSiblings(this.activeClfTab, this.currentClf.rock_id, this.mode).then((response) => {
-          this.currentClfSiblings = response.results;
+          this.currentClfSiblings = this.handleResponse(response);
+          console.log(this.currentClfSiblings)
           this.isCurrentClfSiblingsLoaded = true;
         });
       }
@@ -370,7 +390,8 @@
     },
     watch: {
       'activeClfTab': {
-        handler: function () {
+        handler: function (value) {
+          console.log(value)
           this.composeTree()
         },
         deep: true

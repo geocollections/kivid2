@@ -55,7 +55,7 @@
         convertToNumber: function(str) { return parseInt(str) },
         //reorder hierarchy according to hierarchy string
         reorderHierarchy: function() {
-          if(this.$parent.currentClf.parent_string === undefined) return;
+          if(this.$parent.currentClf.parent_string === undefined || this.$parent.currentClf.parent_string === null) return
           let newArr = []
           let hierarchyIds = this.$parent.currentClf.parent_string.split('-');
           for (let i in hierarchyIds) {
