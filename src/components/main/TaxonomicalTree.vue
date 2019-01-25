@@ -83,7 +83,7 @@
           level += 1;
           for(let idx in orderedSisters) {
             let node = {i: level, label: orderedSisters[idx].rock__name, label_en: orderedSisters[idx].rock__name_en,
-               id: this.sisters[idx].rock_id,children:[]};
+               id: orderedSisters[idx].rock_id,children:[]};
             if(node.id === this.$parent.rock.id) this.addSiblings(this.reorderSiblings(), level,node);
             prevNode.children.push(node)
           }
@@ -91,7 +91,7 @@
         addSiblings: function(orderedSiblings,level, currentRock){
           for(let idx in orderedSiblings) {
             let node = {i: level, label: orderedSiblings[idx].rock__name, label_en: orderedSiblings[idx].rock__name_en,
-              id: this.siblings[idx].rock_id, children:[]};
+              id: orderedSiblings[idx].rock_id, children:[]};
             currentRock.children.push(node)
           }
         }
