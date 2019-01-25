@@ -33,12 +33,14 @@
           this.addSisters(this.reorderSisters(),level,prevNode)
         },
         reorderSisters: function(){
-          return this.lang === 'et' ?
+          return this.sisters === undefined ? [] :
+            this.lang === 'et' ?
             this.sisters.sort((a,b) => (a.rock__name.toLowerCase() > b.rock__name.toLowerCase()) ? 1 : ((b.rock__name.toLowerCase() > a.rock__name.toLowerCase()) ? -1 : 0)) :
             this.sisters.sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
         },
         reorderSiblings: function(){
-          return this.lang === 'et' ?
+          return this.siblings === undefined ? [] :
+            this.lang === 'et' ?
             this.siblings.sort((a,b) => (a.rock__name.toLowerCase() > b.rock__name.toLowerCase()) ? 1 : ((b.rock__name.toLowerCase() > a.rock__name.toLowerCase()) ? -1 : 0)) :
             this.siblings.sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
         },
