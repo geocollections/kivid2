@@ -44,6 +44,7 @@
     "worldwide":"Весь мир",
     "only_estonia":"Только Эстония",
     "only_images":"Только с картинками",
+    "per_page":"Per page",
     "specimen": {
       "id": "Ид",
       "number": "Номер экземпляра",

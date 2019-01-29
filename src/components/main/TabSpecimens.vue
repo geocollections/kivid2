@@ -1,17 +1,13 @@
 <template>
     <div id="#tab-specimens" class="tab-pane" :class="{active: $parent.activeTab === 'specimens'}" role="tabpanel">
-        <b-row v-if="loading">
-          loading
-            <!--<spinner  :show="loading"></spinner><span class="p-2">{{$t('messages.pageLoading')}}</span>-->
-        </b-row>
+      <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
       <b-row class="ml-3">
-        <specimen-filter-btns :search-parameters="searchParameters" v-if="!isSmallScreenDevice" :small-screen-device="false"/>
+        <specimen-filter-btns :search-parameters="searchParameters" v-if="!isSmallScreenDevice && !loading" :small-screen-device="false"/>
       </b-row>
-        <b-row class="m-1 table-responsive" v-if="$parent.isDefinedAndNotEmpty(response.results) && !loading" style="margin-top: -2rem !important;">
-          <specimen-filter-btns class="mt-4" :search-parameters="searchParameters" v-if="isSmallScreenDevice" :small-screen-device="true"/>
-          <div class="col-xs-12 pagination-center" :class="isSmallScreenDevice ? ' mt-3': ''">
-              <b-pagination size="sm" :align="isSmallScreenDevice ? 'center' : 'right'" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy">
-                </b-pagination>
+        <b-row class="m-1 table-responsive" style="margin-top: -2rem !important;">
+          <specimen-filter-btns class="mt-4" :search-parameters="searchParameters" v-if="isSmallScreenDevice && !loading" :small-screen-device="true"/>
+          <div v-if="$parent.isDefinedAndNotEmpty(response.results) && !loading" class="col-xs-12 pagination-center" :class="isSmallScreenDevice ? ' mt-3': ''">
+              <b-pagination size="sm" :align="isSmallScreenDevice ? 'center' : 'right'" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy"></b-pagination>
             </div>
             <table class="table table-bordered table-hover mobile-padding-fix" style="font-size: smaller;" id="table-search">
                 <thead class="thead-default">
@@ -91,7 +87,7 @@
             </table>
             <div class="col-xs-12 pagination-center">
                 <b-pagination
-                        size="sm" align="right" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy">
+                        size="sm" :align="isSmallScreenDevice ? 'center' : 'right'" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy">
                 </b-pagination>
             </div>
         </b-row>
@@ -99,6 +95,7 @@
 </template>
 
 <script>
+  import Spinner from 'vue-simple-spinner'
     import {
         fetchSpecimenCollection
     } from '../../api'
@@ -112,7 +109,7 @@
             return {
               searchParameters: {
                 specimens: { page: 1, paginateBy: 10, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
-                onlyImgs: false,git: false,tug: false,elm: false},
+                onlyImgs: false,git: false,tug: false,elm: false, hackToFixComponentReload: ''},
               },
               loading: true, clientWidth : document.documentElement.clientWidth, response: this.setDefaultResponse()
             }
@@ -142,6 +139,9 @@
                     results: []
                 }
             },
+          searchParamsChanged(param) {
+              console.log(param)
+          }
 
         },
         watch: {
