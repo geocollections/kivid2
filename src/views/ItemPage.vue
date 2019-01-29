@@ -55,25 +55,6 @@
                 </div>
               </div>
             </div>
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true && false">
-              <div class="card rounded-0">
-                <div class="card-header">{{$t('item.classification')}}</div>
-                <div class="card-body">
-                  <div class="row" style="flex-wrap: nowrap !important;font-size: small; padding: 0;">
-                    <div class="col-md-3 ftl-vertical-tab-menu">
-                      <div class="list-group">
-                        <a v-for="cls in rock.classifications" href="#" v-on:click.prevent="setActiveClfTab(cls.rock_classification_id)"
-                           class="list-group-item text-center"
-                           :class="{ active: activeClfTab === cls.rock_classification_id }" v-translate="{ et: cls.rock_classification__name, en: cls.rock_classification__name_en }"></a>
-                      </div>
-                    </div>
-                    <div class="col-md-8">
-                      <taxonomical-tree></taxonomical-tree>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.minerals)">
               <div class="card rounded-0">
                 <div class="card-header">{{$t('item.minerals')}}</div>
@@ -120,25 +101,6 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true && false">
-              <div class="card rounded-0">
-                <div class="card-header">{{$t('item.classification')}}</div>
-                <div class="card-body">
-                  <div class="row" style="flex-wrap: nowrap !important;font-size: small; padding: 0;">
-                    <div class="ftl-vertical-tab-menu">
-                      <div class="list-group" style="flex-direction: row !important; margin-top: 0 !important;">
-                        <a v-for="cls in rock.classifications" href="#" v-on:click.prevent="setActiveClfTab(cls.rock_classification_id)"
-                           class="list-group-item text-center"
-                           :class="{ active: activeClfTab === cls.rock_classification_id }" :title="$i18n.locale === 'et' ? cls.rock_classification__name : cls.rock_classification__name_en" v-translate="{ et: cls.rock_classification__name.substring(0,1), en: cls.rock_classification__name_en.substring(0,1) }"></a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <taxonomical-tree></taxonomical-tree>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.localities)">
               <div class="card rounded-0">
                 <div class="card-header">{{$t('item.localities')}}</div>
@@ -494,56 +456,5 @@
   .btn-circle:hover {
     background-color:#26a69a  !important;
     color:#ffffff  !important;
-  }
-  div.ftl-vertical-tab-menu{
-    margin: 0 !important;
-    padding-right: 0;
-    padding-left: 0;
-    padding-bottom: 0;
-  }
-  div.ftl-vertical-tab-menu div.list-group{
-    margin-bottom: 0;
-
-  }
-  div.ftl-vertical-tab-menu div.list-group>a{
-    margin-bottom: 0;
-    border-color: #26a69a;
-    border-width: thin;
-    color:#373737;
-    font-weight: bold;
-  }
-  div.ftl-vertical-tab-menu div.list-group>a .glyphicon,
-  div.ftl-vertical-tab-menu div.list-group>a .fa {
-    color: #26a69a;
-  }
-  div.ftl-vertical-tab-menu div.list-group>a:first-child{
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-    -moz-border-top-right-radius: 0;
-    -moz-border-top-left-radius: 0;
-  }
-  div.ftl-vertical-tab-menu div.list-group>a:last-child{
-    border-bottom-right-radius: 0;
-    -moz-border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    -moz-border-bottom-left-radius: 0;
-  }
-  div.ftl-vertical-tab-menu div.list-group>a.active,
-  div.ftl-vertical-tab-menu div.list-group>a.active .glyphicon,
-  div.ftl-vertical-tab-menu div.list-group>a.active .fa{
-    background-color:#26a69a;
-    background-image: #26a69a;
-    color: #ffffff;
-  }
-  div.ftl-vertical-tab-menu div.list-group>a.active:after{
-    content: '';
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    margin-top: -13px;
-    border-left: 0;
-    border-bottom: 13px solid transparent;
-    border-top: 13px solid transparent;
-    border-left: 10px solid #26a69a;
   }
 </style>
