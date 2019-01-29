@@ -196,8 +196,23 @@
     name: "item-page",
     components: {TabSpecimens, Tabs, MapComponent, TaxonomicalTree, Lingallery,FontAwesomeIcon},
     data() {
-      return {
+      return this.initialData()
+
+    },
+    computed: {
+      isClassificationTreeLoaded() {
+        return this.isCurrentClfSistersLoaded === true && this.isCurrenClfHierarchyLoaded === true && this.isCurrentClfSiblingsLoaded === true},
+      icon() { return faExternalLink }
+    },
+
+    created() {
+      this.$emit('page-loaded',true);
+      this.loadFullRockInfo()
+    },
+    methods: {
+      initialData() {return {
         kividUrl: 'https://dev.kivid.info',
+        fossilsUrl: 'http://fossiilid.info',
         fileUrl:'https://files.geocollections.info',
         geocollectionUrl: "http://geocollections.info",
         error : false,
@@ -220,20 +235,7 @@
         isCurrentClfSistersLoaded: false,
         isCurrenClfHierarchyLoaded: false,
         isCurrentClfSiblingsLoaded: false
-      }
-    },
-    computed: {
-      isClassificationTreeLoaded() {
-        return this.isCurrentClfSistersLoaded === true && this.isCurrenClfHierarchyLoaded === true && this.isCurrentClfSiblingsLoaded === true},
-      icon() { return faExternalLink }
-    },
-
-    created() {
-      this.$emit('page-loaded',true);
-      this.loadFullRockInfo()
-    },
-    methods: {
-      load() {console.log('TEST')},
+      }},
       isDefinedAndNotNull(value) { return !!value && value !== null },
       isDefinedAndNotEmpty(value) { return !!value && value.length > 0 },
       capitalizeFirstLetter(string) {
@@ -241,8 +243,6 @@
       },
       navigate: function(id) {
         this.$router.push({ path: `/${id}`});
-        // reload
-        this.$router.go(this.$router.currentRoute)
       },
       openUrl: function (params) {
         window.open(params.parent_url + '/' + params.object, '', 'width=' + params.width +
@@ -380,8 +380,11 @@
       '$route.params.id': {
         handler: function (id) {
           this.$router.push({ path: `/${id}`});
+          this.$emit('page-loaded',true);
+          Object.assign(this.$data, this.initialData())
+          this.loadFullRockInfo()
           // reload
-          this.$router.go(this.$router.currentRoute)
+          // this.$router.go(this.$router.currentRoute)
         },
         deep: true
       }

@@ -3,13 +3,13 @@
     <span id="top"></span>
     <div class="container-fluid">
       <b-navbar toggleable="md" type="light"id="mainNav" class="border-bottom fixed-top">
-        <b-navbar-brand
+        <router-link
           :style="{
                   'color':scroll ? '#eb3812' : '',
                   // 'letter-spacing': scroll ? '0px':'2px',
                   'font-size':scroll ? '18px' : 'larger',
                   'text-transform': 'uppercase','font-weight':'700 !important'}"
-          href="/">kivid.info</b-navbar-brand>
+          to="/">kivid.info</router-link>
         <b-navbar-toggle class="mb-2 mt-2" target="nav_collapse"></b-navbar-toggle>
         <b-collapse is-nav id="nav_collapse">
           <!-- Right aligned nav items -->

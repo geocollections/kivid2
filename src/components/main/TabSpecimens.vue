@@ -23,13 +23,13 @@
                 </thead>
                 <tbody>
                 <tr v-for="item in response.results">
-                    <td class="text-nowrap" ><a href="#" @click="$parent.openUrl({parent_url:$parent.geocollectionUrl+'/specimen',object:item.id, width:500,height:500})">
+                    <td class="text-nowrap" ><a href="#" @click.prevent="$parent.openUrl({parent_url:$parent.geocollectionUrl+'/specimen',object:item.id, width:500,height:500})">
                         {{ item.acronym}} {{ item.specimen_number }}</a>
                     </td>
                     <!--<td class="text-nowrap">{{item.specimen_number_old}}</td>-->
                     <td>
                         <div>
-                            <a :href="'/'+item.taxon_id">{{item.taxon}}</a>
+                            <a :href="'/'+item.taxon_id" @click.prevent="$parent.openUrl({parent_url:$parent.fossilsUrl,object:item.taxon_id, width:500,height:500})">{{item.taxon}}</a>
                             <span v-if="$parent.isDefinedAndNotNull(item.taxon_txt)
                             && $parent.isDefinedAndNotNull(item.taxon)
                             && item.taxon_txt != item.taxon"> | </span>
@@ -39,8 +39,7 @@
                         </div>
                         <!-- Currently both are links because rock__name is mostly null. -->
                         <div>
-                            <a href="#" @click="$parent.openUrl({parent_url:$parent.kividUrl,object:item.rock_id, width:500,height:500})">
-                                <span v-translate="{et:item.rock,en:item.rock_en}"></span></a>
+                            <router-link :to="'/'+item.rock_id" v-translate="{et:item.rock,en:item.rock_en}"></router-link>
                             <span v-if="$parent.isDefinedAndNotNull(item.rock) &&
                             $parent.isDefinedAndNotNull(item.rock_txt)"> | </span>
                             <span v-if="($parent.isDefinedAndNotNull(item.rock_txt) || $parent.isDefinedAndNotNull(item.rock_txt_en))
@@ -52,7 +51,7 @@
                     <td v-if="!isSmallScreenDevice || (isSmallScreenDevice && ($parent.isDefinedAndNotNull(item.locality) || $parent.isDefinedAndNotNull(item.locality_en) || $parent.isDefinedAndNotNull(item.locality_free)))">
                         <div v-if="$parent.isDefinedAndNotNull(item.locality) || $parent.isDefinedAndNotNull(item.locality_en)">
                             <a href="#"
-                                    @click="$parent.openUrl({parent_url:$parent.geocollectionUrl+'/locality',object:item.locality_id, width:500,height:500})">
+                                    @click.prevent="$parent.openUrl({parent_url:$parent.geocollectionUrl+'/locality',object:item.locality_id, width:500,height:500})">
                                 <span v-translate="{et:item.locality,en:item.locality_en}"></span></a>
                         </div>
                         <span v-if="$parent.isDefinedAndNotNull(item.locality_free)"> {{item.locality_free}}</span>
@@ -64,7 +63,7 @@
                     ||$parent.isDefinedAndNotNull(item.stratigraphy_en))
                     ||$parent.isDefinedAndNotNull(item.stratigraphy_txt))">
                         <a v-if="$parent.isDefinedAndNotNull(item.stratigraphy)||$parent.isDefinedAndNotNull(item.stratigraphy_en)" href="#"
-                                @click="$parent.openUrl({parent_url:$parent.geocollectionUrl+'/stratigraphy',object:item.stratigraphy_id, width:500,height:500})">
+                                @click.prevent="$parent.openUrl({parent_url:$parent.geocollectionUrl+'/stratigraphy',object:item.stratigraphy_id, width:500,height:500})">
                             <span v-translate="{et:item.stratigraphy,en:item.stratigraphy_en}"></span></a>
 
                         <span v-if="(item.stratigraphy_en == null && item.stratigraphy == null)
@@ -104,7 +103,7 @@
     import SpecimenFilterBtns from "./SpecimenFilterBtns";
     export default {
         name: "TabSpecimens",
-        components: {SpecimenFilterBtns, SortField},
+        components: {SpecimenFilterBtns, SortField,Spinner},
         data() {
             return {
               searchParameters: {

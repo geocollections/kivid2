@@ -55,7 +55,7 @@
             let id = value.id;
             this.$router.push({ path: `/${id}`});
             // reload
-            this.$router.go(this.$router.currentRoute)
+            // this.$router.go(this.$router.currentRoute)
           },
           displayResults: function (item) {
             return `${item.name} | ${item.name_en} ${item.synonym}`
