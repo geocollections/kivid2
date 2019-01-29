@@ -260,8 +260,9 @@
             "<div>" + this.$t('fancybox.date')+": <strong>"+el.attachment__date_created_free +"</strong></div>": "" ,
           licence = this.isDefinedAndNotNull(el.attachment__licence__licence) ?
             "<div>" + this.$t('fancybox.licence')+": <strong>"+el.attachment__licence__licence +"</strong></div>":"" ,
-          detailView = this.isDefinedAndNotNull(el.attachment__specimen_id) ?
-            "<div><button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/specimen/"+el.attachment__specimen_id+"')\">"+this.$t('fancybox.detailView')+"</button></div>":"" ;
+          detailView = this.isDefinedAndNotNull(el.attachment__id) ?
+            "<div><button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/file/"+el.attachment__id+"')\">"+this.$t('fancybox.detailView')+"</button></div>":
+            this.isDefinedAndNotNull(el.attachment__specimen_id) ? "<div><button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/specimen/"+el.attachment__specimen_id+"')\">"+this.$t('fancybox.detailView')+"</button></div>":"" ;
         text += "<div>"+autor+agent+"</div>"+date+licence+detailView;
         return text;
       },
@@ -447,7 +448,7 @@
     width: 25px;
     height: 25px;
     padding: 5px 8px;
-    font-size: 12px;
+    font-size: 12px;fan
     border-radius: 50%;
     color:#26a69a  !important;
     border-color:#26a69a  !important;
