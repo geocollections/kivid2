@@ -1,14 +1,14 @@
 <template>
   <div class="col-xs-12">
-    <button type="button" class="btn btn-outline-primary btn-custom" :class="searchParameters.specimens.onlyImgs ? 'active' : ''" aria-pressed="true" style="font-size:small"
-            @click="searchParameters.specimens.onlyImgs = !searchParameters.specimens.onlyImgs"><font-awesome-icon :icon="icon" />
-      <span v-if="!isSmallScreenDevice">{{ $t('search.only_images') }}</span></button>
-    <button type="button" class="btn btn-outline-primary btn-circle btn-git ml-4" style="font-size: xx-small;" :class="searchParameters.specimens.git ? 'active' : ''" aria-pressed="true"
-            @click="searchParameters.specimens.git = !searchParameters.specimens.git"><span style="margin-left: -0.4rem;">GIT</span></button>
-    <button type="button" class="btn btn-outline-primary btn-circle btn-tug" style="font-size: xx-small;" :class="searchParameters.specimens.tug ? 'active' : ''" aria-pressed="true"
-            @click="searchParameters.specimens.tug = !searchParameters.specimens.tug"><span style="margin-left: -0.4rem;">TUG</span></button>
-    <button type="button" class="btn btn-outline-primary btn-circle btn-elm" style="font-size: xx-small;" :class="searchParameters.specimens.elm ? 'active' : ''" aria-pressed="true"
-            @click="searchParameters.specimens.elm = !searchParameters.specimens.elm"><span style="margin-left: -0.5rem;">ELM</span></button>
+    <button type="button" class="btn btn-outline-primary btn-custom" :class="$props.searchParameters.specimens.onlyImgs ? 'active' : ''" aria-pressed="true" style="font-size:small"
+            @click="$props.searchParameters.specimens.onlyImgs = !$props.searchParameters.specimens.onlyImgs"><font-awesome-icon :icon="icon" />
+      <span v-if="!smallScreenDevice">{{ $t('search.only_images') }}</span></button>
+    <button type="button" class="btn btn-outline-primary btn-circle btn-git ml-4" style="font-size: xx-small;" :class="$props.searchParameters.specimens.git ? 'active' : ''" aria-pressed="true"
+            @click="$props.searchParameters.specimens.git = !$props.searchParameters.specimens.git"><span style="margin-left: -0.4rem;">GIT</span></button>
+    <button type="button" class="btn btn-outline-primary btn-circle btn-tug" style="font-size: xx-small;" :class="$props.searchParameters.specimens.tug ? 'active' : ''" aria-pressed="true"
+            @click="$props.searchParameters.specimens.tug = !searchParameters.specimens.tug"><span style="margin-left: -0.4rem;">TUG</span></button>
+    <button type="button" class="btn btn-outline-primary btn-circle btn-elm" style="font-size: xx-small;" :class="$props.searchParameters.specimens.elm ? 'active' : ''" aria-pressed="true"
+            @click="$props.searchParameters.specimens.elm = !$props.searchParameters.specimens.elm"><span style="margin-left: -0.5rem;">ELM</span></button>
   </div>
 </template>
 
@@ -20,6 +20,7 @@
         components: {FontAwesomeIcon},
         props: {
           searchParameters: Object,
+          smallScreenDevice: Boolean
         },
         computed: {
           icon() { return faExternalLink }

@@ -5,10 +5,10 @@
             <!--<spinner  :show="loading"></spinner><span class="p-2">{{$t('messages.pageLoading')}}</span>-->
         </b-row>
       <b-row class="ml-3">
-        <specimen-filter-btns :search-parameters="searchParameters" v-if="!isSmallScreenDevice"/>
+        <specimen-filter-btns :search-parameters="searchParameters" v-if="!isSmallScreenDevice" :small-screen-device="false"/>
       </b-row>
         <b-row class="m-1 table-responsive" v-if="$parent.isDefinedAndNotEmpty(response.results) && !loading" style="margin-top: -2rem !important;">
-          <specimen-filter-btns class="mt-4" :search-parameters="searchParameters" v-if="isSmallScreenDevice"/>
+          <specimen-filter-btns class="mt-4" :search-parameters="searchParameters" v-if="isSmallScreenDevice" :small-screen-device="true"/>
           <div class="col-xs-12 pagination-center" :class="isSmallScreenDevice ? ' mt-3': ''">
               <b-pagination size="sm" :align="isSmallScreenDevice ? 'center' : 'right'" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy">
                 </b-pagination>
@@ -114,13 +114,12 @@
                 specimens: { page: 1, paginateBy: 10, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
                 onlyImgs: false,git: false,tug: false,elm: false},
               },
-              loading: true, clientWidth : 800, response: this.setDefaultResponse()
+              loading: true, clientWidth : document.documentElement.clientWidth, response: this.setDefaultResponse()
             }
         },
         computed: {
             rock () {return this.$parent.rock},
-            isSmallScreenDevice () { return this.clientWidth < 439 },
-            icon() { return faExternalLink }
+            isSmallScreenDevice () { return this.clientWidth < 439 }
         },
         mounted () {
             window.addEventListener('resize', () => {
