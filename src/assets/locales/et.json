@@ -1,7 +1,10 @@
 {
   "header": {
     "description":"",
-    "search":"Otsi mineraali või kivimit"
+    "search":"Otsi mineraali või kivimit",
+    "mode": "Piira andmestik:",
+    "in_estonia_mode": "Eesti",
+    "global_mode": "Globaalne"
   },
   "main": {
     "greeting":"Mineraalid, kivimid, maavarad",

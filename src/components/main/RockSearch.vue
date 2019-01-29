@@ -44,7 +44,8 @@
             if(value.length < 3)  this.searchResults = [];
             if(value.length > 2) {
               this.isLoading = true;
-              fetchSearch(value).then((response) => {
+              console.log(this.$localStorage.get('kivid_mode'))
+              fetchSearch(value,this.$localStorage.get('kivid_mode')).then((response) => {
                 this.isLoading = false;
                 this.searchResults = response.results ? response.results : []
               });

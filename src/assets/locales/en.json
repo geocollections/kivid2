@@ -1,7 +1,10 @@
 {
   "header": {
     "description":"",
-    "search":"Search mineral or rock"
+    "search":"Search mineral or rock",
+    "mode": "Limit data:",
+    "in_estonia_mode": "Estonia",
+    "global_mode": "Global"
   },
   "main": {
     "greeting":"Minerals, rocks, mineral resources",

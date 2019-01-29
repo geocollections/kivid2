@@ -27,34 +27,34 @@ function applyMode(mode, separator = '=', queryJoiner = '&') {
   return returnVal
 }
 export function fetchRock (id,mode) {
-    return fetch(`rock/?id=${id}${applyMode(mode)}&format=json`)
+    return fetch(`rock/?id=${id}&format=json`)
 }
 export function fetchRockImages (id,mode) {
-  return fetch(`rock_image/?rock_id=${id}${applyMode(mode)}&format=json`)
+  return fetch(`rock_image/?rock_id=${id}&format=json`)
 }
 export function fetchRockProperties (id,mode) {
-  return fetch(`rock_property/?rock_id=${id}${applyMode(mode)}&format=json`)
+  return fetch(`rock_property/?rock_id=${id}&format=json`)
 }
 export function fetchRockSynonyms (id,mode) {
-  return fetch(`rock_synonym/?rock_id=${id}${applyMode(mode)}&format=json`)
+  return fetch(`rock_synonym/?rock_id=${id}&format=json`)
 }
 export function fetchRockReferences (id,mode) {
-  return fetch(`rock_reference/?rock_id=${id}${applyMode(mode)}&format=json`)
+  return fetch(`rock_reference/?rock_id=${id}&format=json`)
 }
 export function fetchRockLocalities (id,mode) {
-  return fetch(`rock_locality/?rock_id=${id}${applyMode(mode)}&format=json`)
+  return fetch(`rock_locality/?rock_id=${id}&format=json`)
 }
 export function fetchRockTreeByRockId (id,mode) {
-  return fetch(`rock_tree/?rock_id=${id}${applyMode(mode)}&format=json`)
+  return fetch(`rock_tree/?rock_id=${id}&format=json`)
 }
 export function fetchHierarchy (id,hierarchyString,clsId) {
   return fetch(`rock_tree/?rock_id!=${id}&rock_id__in=${hierarchyString}&rock_classification_id=${clsId}&format=json`)
 }
 export function fetchRockTree (clsId,parentId,mode) {
-  return fetch(`rock_tree/?rock_classification_id=${clsId}&parent_id=${parentId}${applyMode(mode)}&rock__name__isnull=False&rock__name_en__isnull=False&format=json`)
+  return fetch(`rock_tree/?rock_classification_id=${clsId}&parent_id=${parentId}&rock__name__isnull=False&rock__name_en__isnull=False&format=json`)
 }
 export function fetchRockSiblings (clsId,id,mode) {
-  return fetch(`rock_tree/?rock_classification_id=${clsId}&parent_id=${id}${applyMode(mode)}&rock__name__isnull=False&rock__name_en__isnull=False&format=json`)
+  return fetch(`rock_tree/?rock_classification_id=${clsId}&parent_id=${id}&rock__name__isnull=False&rock__name_en__isnull=False&format=json`)
 }
 export function cntSpecimenCollection(id) {
   return fetch(`solr/specimen/?q=rock_id:${id}&rows=1&format=json`)
@@ -79,11 +79,11 @@ export function fetchSpecimenCollection (id,mode,searchParameters) {
 }
 export function fetchSearch (name,mode) {
   //return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)
-  return fetch(`rock/?sql=simple_rock_search&keyword=${name}${applyMode(mode)}&format=json`)	
+  return fetch(`rock/?sql=simple_rock_search&keyword=${name}${applyMode(mode)}&format=json`)
 }
 export function fetchLastChangedRocks (mode) {
   //return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)
-  return fetch(`rock/?fields=id,name,name_en,date_changed&paginate_by=5&page=1&order_by=-date_changed${applyMode(mode)}&format=json`)
+  return fetch(`rock/?fields=id,name,name_en,date_changed&paginate_by=5&page=1&order_by=-date_changed&format=json`)
 }
 export function fetchPhotoGallery (parentString,mode) {
   return fetch(`rock/?sql=rock_photo_gallery&keyword=${parentString}&page=1&paginate_by=25&format=json`)
