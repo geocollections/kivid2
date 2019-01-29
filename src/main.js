@@ -13,7 +13,8 @@ import VueI18n from 'vue-i18n' // Translations
 import VueCookie from 'vue-cookie'
 
 import 'vue-multiselect/dist/vue-multiselect.min.css' // Select input
-
+import VueIziToast from 'vue-izitoast' // Pop-up messages
+import 'izitoast/dist/css/iziToast.min.css' // Pop-up messages style
 import 'flag-icon-css/css/flag-icon.min.css' // Flag icons
 
 Vue.use(VueResource);
@@ -22,7 +23,7 @@ Vue.use(VueSession);
 Vue.use(VueLocalStorage);
 Vue.use(VueI18n);
 Vue.use(VueCookie);
-
+Vue.use(VueIziToast)
 Vue.config.productionTip = false;
 
 // Gets translations from json files

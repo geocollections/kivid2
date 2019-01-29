@@ -1,6 +1,6 @@
 <template>
   <div class="page-container item-page" >
-    <div v-if="!error">
+    <div v-if="error === false">
       <div class="row">
         <div class="col-md-12">
           <h1>{{capitalizeFirstLetter(rock.name)}}</h1>
@@ -165,12 +165,6 @@
         </div>
 
     </div>
-    <div class="row" v-else>
-      <div class="col-md-12  m-1">
-        <h3>ID {{$route.currentRoute.params.id}}: kirje ei ole kättesaadav</h3>
-      </div>
-    </div>
-    <!--{{rock}}-->
   </div>
 </template>
 
@@ -297,7 +291,12 @@
           if(this.isDefinedAndNotEmpty(response.results)) {
             this.rock = Object.assign(this.rock,response.results[0])
             this.basicInfoLoaded = true;
-          } else this.error = true;
+          } else {
+            this.error = true;
+            let id = this.$router.currentRoute.params.id
+            this.$emit('throw-error',`This rock with id <strong>${ id }</strong> is not existing or not available `);
+            this.$router.push({name:'FrontPage'})
+          }
         });
         fetchRockImages(this.rock.id, this.mode).then((response) => {
           this.rock.images = this.isDefinedAndNotEmpty(response.results) ?

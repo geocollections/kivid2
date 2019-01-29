@@ -3,7 +3,7 @@
     <spinner v-show="showSpinner" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
     <app-header v-if="$router.currentRoute.name !== 'FrontPage'"/>
     <section class="container-fluid mt-5 mb-5" >
-      <router-view class="page-container" v-on:page-loaded="isSpinnerShown"/>
+      <router-view class="page-container" v-on:page-loaded="isSpinnerShown" v-on:throw-error="handleError"/>
     </section>
     <app-footer/>
   </div>
@@ -20,10 +20,18 @@ export default {
     Spinner,
   },
   name: 'App',
-  data() { return  { showSpinner: true }},
+  data() { return  { showSpinner: true,errorMessege: false}},
   methods: {
     isSpinnerShown: function(isShown) {
       this.showSpinner = isShown;
+    },
+    handleError: function(msg) {
+      this.$toast.info(msg, 'Info', {
+        position: 'bottomRight',
+        timeout: 5000,
+        pauseOnHover: false
+      })
+
     }
   }
 }
@@ -42,12 +50,6 @@ export default {
   section {
     padding-top: 3rem;
 
-  }
-  #main {
-    background-color: #fff!important;
-    padding: 120px 15px 0;
-    width: 100%;
-    margin: 0 auto;
   }
 
   /* Part of removing fixed navbar on smaller screens */
