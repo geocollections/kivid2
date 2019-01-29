@@ -43,6 +43,7 @@
   "search": {
     "worldwide":"Maailm",
     "only_estonia":"Ainult Eesti",
+    "only_images":"Ainult piltidega",
     "specimen": {
       "id": "ID",
       "number": "Specimen number",

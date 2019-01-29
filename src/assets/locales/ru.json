@@ -43,6 +43,7 @@
   "search": {
     "worldwide":"Весь мир",
     "only_estonia":"Только Эстония",
+    "only_images":"Только с картинками",
     "specimen": {
       "id": "Ид",
       "number": "Номер экземпляра",

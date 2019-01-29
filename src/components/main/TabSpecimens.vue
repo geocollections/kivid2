@@ -4,21 +4,13 @@
           loading
             <!--<spinner  :show="loading"></spinner><span class="p-2">{{$t('messages.pageLoading')}}</span>-->
         </b-row>
-      <div class="row ml-3">
-        <div class="col-xs-12">
-          <button type="button" class="btn btn-outline-primary btn-custom" :class="searchParameters.specimens.onlyImgs ? 'active' : ''" aria-pressed="true" style="font-size:small"
-                  v-on:click.prevent="searchParameters.specimens.onlyImgs = !searchParameters.specimens.onlyImgs"><font-awesome-icon :icon="icon" /> Ainult piltidedga</button>
-          <button type="button" class="btn btn-outline-primary btn-circle btn-git ml-4" style="font-size: xx-small;" :class="searchParameters.specimens.git ? 'active' : ''" aria-pressed="true"
-                  v-on:click.prevent="searchParameters.specimens.git = !searchParameters.specimens.git"><span style="margin-left: -0.4rem;">GIT</span></button>
-          <button type="button" class="btn btn-outline-primary btn-circle btn-tug" style="font-size: xx-small;" :class="searchParameters.specimens.tug ? 'active' : ''" aria-pressed="true"
-                  v-on:click.prevent="searchParameters.specimens.tug = !searchParameters.specimens.tug"><span style="margin-left: -0.4rem;">TUG</span></button>
-          <button type="button" class="btn btn-outline-primary btn-circle btn-elm" style="font-size: xx-small;" :class="searchParameters.specimens.elm ? 'active' : ''" aria-pressed="true"
-                  v-on:click.prevent="searchParameters.specimens.elm = !searchParameters.specimens.elm"><span style="margin-left: -0.5rem;">ELM</span></button>
-        </div>
-      </div>
+      <b-row class="ml-3">
+        <specimen-filter-btns :search-parameters="searchParameters" v-if="!isSmallScreenDevice"/>
+      </b-row>
         <b-row class="m-1 table-responsive" v-if="$parent.isDefinedAndNotEmpty(response.results) && !loading" style="margin-top: -2rem !important;">
-            <div class="col-xs-6 pagination-center">
-              <b-pagination size="sm" align="right" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy">
+          <specimen-filter-btns class="mt-4" :search-parameters="searchParameters" v-if="isSmallScreenDevice"/>
+          <div class="col-xs-12 pagination-center" :class="isSmallScreenDevice ? ' mt-3': ''">
+              <b-pagination size="sm" :align="isSmallScreenDevice ? 'center' : 'right'" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy">
                 </b-pagination>
             </div>
             <table class="table table-bordered table-hover mobile-padding-fix" style="font-size: smaller;" id="table-search">
@@ -110,12 +102,12 @@
     import {
         fetchSpecimenCollection
     } from '../../api'
-    import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-    import faExternalLink from '@fortawesome/fontawesome-free-solid/faCamera'
+
     import SortField from "./SortField";
+    import SpecimenFilterBtns from "./SpecimenFilterBtns";
     export default {
         name: "TabSpecimens",
-        components: {SortField,FontAwesomeIcon},
+        components: {SpecimenFilterBtns, SortField},
         data() {
             return {
               searchParameters: {
@@ -171,26 +163,6 @@
 </script>
 
 <style scoped>
-  .btn-custom {
-    color:#26a69a  !important;
-    border-color:#26a69a  !important;
-  }
-  .btn-custom:hover,.btn-custom.active {
-    background-color:#26a69a  !important;
-    color:#ffffff  !important;
-  }
-  .btn-circle {
-    width: 30px;
-    height: 30px;
-    padding: 7px 12px;
-    border-radius: 50%;
-    color:#26a69a  !important;
-    border-color:#26a69a  !important;
-  }
-  .btn-circle:hover,.btn-circle.active  {
-    background-color:#26a69a  !important;
-    color:#ffffff  !important;
-  }
     #table-search .btn{
         padding:0;
         margin:0;

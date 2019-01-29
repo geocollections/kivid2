@@ -45,6 +45,7 @@
   "search": {
     "worldwide":"Worldwide",
     "only_estonia":"Only Estonia",
+    "only_images":"With images",
     "specimen": {
       "id": "ID",
       "number": "Specimen number",
