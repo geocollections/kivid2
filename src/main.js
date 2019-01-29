@@ -42,7 +42,7 @@ const i18n = new VueI18n({
   messages
 })
 Vue.directive('translate', function (el, binding) {
-  let value = localStorage.kivid_lang === 'et' ? binding.value.et : binding.value.en
+  let value = i18n.locale === 'et' ? binding.value.et : binding.value.en
   el.innerHTML = value === undefined || value === null ? '' : value
 });
 // This adds session id and csrf to request | MUST BE BEFORE new Vue()

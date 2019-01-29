@@ -15,7 +15,7 @@
         }
       },
       computed: {
-        lang() {return this.$localStorage.get('kivid_lang')},
+        lang() {return this.$i18n.locale},
         hierarchy() { return this.$parent.currenClfHierarchy},
         sisters() { return this.$parent.currentClfSisters},
         siblings() { return this.$parent.currentClfSiblings}
@@ -30,7 +30,8 @@
           this.addTopRock();
           let level = 0,prevNode;
           level,prevNode = this.addHierarchy(hierarchy,level);
-          this.addSisters(this.reorderSisters(),level,prevNode)
+          if(this.sisters.length === 1) {this.addSiblings(this.reorderSiblings(), level,prevNode);}
+          else this.addSisters(this.reorderSisters(),level,prevNode)
         },
         reorderSisters: function(){
           return this.sisters === undefined ? [] :

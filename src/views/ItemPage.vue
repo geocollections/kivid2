@@ -55,18 +55,21 @@
                 </div>
               </div>
             </div>
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true">
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true && false">
               <div class="card rounded-0">
                 <div class="card-header">{{$t('item.classification')}}</div>
                 <div class="card-body">
-                  <div class="m-1 mt-3">
-                    <ul class="nav nav-tabs tab-links" style="flex-wrap: nowrap !important;font-size: small">
-                      <li class="nav-item" v-for="cls in rock.classifications">
-                        <a href="#" v-on:click.prevent="setActiveClfTab(cls.rock_classification_id)" class="nav-link"
+                  <div class="row" style="flex-wrap: nowrap !important;font-size: small; padding: 0;">
+                    <div class="col-md-3 ftl-vertical-tab-menu">
+                      <div class="list-group">
+                        <a v-for="cls in rock.classifications" href="#" v-on:click.prevent="setActiveClfTab(cls.rock_classification_id)"
+                           class="list-group-item text-center"
                            :class="{ active: activeClfTab === cls.rock_classification_id }" v-translate="{ et: cls.rock_classification__name, en: cls.rock_classification__name_en }"></a>
-                      </li>
-                    </ul>
-                    <taxonomical-tree></taxonomical-tree>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <taxonomical-tree></taxonomical-tree>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -117,11 +120,46 @@
             </div>
           </div>
           <div class="col-md-4">
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true && false">
+              <div class="card rounded-0">
+                <div class="card-header">{{$t('item.classification')}}</div>
+                <div class="card-body">
+                  <div class="row" style="flex-wrap: nowrap !important;font-size: small; padding: 0;">
+                    <div class="ftl-vertical-tab-menu">
+                      <div class="list-group" style="flex-direction: row !important; margin-top: 0 !important;">
+                        <a v-for="cls in rock.classifications" href="#" v-on:click.prevent="setActiveClfTab(cls.rock_classification_id)"
+                           class="list-group-item text-center"
+                           :class="{ active: activeClfTab === cls.rock_classification_id }" :title="$i18n.locale === 'et' ? cls.rock_classification__name : cls.rock_classification__name_en" v-translate="{ et: cls.rock_classification__name.substring(0,1), en: cls.rock_classification__name_en.substring(0,1) }"></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <taxonomical-tree></taxonomical-tree>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.localities)">
               <div class="card rounded-0">
                 <div class="card-header">{{$t('item.localities')}}</div>
                 <div class="card-body no-padding">
                   <map-component></map-component>
+                </div>
+              </div>
+            </div>
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true">
+              <div class="card rounded-0">
+                <div class="card-header">{{$t('item.classification')}}</div>
+                <div class="card-body">
+                  <div class="m-1 mt-3">
+                    <ul class="nav nav-tabs tab-links" style="flex-wrap: nowrap !important;font-size: small">
+                      <li class="nav-item" v-for="cls in rock.classifications">
+                        <a href="#" v-on:click.prevent="setActiveClfTab(cls.rock_classification_id)" class="nav-link"
+                           :class="{ active: activeClfTab === cls.rock_classification_id }" v-translate="{ et: cls.rock_classification__name, en: cls.rock_classification__name_en }"></a>
+                      </li>
+                    </ul>
+                    <taxonomical-tree></taxonomical-tree>
+                  </div>
                 </div>
               </div>
             </div>
@@ -319,27 +357,11 @@
           this.rock.references = this.handleResponse(response);
         });
         fetchRockTreeByRockId(this.rock.id, this.mode).then((response) => {
-          if(this.isDefinedAndNotNull(response.results)) {
-            this.rock.classifications = this.handleResponse(response);
-            //workaround!!!
-            // in some case as 1372 (data problem) parent_string is null and tree cannot be composed
-            if(this.rock.classifications[0].parent_string === null) {
-              fetchRockTreeByRockId(response.results[0].parent_id, this.mode).then((response) => {
-                if(this.isDefinedAndNotNull(response.results)) {
-                  this.setActiveClfTab(this.rock.classifications[0].rock_classification_id);
-                  this.currentClf.parent_string = response.results[0].parent_string;
-                  this.currentRockDoNotHaveAnyImageFetchImagesByParentString();
-                }
-              });
-            } else {
-              this.setActiveClfTab(this.rock.classifications[0].rock_classification_id);
-              this.currentRockDoNotHaveAnyImageFetchImagesByParentString();
-            }
+          this.rock.classifications = this.handleResponse(response);
+          if(this.rock.classifications.length === 0) return;
+          this.setActiveClfTab(this.rock.classifications[0].rock_classification_id);
+          this.currentRockDoNotHaveAnyImageFetchImagesByParentString();
 
-            // if(!this.isDefinedAndNotNull(response.results[0].parent__name)) return;
-
-            // this.composeTree()
-          }
         });
         fetchRockLocalities(this.rock.id, this.mode).then((response) => {
           this.rock.localities = this.handleResponse(response);
@@ -360,7 +382,7 @@
         this.activeTab = tab
       },
       setActiveClfTab: function(tab) {
-        this.activeClfTab = tab
+        this.activeClfTab = tab;
         this.currentClf = this.getCurrentClassification(this.rock.classifications,tab)[0]
       },
       formatHierarchyString: function(value) { return value ? value.replace(/-/g, ',') : value;},
@@ -368,21 +390,18 @@
         this.isCurrenClfHierarchyLoaded = false;
         fetchHierarchy(this.rock.id,this.formatHierarchyString(this.currentClf.parent_string),this.activeClfTab).then((response) => {
           this.currenClfHierarchy = this.handleResponse(response);
-          console.log(this.currenClfHierarchy)
           this.isCurrenClfHierarchyLoaded = true;
         });
         //sisters
         this.isCurrentClfSistersLoaded = false;
         fetchRockTree(this.activeClfTab, this.currentClf.parent_id, this.mode).then((response) => {
           this.currentClfSisters = this.handleResponse(response);
-          console.log(this.currentClfSisters)
           this.isCurrentClfSistersLoaded = true;
         });
         //siblings
         this.isCurrentClfSiblingsLoaded = false;
         fetchRockSiblings(this.activeClfTab, this.currentClf.rock_id, this.mode).then((response) => {
           this.currentClfSiblings = this.handleResponse(response);
-          console.log(this.currentClfSiblings)
           this.isCurrentClfSiblingsLoaded = true;
         });
       }
@@ -391,8 +410,8 @@
     watch: {
       'activeClfTab': {
         handler: function (value) {
-          console.log(value)
-          this.composeTree()
+          if(value)this.composeTree()
+
         },
         deep: true
       },
@@ -475,5 +494,56 @@
   .btn-circle:hover {
     background-color:#26a69a  !important;
     color:#ffffff  !important;
+  }
+  div.ftl-vertical-tab-menu{
+    margin: 0 !important;
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 0;
+  }
+  div.ftl-vertical-tab-menu div.list-group{
+    margin-bottom: 0;
+
+  }
+  div.ftl-vertical-tab-menu div.list-group>a{
+    margin-bottom: 0;
+    border-color: #26a69a;
+    border-width: thin;
+    color:#373737;
+    font-weight: bold;
+  }
+  div.ftl-vertical-tab-menu div.list-group>a .glyphicon,
+  div.ftl-vertical-tab-menu div.list-group>a .fa {
+    color: #26a69a;
+  }
+  div.ftl-vertical-tab-menu div.list-group>a:first-child{
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    -moz-border-top-right-radius: 0;
+    -moz-border-top-left-radius: 0;
+  }
+  div.ftl-vertical-tab-menu div.list-group>a:last-child{
+    border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+  }
+  div.ftl-vertical-tab-menu div.list-group>a.active,
+  div.ftl-vertical-tab-menu div.list-group>a.active .glyphicon,
+  div.ftl-vertical-tab-menu div.list-group>a.active .fa{
+    background-color:#26a69a;
+    background-image: #26a69a;
+    color: #ffffff;
+  }
+  div.ftl-vertical-tab-menu div.list-group>a.active:after{
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    margin-top: -13px;
+    border-left: 0;
+    border-bottom: 13px solid transparent;
+    border-top: 13px solid transparent;
+    border-left: 10px solid #26a69a;
   }
 </style>
