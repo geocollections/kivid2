@@ -19,7 +19,8 @@
     "ores":"Руда",
     "combustibleRocks":"Горюций камень",
     "industrialRawMaterials":"Промышленное сырье",
-    "buildingSupplies":"Строительные материалы"
+    "buildingSupplies":"Строительные материалы",
+    "occurs_in_estonia":"Представлен в Эстонии"
   },
   "item": {
     "type":"Тип/уровень",

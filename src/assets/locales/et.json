@@ -41,7 +41,8 @@
     "tab_overview":"Üldinfo",
     "tabs_specimens":"Eksemplarid",
     "minerals":"Mineraalne koostis",
-    "mineralsByRock":"Mineraali sisaldavad kivimid"
+    "mineralsByRock":"Mineraali sisaldavad kivimid",
+    "occurs_in_estonia":"Esineb Eestis"
   },
   "search": {
     "worldwide":"Maailm",

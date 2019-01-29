@@ -50,6 +50,9 @@
                     <tr v-if="isDefinedAndNotNull(rock.link_wikipedia) || isDefinedAndNotNull(rock.link_wikipedia_en)">
                       <th>Wikipedia</th><td><a target='_blank' :href="'http://et.wikipedia.org/wiki/'+rock.link_wikipedia">{{rock.link_wikipedia}}</a> | <a target='_blank' :href="'http://en.wikipedia.org/wiki/'+rock.link_wikipedia_en">{{rock.link_wikipedia_en}}</a></td>
                     </tr>
+                    <tr v-if="rock.in_estonia">
+                      <th style="white-space: nowrap;"><i>{{$t('item.occurs_in_estonia')}}</i></th><td></td>
+                    </tr>
                     </tbody>
                   </table>
                 </div>
