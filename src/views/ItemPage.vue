@@ -112,18 +112,22 @@
                 </div>
               </div>
             </div>
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true">
-              <div class="card rounded-0">
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications)">
+              <div class="card rounded-0" id="tab-block">
                 <div class="card-header">{{$t('item.classification')}}</div>
                 <div class="card-body">
                   <div class="m-1 mt-3">
-                    <ul class="nav nav-tabs tab-links" style="flex-wrap: nowrap !important;font-size: small">
+                    <div class="scroller scroller-left" @click="scrollLeft()"><font-awesome-icon class="tabArrow" :icon="arrowLeft"/></div>
+                    <div class="scroller scroller-right" @click="scrollRight()"><font-awesome-icon class="tabArrow" :icon="arrowRight"/></div>
+                    <div class="wrapper">
+                    <ul class="nav nav-tabs tab-links list" style="flex-wrap: nowrap !important;font-size: small">
                       <li class="nav-item" v-for="cls in rock.classifications">
-                        <a href="#" v-on:click.prevent="setActiveClfTab(cls.rock_classification_id)" class="nav-link"
+                        <a :id="'id_'+cls.rock_classification_id" href="#" @click.prevent="setActiveClfTab(cls.rock_classification_id)" class="nav-link"
                            :class="{ active: activeClfTab === cls.rock_classification_id }" v-translate="{ et: cls.rock_classification__name, en: cls.rock_classification__name_en }"></a>
                       </li>
                     </ul>
-                    <taxonomical-tree></taxonomical-tree>
+                    <taxonomical-tree v-if="isClassificationTreeLoaded === true" style="margin-top: 3rem !important;"></taxonomical-tree>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -172,6 +176,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import {
     fetchRock,
     fetchRockImages,
@@ -190,6 +195,8 @@
   } from '../api'
   import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
   import faExternalLink from '@fortawesome/fontawesome-free-solid/faExternalLinkAlt'
+  import faArrowRight from '@fortawesome/fontawesome-free-solid/faArrowAltCircleRight'
+  import faArrowLeft from '@fortawesome/fontawesome-free-solid/faArrowAltCircleLeft'
   import Lingallery from "../components/main/Lingallery";
   import TaxonomicalTree from "../components/main/TaxonomicalTree";
   import MapComponent from "../components/main/MapComponent";
@@ -200,14 +207,32 @@
     components: {TabSpecimens, Tabs, MapComponent, TaxonomicalTree, Lingallery,FontAwesomeIcon},
     data() {
       return this.initialData()
-
+    },
+    beforeMount() {
+      window.addEventListener('resize', this.reAdjust);
+    },
+    beforeDestroy () {
+      window.addEventListener('resize', this.reAdjust);
     },
     computed: {
       isClassificationTreeLoaded() {
         return this.isCurrentClfSistersLoaded === true && this.isCurrenClfHierarchyLoaded === true && this.isCurrentClfSiblingsLoaded === true},
-      icon() { return faExternalLink }
-    },
+      icon() { return faExternalLink },
+      arrowRight() { return faArrowRight },
+      arrowLeft() { return faArrowLeft },
+      widthOfList() {
+        let itemsWidth = 0;
+        $('.list li').each(function(){
+          let itemWidth = $(this).outerWidth();
+          itemsWidth+=itemWidth;
+        });
+        return itemsWidth;
+      },
+      widthOfHidden() {
+        return (($('.wrapper').outerWidth())-this.widthOfList-this.tabListLeftPosi);
+      },
 
+    },
     created() {
       this.$emit('page-loaded',true);
       this.loadFullRockInfo()
@@ -219,6 +244,7 @@
         fileUrl:'https://files.geocollections.info',
         geocollectionUrl: "http://geocollections.info",
         error : false,
+        tabListLeftPosi : 0,
         mode: this.$localStorage.get('kivid_mode'),
         rock : {
           id: this.$router.currentRoute.params.id,
@@ -237,8 +263,32 @@
         currentClf: {},
         isCurrentClfSistersLoaded: false,
         isCurrenClfHierarchyLoaded: false,
-        isCurrentClfSiblingsLoaded: false
+        isCurrentClfSiblingsLoaded: false,
+        leftAnimation: false,
+        rightAnimation: false
       }},
+      reAdjust() {
+        console.log('resize')
+        this.$nextTick(() => this.setArrows())
+      },
+      scrollArrows(animation, isLeft) {
+        let this_ = this;
+        if(animation === true) return
+        animation = true
+        $('.list').animate({left:(isLeft? '+': '-')+"="+10+"rem"},'fast',function(){
+          isLeft ? this_.leftAnimation = false : this_.rightAnimation = false
+          this_.tabListLeftPosi = $('.list').position().left
+          this_.setArrows();
+        });
+      },
+      scrollRight() {
+        if(this.widthOfHidden > 0) return;
+        this.scrollArrows(this.rightAnimation,false)
+      },
+      scrollLeft() {
+        if(this.tabListLeftPosi >= 0) return;
+        this.scrollArrows(this.leftAnimation,true)
+      },
       isDefinedAndNotNull(value) { return !!value && value !== null },
       isDefinedAndNotEmpty(value) { return !!value && value.length > 0 },
       capitalizeFirstLetter(string) {
@@ -343,12 +393,28 @@
           return val.rock_classification_id === itemID;
         }, this);
       },
+      setArrows: function() {
+
+        setTimeout(() => {
+          // console.log( $('#id_'+this.activeClfTab).offset().left)
+          // $(".list").delay(1000).animate({left: - $('#id_'+this.activeClfTab).offset().left }, 1000);
+          // console.log(this.widthOfHidden > 0)
+          // console.log('outer ' + $('.wrapper').outerWidth())
+          // console.log('width of list '+this.widthOfList)
+          // console.log('left pos '+this.tabListLeftPosi)
+          this.widthOfHidden < 0 ? $('.scroller-right').fadeIn('fast') : $('.scroller-right').fadeOut('fast');
+          this.tabListLeftPosi < 0 ? $('.scroller-left').fadeIn('fast') : $('.scroller-left').fadeOut('fast');
+
+        }, 100)
+
+      },
       setActiveTab: function(tab) {
         this.activeTab = tab
       },
       setActiveClfTab: function(tab) {
         this.activeClfTab = tab;
         this.currentClf = this.getCurrentClassification(this.rock.classifications,tab)[0]
+        this.$nextTick(() => this.setArrows())
       },
       formatHierarchyString: function(value) { return value ? value.replace(/-/g, ',') : value;},
       composeTree: function () {
@@ -463,4 +529,55 @@
     background-color:#26a69a  !important;
     color:#ffffff  !important;
   }
+  .fa-arrow-alt-circle-left, .fa-arrow-alt-circle-right {
+    color:#6c757d  !important;
+  }
+  .scroller {
+    text-align:center;
+    cursor:pointer;
+    display: none;
+    padding-top:11px;
+    white-space:no-wrap;
+    vertical-align:middle;
+    background-color:#fff;
+
+
+  }
+
+  .scroller-right{
+    float:right;
+    margin-right: -20px !important;
+  }
+
+  .scroller-left {
+    float:left;
+    margin-left: -20px !important;
+  }
+
+  .wrapper {
+    position:relative;
+    margin:0 auto;
+    overflow:hidden;
+    padding:5px;
+    /*height:50px;*/
+  }
+  .list {
+    position:absolute;
+    left:0px;
+    top:0px;
+    min-width:3000px;
+    margin-left:12px;
+    margin-top:0px;
+  }
+
+  .list li{
+    display:table-cell;
+    position:relative;
+    text-align:center;
+    cursor:grab;
+    cursor:-webkit-grab;
+    color:#efefef;
+    vertical-align:middle;
+  }
+
 </style>
