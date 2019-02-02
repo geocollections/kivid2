@@ -13,11 +13,11 @@
                 <thead class="thead-default">
                 <tr>
                     <th><sort-field value = "specimen_number" name="search.specimen.number" :searchParameters="searchParameters"></sort-field></th>
-                    <th><sort-field value = "taxon" name="search.specimen.name_part_element" :searchParameters="searchParameters"></sort-field></th>
+                    <th><sort-field value = "rock,rock_en" name="search.specimen.name" :searchParameters="searchParameters"></sort-field></th>
                     <th><sort-field value = "locality,locality_en" name="search.specimen.locality" :searchParameters="searchParameters"></sort-field></th>
                     <th><sort-field value = "depth" name="search.specimen.depth_m" :searchParameters="searchParameters"></sort-field></th>
                     <th><sort-field value = "stratigraphy,stratigraphy_en" name="search.specimen.stratigraphy" :searchParameters="searchParameters"/></th>
-                    <th><sort-field value = "original_status,original_status_en" name="search.specimen.status" :searchParameters="searchParameters"></sort-field></th>
+                    <!--<th><sort-field value = "original_status,original_status_en" name="search.specimen.status" :searchParameters="searchParameters"></sort-field></th>-->
                     <th>{{ $t('search.specimen.images') }}</th>
                 </tr>
                 </thead>
@@ -28,15 +28,6 @@
                     </td>
                     <!--<td class="text-nowrap">{{item.specimen_number_old}}</td>-->
                     <td>
-                        <div>
-                            <a :href="'/'+item.taxon_id" @click.prevent="$parent.openUrl({parent_url:$parent.fossilsUrl,object:item.taxon_id, width:500,height:500})">{{item.taxon}}</a>
-                            <span v-if="$parent.isDefinedAndNotNull(item.taxon_txt)
-                            && $parent.isDefinedAndNotNull(item.taxon)
-                            && item.taxon_txt != item.taxon"> | </span>
-                            <span v-if="$parent.isDefinedAndNotNull(item.taxon_txt)
-                            && item.taxon_txt != item.taxon"><i v-for="(txt,idx) in item.taxon_txt">{{txt}}<span v-if="idx !== item.taxon_txt.length -1">,</span></i>
-                            </span>
-                        </div>
                         <!-- Currently both are links because rock__name is mostly null. -->
                         <div>
                             <router-link :to="'/'+item.rock_id" v-translate="{et:item.rock,en:item.rock_en}"></router-link>
@@ -71,10 +62,12 @@
                               v-for="(txt,idx) in item.stratigraphy_txt">{{ txt }}<span v-if="idx !== item.stratigraphy_txt.length -1">,</span></span>
                     </td>
 
+                    <!--
                     <td v-if="!isSmallScreenDevice || (isSmallScreenDevice && ($parent.isDefinedAndNotNull(item.original_status)||$parent.isDefinedAndNotNull(item.original_status_en)))">
                         <span v-if="$parent.isDefinedAndNotNull(item.original_status)||$parent.isDefinedAndNotNull(item.original_status_en)"
                               v-translate="{et:item.original_status,en:item.original_status_en}"></span>
                     </td>
+                    -->
                     <td v-if="$parent.isDefinedAndNotNull(item.image_preview_url)">
                         <a data-fancybox="gallery3" :href="item.image_url" :data-caption="item.caption">
                         <img class="img-thumbnail previewImage" :src="item.image_preview_url" style="max-height: 6rem;max-width:3rem "/>
@@ -107,7 +100,7 @@
         data() {
             return {
               searchParameters: {
-                specimens: { page: 1, paginateBy: 10, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
+                specimens: { page: 1, paginateBy: 25, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
                 onlyImgs: false,git: false,tug: false,elm: false, hackToFixComponentReload: ''},
               },
               loading: true, clientWidth : document.documentElement.clientWidth, response: this.setDefaultResponse()

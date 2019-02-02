@@ -146,7 +146,7 @@
                 <div class="card-header">{{$t('item.features')}}</div>
                 <div class="card-body">
                   <div v-for="item in rock.properties">
-                    <span style="font-weight: bolder" v-translate="{ et: item.property, en: item.property_en }"></span>:
+                    <span style="font-weight: bolder" v-translate="{ et: item.property_type__property, en: item.property_type__property_en }"></span>:
                     <span v-if="isDefinedAndNotNull(item.value_min) || isDefinedAndNotNull(item.value_max)">
                     	<span v-if="(item.value_min === item.value_max) || (isDefinedAndNotNull(item.value_min) && !item.value_max)">
                     		{{item.value_min}}</span>
