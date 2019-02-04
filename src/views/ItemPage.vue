@@ -113,7 +113,7 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.localities)">
+            <div class="row m-1"  v-if="isDefinedAndNotNull(rock.in_estonia) && isDefinedAndNotEmpty(rock.localities)">
               <div class="card rounded-0">
                 <div class="card-header">{{$t('item.localities')}}</div>
                 <div class="card-body no-padding">

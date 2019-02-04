@@ -29,13 +29,6 @@
 
         },
         methods: {
-            setView()  {
-                let mode = this.$localStorage.get('kivid_mode');
-                if (mode) {
-                    if(mode === 'in_estonia') this.map.setView([58.5,25.5], 6)
-                    else this.map.setView([58.5,20.5], 1);
-                }
-            },
             checkAllLayers() {
                 this.layers.sort((a, b) => a.id - b.id);
                 for(let i = 0; i < this.layers.length; i++){
@@ -68,7 +61,7 @@
                 this.map = L.map('map',{
                     fullscreenControl: true,
                 })
-                this.setView();
+                this.map.setView([58.5,25.5], 6);
                 this.tileLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoia3V1dG9iaW5lIiwiYSI6ImNpZWlxdXAzcjAwM2Nzd204enJvN2NieXYifQ.tp6-mmPsr95hfIWu3ASz2w',
                     {
                         minZoom: 1,
@@ -80,8 +73,6 @@
                   layers: 'IGME5000:EuroGeology',
                   transparency: 'true',
                   format: 'image/png',
-                  minZoom: 1,
-                  maxZoom: 18,
                   opacity: 0.5
               }).addTo(this.map);
 
