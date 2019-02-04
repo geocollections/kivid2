@@ -3,8 +3,8 @@
     <div v-if="error === false">
       <div class="row">
         <div class="col-md-12">
-          <h1 v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en) }"></h1>
-          <h6><i v-translate="{ et: rock.name_en, en: rock.name }"></i></h6>
+          <h1>{{capitalizeFirstLetter(rock.name)}}</h1>
+          <h6><i>{{rock.name_en}}</i></h6>
         </div>
       </div>
       <div class="col-md-12">  
@@ -30,10 +30,8 @@
                     <tr v-if="isDefinedAndNotNull(rock.description) || isDefinedAndNotNull(rock.description_en)">
                       <th>{{$t('item.description')}}</th><td v-translate="{ et: rock.description, en: rock.description_en }"></td>
                     </tr>
-                    <tr v-if="rock.in_estonia==1">
-                      <th>{{$t('item.in_estonia')}}</th>
-                      	<td v-if="isDefinedAndNotNull(rock.description_in_estonia) | isDefinedAndNotNull(rock.description_in_estonia_en)" v-translate="{ et: rock.description_in_estonia, en: rock.description_in_estonia_en }">zz</td>
-                      	<td v-else>{{$t('item.occurs_in_estonia')}}</td>
+                    <tr v-if="isDefinedAndNotNull(rock.description_in_estonia) | isDefinedAndNotNull(rock.description_in_estonia_en)">
+                      <th>{{$t('item.in_estonia')}}</th><td v-translate="{ et: rock.description_in_estonia, en: rock.description_in_estonia_en }"></td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.description_usage) | isDefinedAndNotNull(rock.description_usage_en)">
                       <th>{{$t('item.usage')}}</th><td v-translate="{ et: rock.description_usage, en: rock.description_usage_en }"></td>
@@ -52,11 +50,9 @@
                     <tr v-if="isDefinedAndNotNull(rock.link_wikipedia) || isDefinedAndNotNull(rock.link_wikipedia_en)">
                       <th>Wikipedia</th><td><a target='_blank' :href="'http://et.wikipedia.org/wiki/'+rock.link_wikipedia">{{rock.link_wikipedia}}</a> | <a target='_blank' :href="'http://en.wikipedia.org/wiki/'+rock.link_wikipedia_en">{{rock.link_wikipedia_en}}</a></td>
                     </tr>
-                    <!--
                     <tr v-if="rock.in_estonia">
                       <th style="white-space: nowrap;"><i>{{$t('item.occurs_in_estonia')}}</i></th><td></td>
                     </tr>
-                    -->
                     </tbody>
                   </table>
                 </div>
@@ -97,15 +93,10 @@
                                            <span v-if="reference.reference__number != null">{{reference.reference__number}},</span>
                                            <span v-if="isDefinedAndNotNull(reference.reference__pages)">{{reference.reference__pages}}. </span>
                                        </span>
-                    <span v-else-if="isDefinedAndNotNull(reference.reference__book) && reference.reference__book!=''"><!-- if book article -->
-                                       <em>{{reference.reference__book}}</em>, lk. {{reference.reference__pages}}.
+                    <span v-if="isDefinedAndNotNull(reference.reference__book)"><!-- if book article -->
+                                       <em>{{reference.reference__book}}</em>, pp. {{reference.reference__pages}}.
                                        </span>
-                    <span v-else><!-- if partial record -->
-                                       {{reference.reference__publisher}}, {{reference.reference__publisher_place}}, lk. {{reference.reference__pages}}.
-                                       </span>
-                    <span v-if="reference.pages || reference.figures"><!-- if specific pages on mineral provided -->
-                                       [lk. {{reference.pages}}] 
-                                       </span>                         
+
                     <span v-if="reference.reference__doi !== null" ><a :href="'https://doi.org/'+reference.reference__doi" rel="noopener" target="_blank">DOI:{{reference.reference__doi}}</a></span>
                   </div>
                 </div>
@@ -148,10 +139,7 @@
                   <div v-for="item in rock.properties">
                     <span style="font-weight: bolder" v-translate="{ et: item.property, en: item.property_en }"></span>:
                     <span v-if="isDefinedAndNotNull(item.value_min) || isDefinedAndNotNull(item.value_max)">
-                    	<span v-if="(item.value_min === item.value_max) || (isDefinedAndNotNull(item.value_min) && !item.value_max)">
-                    		{{item.value_min}}</span>
-                    	<span v-else>                		
-                    		{{item.value_min}} - {{item.value_max}}</span></span>
+                    {{item.value_min}} - {{item.value_max}}</span>
                     <span v-if="isDefinedAndNotNull(item.value_txt)">{{item.value_txt}}</span>
                   </div>
                 </div>
@@ -345,7 +333,6 @@
       },
       currentRockDoNotHaveAnyImageFetchImagesByParentString() {
         if(this.rock.images.length === 0) {
-
           fetchPhotoGallery(this.currentClf.parent_string, this.mode).then((response) => {
             this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
               this.composeImageUrls(response.results) : [];
