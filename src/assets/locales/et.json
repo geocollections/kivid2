@@ -51,14 +51,14 @@
     "per_page":"Per page",
     "specimen": {
       "id": "ID",
-      "number": "Specimen number",
-      "depth_m": "Depth (m)",
-      "stratigraphy": "Stratigraphy",
-      "collector": "Collector",
-      "locality": "Locality",
-      "name_part_element": "Name Part/element",
-      "status": "Status",
-      "images": "Images"
+      "number": "Number",
+      "depth_m": "Sügavus (m)",
+      "stratigraphy": "Stratigraafia",
+      "collector": "Koguja",
+      "locality": "Leiukoht",
+      "name": "Nimi",
+      "status": "Staatus",
+      "images": "Fotod"
     }
   },
   "fancybox": {

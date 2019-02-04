@@ -59,7 +59,7 @@
       "stratigraphy": "Stratigraphy",
       "collector": "Collector",
       "locality": "Locality",
-      "name_part_element": "Name Part/element",
+      "name": "Name",
       "status": "Status",
       "images": "Images"
     }

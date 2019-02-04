@@ -57,7 +57,7 @@ export function fetchRockSiblings (clsId,id,mode) {
   return fetch(`rock_tree/?rock_classification_id=${clsId}&parent_id=${id}&rock__name__isnull=False&rock__name_en__isnull=False&format=json`)
 }
 export function cntSpecimenCollection(id) {
-  return fetch(`solr/specimen/?q=rock_id:${id}&rows=1&format=json`)
+  return fetch(`solr/specimen/?fq=hierarchy_string_rock:${id}&rows=1&format=json`)
 }
 export function fetchSpecimenCollection (id,mode,searchParameters) {
   let start = searchParameters.specimens.paginateBy*(searchParameters.specimens.page-1);
@@ -75,7 +75,7 @@ export function fetchSpecimenCollection (id,mode,searchParameters) {
       fq += searchParameters.specimens.elm === true ? 'ELM%20or':'';
     }
   }
-  return fetch(`solr/specimen/?q=rock_id:${id}${fq}&rows=${searchParameters.specimens.paginateBy}&start=${start}&sort=${orderBy}&format=json`)
+  return fetch(`solr/specimen/?fq=hierarchy_string_rock:${id}${fq}&rows=${searchParameters.specimens.paginateBy}&start=${start}&sort=${orderBy}&format=json`)
 }
 export function fetchSearch (name,mode) {
   //return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)
