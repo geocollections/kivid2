@@ -94,3 +94,17 @@ a.page-link {color: #26a69a !important; }
 .page-item.active .page-link {border-color: #26a69a;background-color: #26a69a; color: #fff !important;}
 
 /*Pagination style ends */
+
+.btn-circle {
+  width: 25px;
+  height: 25px;
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 50%;
+  color:#26a69a  !important;
+  border-color:#26a69a  !important;
+}
+.btn-circle:hover {
+  background-color:#26a69a  !important;
+  color:#ffffff  !important;
+}

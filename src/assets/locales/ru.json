@@ -63,7 +63,19 @@
       "name_part_element": "Название части/элемента",
       "status": "Статус",
       "images": "Изображение"
-    }
+    },
+    "chooseType":"Выбрать...",
+    "operand": {
+      "contains":"contains",
+      "isGreaterThan":"greater than",
+      "isSmallerThan":"smaller than",
+      "equals":"equals",
+      "isBetween":"between"
+    },
+    "additionalCriteria":"Additional criteria",
+    "value":"value",
+    "from":"from",
+    "to":"to"
   },
   "fancybox": {
     "author": "Автор",

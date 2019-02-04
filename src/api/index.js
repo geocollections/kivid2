@@ -94,3 +94,9 @@ export function fetchMinerals (id,mode) {
 export function fetchMineralsByRock (id,mode) {
   return fetch(`rock_mineral/?mineral__id=${id}&format=json`)
 }
+export function fetchRockPropertyType () {
+  return fetch(`rock_property_type/?format=json`)
+}
+export function fetchSearchByPropertyType (property_type,operand,value) {
+  return fetch(`rock_property/?property_type=${property_type}&value_min__${operand}=${value}&fields=rock_id,rock__name,rock__name_en,value_min,value_max,value_txt&format=json`)
+}

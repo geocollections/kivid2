@@ -62,7 +62,19 @@
       "name": "Name",
       "status": "Status",
       "images": "Images"
-    }
+    },
+    "chooseType":"Choose property",
+    "operand": {
+      "contains":"contains",
+      "isGreaterThan":"greater than",
+      "isSmallerThan":"smaller than",
+      "equals":"equals",
+      "isBetween":"between"
+    },
+    "additionalCriteria":"Additional criteria",
+    "value":"value",
+    "from":"from",
+    "to":"to"
   },
   "fancybox": {
     "author": "Author",

@@ -62,7 +62,19 @@
       "name": "Nimi",
       "status": "Staatus",
       "images": "Fotod"
-    }
+    },
+    "chooseType":"Vali ...",
+    "operand": {
+      "contains":"contains",
+      "isGreaterThan":"greater than",
+      "isSmallerThan":"smaller than",
+      "equals":"equals",
+      "isBetween":"between"
+    },
+    "additionalCriteria":"Additional criteria",
+    "value":"value",
+    "from":"from",
+    "to":"to"
   },
   "fancybox": {
     "author": "Autor",

@@ -533,7 +533,7 @@
     width: 25px;
     height: 25px;
     padding: 5px 8px;
-    font-size: 12px;fan
+    font-size: 12px;
     border-radius: 50%;
     color:#26a69a  !important;
     border-color:#26a69a  !important;
