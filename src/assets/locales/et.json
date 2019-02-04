@@ -44,6 +44,9 @@
     "mineralsByRock":"Mineraali sisaldavad kivimid",
     "occurs_in_estonia":"Esineb Eestis"
   },
+  "map": {
+    "overlay_title":"Bedrock age"
+  },
   "search": {
     "worldwide":"Maailm",
     "only_estonia":"Ainult Eesti",

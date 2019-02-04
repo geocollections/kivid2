@@ -10,6 +10,7 @@
               map: null,
               groupedLayers: null,
               tileLayer: null,
+              geologicalLayer: null,
               layers: [
                   {id: 0, name: 'localities', active: true, features: []}
               ]
@@ -55,6 +56,11 @@
                   });
                   layer.leaflatObjects = L.layerGroup(leaflatObjects)
               });
+              let overlays = {}
+              overlays[this.$t('map.overlay_title')+'<br /><img src="http://gis.geokogud.info/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=IGME5000:EuroGeology&legend_options=fontName:DejaVu%20Sans%20ExtraLight;fontAntiAliasing:true;fontColor:0x333333;fontSize:10;bgColor:0xFFFFff;dpi:96" /> '] = this.geologicalLayer
+
+              L.control.layers(null, overlays).addTo(this.map);
+
             },
 
             loadMap : function() {
@@ -69,8 +75,15 @@
                         maxZoom: 18,
                         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
                     }
-                );
-                this.tileLayer.addTo(this.map);
+                ).addTo(this.map);
+              this.geologicalLayer = L.tileLayer.wms('http://gis.geokogud.info/geoserver/wms', {
+                  layers: 'IGME5000:EuroGeology',
+                  transparency: 'true',
+                  format: 'image/png',
+                  minZoom: 1,
+                  maxZoom: 18,
+                  opacity: 0.5
+              }).addTo(this.map);
 
             },
 

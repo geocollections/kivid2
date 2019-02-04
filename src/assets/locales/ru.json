@@ -42,7 +42,11 @@
     "tab_overview":"Общая информация",
     "tabs_specimens":"Экземпляры",
     "minerals":"Минеральный состав",
-    "mineralsByRock":"Камни содержащие минерал"
+    "mineralsByRock":"Камни содержащие минерал",
+    "occurs_in_estonia":"Встречается в Эстонии"
+  },
+  "map": {
+    "overlay_title":"Bedrock age"
   },
   "search": {
     "worldwide":"Весь мир",

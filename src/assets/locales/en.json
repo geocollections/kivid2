@@ -43,9 +43,9 @@
     "minerals":"Mineral composition",
     "mineralsByRock":"Mineral containing rocks",
     "occurs_in_estonia":"Occurs in Estonia"
-
-
-
+  },
+  "map": {
+    "overlay_title":"Bedrock age"
   },
   "search": {
     "worldwide":"Worldwide",
