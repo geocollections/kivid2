@@ -11,93 +11,53 @@
       </div>
     </div>
     <div class="row m-2">
-      <div class="col-md-3"></div>
-      <div class="col-md-6" >
-        <rock-search/>
-      </div>
-      <div class="col-md-1">
-        <!--<button type="button" class="btn btn-xs btn-outline-primary" aria-pressed="true"-->
-                <!--@click="isAdvancedSearch = true">{{$t('search.additionalCriteria')}}</button>-->
-      </div>
-      <div class="col-md-2"></div>
-    </div>
-
-    <div class="row m-2">
-      <div class="col-md-4"></div>
-      <div class="col-md-4">
-        <mode-buttons/>
-      </div>
-      <div class="col-md-4"></div>
-    </div>
-    <div class="row m-2" v-if="rockPropertyTypes.length > 0">
       <div class="col-md-1"></div>
-      <div class="col-md-10 border border-light small p-1">
-        <div class="row" >
-          <div class="col-lg-4">
-            <div class="well ml-0 mr-0">
-              <div class="row searchCriterion">
-                  <select class="ml-3 searchCriterionType" v-model="searchParameters.propertyType">
+      <div class="col-md-10"  style="text-align: center">
+        <div class="col-lg-12"><rock-search/></div>
+        <div class="col-lg-12" style="text-align: right; font-size: x-small !important;">
+          <button class="btn btn-xs btn-link pt-0" v-b-toggle.collapseA style="font-size: small !important;"><font-awesome-icon :icon="searchIcon" /> Laiendatud otsing </button></div>
+        <div class="col-lg-12 pb-2"><mode-buttons/></div>
+        <b-collapse id="collapseA"  class="col-lg-12 border border-light small p-1"  v-if="rockPropertyTypes.length > 0">
+          <div class="row" >
+            <div class="col-lg-4">
+              <div class="well ml-0 mr-0">
+                <div class="row searchCriterion">
+                  <select class="ml-2 searchCriterionType" v-model="searchParameters.propertyType">
                     <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en }"></option>
                   </select>
                   <select class="searchCriterionType"  v-model="searchParameters.propertyOperand">
                     <option v-bind:value="item.value" v-for="item in operands">{{$t('search.operand.'+item.name)}}</option>
                   </select>
-                <div class="col-lg-12"  v-if="searchParameters.propertyOperand !== 'range'">
-                  <input type="text" class="form-control" v-model="searchParameters.propertyValue"/>
-                </div>
-                <div class="col-lg-6 pr-0" v-if="searchParameters.propertyOperand === 'range'">
-                  <input type="number" class="form-control" v-model="searchParameters.propertyValueFrom"/>
-                </div>
-                <div class="col-lg-6  pl-0" v-if="searchParameters.propertyOperand === 'range'">
-                  <input type="number" class="form-control" v-model="searchParameters.propertyValueTo"/>
+                  <div class="col-lg-12"  v-if="searchParameters.propertyOperand !== 'range'">
+                    <input type="text" class="form-control" v-model="searchParameters.propertyValue"/>
+                  </div>
+                  <div class="col-lg-6 pr-0" v-if="searchParameters.propertyOperand === 'range'">
+                    <input type="number" class="form-control" v-model="searchParameters.propertyValueFrom"/>
+                  </div>
+                  <div class="col-lg-6  pl-0" v-if="searchParameters.propertyOperand === 'range'">
+                    <input type="number" class="form-control" v-model="searchParameters.propertyValueTo"/>
+                  </div>
                 </div>
               </div>
+              <div style="text-align: right;">
+                <button type="button" class="btn btn-xs btn-outline-danger" aria-pressed="true" @click="clearSearch" title="Clears search fields">Clear</button>
+                <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
+                  <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
+              </div>
             </div>
-            <div style="text-align: right;">
-              <button type="button" class="btn btn-xs btn-outline-danger" aria-pressed="true" @click="clearSearch" title="Clears search fields">Clear</button>
-              <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">Search</button>
-            </div>
-
-            <div style="text-align: right;">
-            </div>
-          </div>
-          <div class="col-lg-8" style="text-align: left;"> Results:
-            <div class="row">
-              <div class="col-md-3"  v-for="item in searchResults"><router-link :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link></div>
+            <div class="col-lg-8" style="text-align: left;"> Results:
+              <div class="row">
+                <div class="col-md-3"  v-for="item in searchResults"><router-link :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link></div>
+              </div>
             </div>
           </div>
+        </b-collapse>
+        <div class="col-lg-12">
+          <router-link :to="'/'+232">
+            <img src="https://files.geocollections.info/medium/9d/b5/9db5b4d9-7e83-471f-a2dd-cf2f440064f1.jpg" alt="kaltsiit" style="max-width: 750px; width: 100%;"/>
+          </router-link>
         </div>
-        <!--<div class="row">-->
-          <!--<form class="form-inline p-3 border border-light small">-->
-            <!--<label class="my-1 mr-2">Search by property</label>-->
-            <!--<select class="col-md-4 custom-select mr-sm-2" v-model="propertyType">-->
-              <!--<option disabled value="">{{$t('search.chooseType')}}</option>-->
-              <!--<option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en }"></option>-->
-            <!--</select>-->
-            <!--<select class="col-md-2 custom-select mr-sm-2"  v-model="operand">-->
-              <!--<option disabled value="">{{$t('search.chooseType')}}</option>-->
-              <!--<option v-bind:value="item.value" v-for="item in operands">{{$t('search.operand.'+item.name)}}</option>-->
-              <!--</select>-->
-
-            <!--<input type="text" class="col-md-3 form-control mr-sm-2" style="font-size: small !important;" v-model="propertyValue" v-if="operand !== 5">-->
-            <!--<input type="text" class="col-md-2 form-control mr-sm-2" style="font-size: small !important;" v-model="propertyValueFrom" :placeholder="$t('search.from')" v-if="operand === 5">-->
-            <!--<input type="text" class="col-md-2 form-control mr-sm-2" style="font-size: small !important;" v-model="propertyValueTo":placeholder="$t('search.to')" v-if="operand === 5">-->
-          <!--</form>-->
-          <!--</div>-->
-      </div>
-
-      <div class="col-md-1"></div>
-    </div>
-
-    <div class="row m-2">
-      <div class="col-md-12">
-      <router-link :to="'/'+232">
-      <img src="https://files.geocollections.info/medium/9d/b5/9db5b4d9-7e83-471f-a2dd-cf2f440064f1.jpg" alt="kaltsiit" style="max-width: 750px; width: 100%;"/>
-      </router-link>
-      </div>
-    </div>
-    <div class="row m-2">
-      <div class="col-md-12">
+        <div class="col-lg-12">
           |
           <router-link :to="'/'+3">{{$t('main.minerals')}}</router-link> |
           <router-link :to="'/'+799">{{$t('main.gemstones')}}</router-link> |
@@ -120,8 +80,11 @@
             <span v-for="item in lastChangedRocks">
               <router-link :to="'/'+item.id" v-translate="{ et: item.name, en: item.name_en }"></router-link>  |
             </span></div>
+        </div>
       </div>
+      <div class="col-md-1"></div>
     </div>
+
 
 
   </div>
@@ -181,7 +144,7 @@
       },
       searchByAdditionalCriteria() {
         if(!this.isValidForm()) {
-          this.$emit('throw-error',`Search is not allowed. Please choose the search criteria`);
+          this.$emit('throw-error',`Search is not allowed. Please choose some search criteria`);
           return;
         }
         let query = this.searchParameters.propertyOperand !== 'range'?
@@ -207,6 +170,11 @@
             searchResults.filter(x => !!x.rock__name).sort((a,b) => (a.rock__name.toLowerCase() > b.rock__name.toLowerCase()) ? 1 : ((b.rock__name.toLowerCase() > a.rock__name.toLowerCase()) ? -1 : 0)) :
             searchResults.filter(x => x.rock__name_en).sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
       },
+      openAdvanceSearchSection: function() {
+        $('html, body').animate({
+          scrollTop: $("#advancedSearch").offset().top
+        }, 1000);
+      }
     },
     watch: {
       'searchParameters.propertyOperand': {
