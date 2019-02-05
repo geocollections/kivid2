@@ -19,7 +19,9 @@
     "ores":"Ores",
     "combustibleRocks":"Combustible rocks",
     "industrialRawMaterials":"Industrial raw materials",
-    "buildingSupplies":"Building supplies"
+    "buildingSupplies":"Building supplies",
+    "searchInstructions": "Search instructions",
+    "searchResults":"Search results"
   },
   "item": {
     "type":"Type/level",

@@ -20,7 +20,9 @@
     "combustibleRocks":"Горюций камень",
     "industrialRawMaterials":"Промышленное сырье",
     "buildingSupplies":"Строительные материалы",
-    "occurs_in_estonia":"Представлен в Эстонии"
+    "occurs_in_estonia":"Представлен в Эстонии",
+    "searchInstructions": "Руководство по поиску",
+    "searchResults":"Результаты поиска"
   },
   "item": {
     "type":"Тип/уровень",

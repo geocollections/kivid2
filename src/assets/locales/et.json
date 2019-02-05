@@ -19,7 +19,9 @@
     "ores":"Maagid",
     "combustibleRocks":"Põlevmaavarad",
     "industrialRawMaterials":"Tööstustoormed",
-    "buildingSupplies":"Ehitusmaavarad"
+    "buildingSupplies":"Ehitusmaavarad",
+    "searchInstructions": "Otsingu juhend",
+    "searchResults":"Otsingu tulemused"
   },
   "item": {
     "type":"Tüüp/tase",
