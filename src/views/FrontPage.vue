@@ -18,19 +18,21 @@
           <button class="btn btn-xs btn-link pt-0" v-b-toggle.collapseA style="font-size: small !important; letter-spacing: 1.3px "><font-awesome-icon :icon="searchIcon" /> Laiendatud otsing </button>
         </div>
         <div class="col-lg-12 pb-5"><mode-buttons/></div>
-        <b-collapse id="collapseA"  class="col-lg-12 border border-light small p-4"  v-if="rockPropertyTypes.length > 0">
+        <b-collapse id="collapseA"  class="col-lg-12 border border-light medium p-4"  v-if="rockPropertyTypes.length > 0">
           <div class="row">
             <h4>{{$t('main.searchInstructions')}}</h4>
           </div>
-          <div class="row">
-            <div class="input-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn form-control btn-secondary" @click="searchType = 1;clearSearch()" :class="searchType === 1 ? 'active': ''">Property</button>
-              <button type="button" class="btn form-control btn-secondary" @click="searchType = 2;clearSearch()" :class="searchType === 2 ? 'active': ''">Chemical element</button>
-              <button type="button" class="btn form-control btn-secondary" @click="searchType = 3;clearSearch()" :class="searchType === 3 ? 'active': ''">Mineral</button>
+
+          <div>
+            <div class="row">
+              <div class="input-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn form-control btn-secondary" @click="searchType = 1;clearSearch()" :class="searchType === 1 ? 'active': ''">Property</button>
+                <button type="button" class="btn form-control btn-secondary" @click="searchType = 2;clearSearch()" :class="searchType === 2 ? 'active': ''">Chemical element</button>
+                <button type="button" class="btn form-control btn-secondary" @click="searchType = 3;clearSearch()" :class="searchType === 3 ? 'active': ''">Mineral</button>
+              </div>
             </div>
-          </div>
-          <div class="col-lg-12">
-            <div class="row well"  v-if="searchType === 1">
+            <div class="col-lg-12">
+              <div class="row well"  v-if="searchType === 1">
                 <div class="col-lg-5">
                   <select class="searchCriterionType" v-model="searchParameters.propertyType">
                     <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en }"></option>
@@ -51,36 +53,46 @@
                 <div class="col-lg-2" v-if="searchParameters.propertyOperand === 'range'">
                   <input type="number" class="form-control" v-model="searchParameters.propertyValueTo"/>
                 </div>
-              <div class="col-lg-1">
-                <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
-                  <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
+                <div class="col-lg-1">
+                  <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
+                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
+                </div>
               </div>
+              <div class="row well" v-if="searchType === 2">
+                <div class="col-lg-4 label"  style="text-align: left;padding: 10px"><label>Chemical element name:</label></div>
+                <div class="col-lg-6">
+                  <input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>
+                </div>
+                <div class="col-lg-1">
+                  <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
+                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
+                </div>
               </div>
-            <div class="row well" v-if="searchType === 2">
+              <div class="row well" v-if="searchType === 3">
+                <div class="col-lg-4" style="text-align: right">
+                  <label class="typo__label" style="padding: 10px">Mineral:</label>
+                </div>
+                <div class="col-lg-6">
+                  <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'"
+                                    v-model="searchParameters.selectedMinerals" placeholder="Search mineral" track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true"></vue-multiselect>
+                  <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en }"></span>
+                </div>
+                <div class="col-lg-1">
+                  <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
+                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-8" style="text-align: left;">
+              <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
+              <!--<h3 v-if="searchResults.length === 0">{{$t('main.searchInstructions')}}</h3>-->
+              <h3 v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
+              <div class="row" v-if="searchResults.length > 0">
+                <div class="col-md-3 pb-2 "  v-for="item in searchResults"><router-link :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link></div>
+              </div>
+            </div>
+          </div>
 
-            </div>
-            <div class="row well" v-if="searchType === 3">
-              <div class="col-lg-4">
-                <label class="typo__label" style="  padding: 10px">Mineral</label>
-              </div>
-              <div class="col-lg-6">
-                <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'" v-model="searchParameters.selectedMinerals" tag-placeholder="Add this as new tag" placeholder="Search mineral" label="mineral__name" track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true" @tag="addTag"></vue-multiselect>
-                <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en }"></span>
-              </div>
-              <div class="col-lg-1">
-                <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
-                  <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-12" style="text-align: left;">
-            <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
-            <!--<h3 v-if="searchResults.length === 0">{{$t('main.searchInstructions')}}</h3>-->
-            <h3 v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
-            <div class="row" v-if="searchResults.length > 0">
-              <div class="col-md-3 pb-2 "  v-for="item in searchResults"><router-link :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link></div>
-            </div>
-          </div>
           <div class="row" v-if="false">
             <div class="col-lg-4">
               <div class="well ml-0 mr-0 p-3">
@@ -104,7 +116,7 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12">
-                    <label class="typo__label" style="text-align: left">Mineral</label>
+                    <label style="text-align: left">Mineral</label>
                     <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'" v-model="searchParameters.selectedMinerals" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="mineral__name" track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true" @tag="addTag"></vue-multiselect>
                     <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en }"></span>
                   </div>
@@ -170,7 +182,8 @@
     fetchRockPropertyType,
     fetchSearchByPropertyType,
     fetchMineralList,
-    fetchSearchByMineral
+    fetchSearchByMineral,
+    fetchSearchByChemicalElement
   } from '../api'
   import Spinner from 'vue-simple-spinner'
   import VueMultiselect from 'vue-multiselect'
@@ -218,7 +231,7 @@
       isValidForm() {
         return !((this.searchParameters.propertyOperand !== 'range' && (this.searchParameters.propertyValue === null || this.searchParameters.propertyValue.length === 0))
         && (this.searchParameters.propertyOperand === 'range' && (this.searchParameters.propertyValueFrom === null || this.searchParameters.propertyValueTo === null))
-        && (this.searchParameters.selectedMinerals.length === 0))
+        && (this.searchParameters.selectedMinerals.length === 0) && this.searchParameters.chemicalElement === null)
       },
       getSelectedMineralIds(){
         return Array.from(this.searchParameters.selectedMinerals.map(item => item.mineral__id))
@@ -230,14 +243,16 @@
         }
         this.loading = true;
         let query, mineralsIds = this.getSelectedMineralIds();
-        if (mineralsIds.length > 0) {
-          //hack >> mineral search accepts more than one value
+        if (this.searchType === 3) {
+          //hack >> minera l search accepts more than one value
           mineralsIds.push(0);
           query = fetchSearchByMineral(mineralsIds);
-        } else {
+        } else if (this.searchType === 1) {
           query = this.searchParameters.propertyOperand !== 'range'?
             fetchSearchByPropertyType(this.searchParameters.propertyType, this.searchParameters.propertyOperand,this.searchParameters.propertyValue) :
             fetchSearchByPropertyType(this.searchParameters.propertyType, this.searchParameters.propertyOperand,this.searchParameters.propertyValueFrom+','+this.searchParameters.propertyValueTo)
+        } else if (this.searchType === 2) {
+          query = fetchSearchByChemicalElement(this.searchParameters.chemicalElement);
         }
 
         query.then((response) => {
@@ -251,6 +266,7 @@
       },
       setDefaultSearchParams() {
         return {
+          chemicalElement: null,
           selectedMinerals: [],
           propertyType:'1',
           propertyOperand: 'icontains',
@@ -263,9 +279,6 @@
             searchResults.filter(x => x.rock__name_en).sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
       },
 
-      addTag: function () {
-        
-      },
       displayMineralResults: function (item) {
         return this.lang === 'et' ? `${item.mineral__name}` : `${item.mineral__name_en}`
       },
@@ -296,9 +309,9 @@
   margin-right: auto;
 }
 .btn-search {
-  color:#F05F40  !important;
+  color:#ffffff  !important;
   border-color:#eb3812  !important;
-  background-color:#fff  !important;
+  background-color:#f05f40  !important;
 }
 .btn-search:hover {
   background-color:#eb3812  !important;
@@ -317,8 +330,7 @@
 .well {
   padding: 10px;
   vertical-align: middle;
-  margin-left: 5px;
-  margin-right: 5px;
+
   min-height: 20px;
   margin-bottom: 20px;
   background-color: #f5f5f5;

@@ -100,6 +100,9 @@ export function fetchRockPropertyType () {
 export function fetchSearchByMineral (ids) {
   return fetch(`rock_mineral/?mineral__id__in=${ids}&fields=rock_id,rock__name,rock__name_en&format=json`)
 }
+export function fetchSearchByChemicalElement (el) {
+  return fetch(`rock_mineral/?mineral__formula__icontains=${el}&fields=rock_id,rock__name,rock__name_en&distinct=true&format=json`)
+}
 export function fetchMineralList () {
   return fetch(`rock_mineral/?fields=mineral__id,mineral__name,mineral__name_en&distinct=true&format=json`)
 }
