@@ -315,6 +315,10 @@
       },
       setFancyBoxCaption: function(el) {
         let text = "",
+          rock = this.isDefinedAndNotNull(el.rock_id) ?
+            "<a href=\"/"+el.rock_id+"\" style=\"color:#c82333 !important\" ')\">" +
+            "<h5>"+(this.$localStorage.get('kivid_lang') === 'et'? el.name : el.name_en)+"</h5></a>"
+            :"" ,
           autor = this.isDefinedAndNotNull(el.attachment__author__agent) ?
             this.$t('fancybox.author')+": <strong>"+el.attachment__author__agent +"</strong>":"" ,
           agent = this.isDefinedAndNotNull(el.attachment__copyright_agent__agent) ?
@@ -328,7 +332,7 @@
           detailView = this.isDefinedAndNotNull(el.attachment__id) ?
             "<div><button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/file/"+el.attachment__id+"')\">"+this.$t('fancybox.detailView')+"</button></div>":
             this.isDefinedAndNotNull(el.attachment__specimen_id) ? "<div><button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/specimen/"+el.attachment__specimen_id+"')\">"+this.$t('fancybox.detailView')+"</button></div>":"" ;
-        text += "<div>"+autor+agent+"</div>"+date+licence+detailView;
+        text += "<div>"+rock+autor+agent+"</div>"+date+licence+detailView;
         return text;
       },
       composeImageUrls(images){

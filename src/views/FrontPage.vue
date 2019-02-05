@@ -83,7 +83,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-8" style="text-align: left;">
+            <div class="col-lg-12" style="text-align: left;">
               <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
               <!--<h3 v-if="searchResults.length === 0">{{$t('main.searchInstructions')}}</h3>-->
               <h3 v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
