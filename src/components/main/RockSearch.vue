@@ -1,5 +1,4 @@
 <template>
-
     <vue-multiselect class="align-middle" deselect-label="Can't remove this value"
                      select-label=""
                      :custom-label="displayResults"

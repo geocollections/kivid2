@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div class="btn-group btn-group-toggle">
       <label class="btn  btn-xs btn-secondary" :class="selectedMode === 'in_global' ? 'active': ''">
         <input type="radio" name="options" id="one" value="in_global" v-model="selectedMode">{{$t('search.worldwide')}}
@@ -8,7 +7,6 @@
         <input type="radio" name="options" id="two" value="in_estonia" v-model="selectedMode">{{$t('search.only_estonia')}}
       </label>
     </div>
-  </div>
 
 </template>
 
