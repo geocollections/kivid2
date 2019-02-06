@@ -13,7 +13,7 @@
         </div>
       </div>
       <tabs v-on:tab-changed="setActiveTab"></tabs>
-      <tab-specimens v-if="activeTab === 'specimens'"></tab-specimens>
+      <tab-specimens :search-parameters="searchParameters" v-if="activeTab === 'specimens'" v-on:specimen-filter-applied="setSpecimenCollectionCnt"></tab-specimens>
         <div class="row" v-if="activeTab  === 'overview'">
           <div class="col-md-8">
             <div class="row m-1">
@@ -267,7 +267,8 @@
           synonyms: [],
           classifications: [],
           tree: {nodes: []},
-          specimenCollectionCnt: 1
+          specimenCollectionCnt: 1,
+          specimenCollectionCntFiltered: -1
         },
         basicInfoLoaded: false,
         activeTab: 'overview',
@@ -277,7 +278,11 @@
         isCurrenClfHierarchyLoaded: false,
         isCurrentClfSiblingsLoaded: false,
         leftAnimation: false,
-        rightAnimation: false
+        rightAnimation: false,
+        searchParameters: {
+          specimens: { page: 1, paginateBy: 25, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
+          onlyImgs: false,git: false,tug: false,elm: false, hackToFixComponentReload: ''},
+        },
       }},
       reAdjust() {
         console.log('resize')
@@ -452,6 +457,9 @@
           this.currentClfSiblings = this.handleResponse(response);
           this.isCurrentClfSiblingsLoaded = true;
         });
+      },
+      setSpecimenCollectionCnt: function(specimentAmount) {
+        this.rock.specimenCollectionCntFiltered = specimentAmount;
       }
 
     },

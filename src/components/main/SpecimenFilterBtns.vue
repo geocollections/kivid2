@@ -15,17 +15,9 @@
       <span v-if="!smallScreenDevice" style="font-size:medium !important;">{{ $t('search.per_page') }}: </span>
       <div class="btn-group ml-2" >
         <button type="button"
-                :class="{'active':$props.searchParameters.specimens.paginateBy === 10}"
-                @click="$props.searchParameters.specimens.paginateBy=10"
-                class="btn btn-outline-primary btn-custom" aria-pressed="true">10</button>
-        <button type="button"
-                :class="{'active':$props.searchParameters.specimens.paginateBy === 25}"
-                @click="$props.searchParameters.specimens.paginateBy=25"
-                class="btn btn-outline-primary btn-custom" aria-pressed="true">25</button>
-        <button type="button"
-                :class="{'active':$props.searchParameters.specimens.paginateBy === 50}"
-                @click="$props.searchParameters.specimens.paginateBy=50"
-                class="btn btn-outline-primary btn-custom" aria-pressed="true">50</button>
+                :class="{'active':$props.searchParameters.specimens.paginateBy === nr}"
+                @click="$props.searchParameters.specimens.paginateBy=nr"
+                class="btn btn-outline-primary btn-custom" aria-pressed="true" v-for="nr in [10,25,50,100]">{{nr}}</button>
       </div>
     </div>
   </div>

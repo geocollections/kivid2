@@ -6,10 +6,10 @@
       </b-row>
         <b-row class="m-1 table-responsive" style="margin-top: -2rem !important;">
           <specimen-filter-btns class="mt-4" :search-parameters="searchParameters" v-if="isSmallScreenDevice && !loading" :small-screen-device="true"/>
-          <div v-if="$parent.isDefinedAndNotEmpty(response.results) && !loading" class="col-xs-12 pagination-center" :class="isSmallScreenDevice ? ' mt-3': ''">
-              <b-pagination size="sm" :align="isSmallScreenDevice ? 'center' : 'right'" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy"></b-pagination>
+            <div class="col-xs-12 pagination-center mb-5" :class="isSmallScreenDevice ? ' mt-3': ''">
+              <b-pagination v-if="$parent.isDefinedAndNotEmpty(response.results) && !loading" size="sm" :align="isSmallScreenDevice ? 'center' : 'right'" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy"></b-pagination>
             </div>
-            <table class="table table-bordered table-hover mobile-padding-fix" style="font-size: smaller;" id="table-search">
+            <table class="table table-bordered table-hover mobile-padding-fix " style="font-size: smaller;" id="table-search">
                 <thead class="thead-default">
                 <tr>
                     <th><sort-field value = "specimen_number" name="search.specimen.number" :searchParameters="searchParameters"></sort-field></th>
@@ -77,7 +77,7 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="col-xs-12 pagination-center">
+            <div class="col-xs-12 pagination-center" v-if="$parent.isDefinedAndNotEmpty(response.results) && !loading" >
                 <b-pagination
                         size="sm" :align="isSmallScreenDevice ? 'center' : 'right'" :limit="5" :hide-ellipsis="true" :total-rows="response.count" v-model="searchParameters.specimens.page" :per-page="searchParameters.specimens.paginateBy">
                 </b-pagination>
@@ -99,12 +99,15 @@
         components: {SpecimenFilterBtns, SortField,Spinner},
         data() {
             return {
-              searchParameters: {
-                specimens: { page: 1, paginateBy: 25, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
-                onlyImgs: false,git: false,tug: false,elm: false, hackToFixComponentReload: ''},
-              },
+              // searchParameters: {
+              //   specimens: { page: 1, paginateBy: 25, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
+              //   onlyImgs: false,git: false,tug: false,elm: false, hackToFixComponentReload: ''},
+              // },
               loading: true, clientWidth : document.documentElement.clientWidth, response: this.setDefaultResponse()
             }
+        },
+        props: {
+          searchParameters: Object
         },
         computed: {
             rock () {return this.$parent.rock},
@@ -123,6 +126,7 @@
                 fetchSpecimenCollection(this.$parent.rock.id,this.mode, this.searchParameters).then((response) => {
                     this.response = response;
                     this.loading = false;
+                    this.$emit('specimen-filter-applied', this.response.count)
                 });
             },
             setDefaultResponse() {
