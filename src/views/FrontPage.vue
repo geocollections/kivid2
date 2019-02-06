@@ -15,10 +15,14 @@
       <div class="col-md-10"  style="text-align: center">
         <div class="col-lg-12 ml-auto mr-auto" style="max-width: 30rem">
           <rock-search/>
-          <button class="btn btn-xs btn-link pt-0" v-b-toggle.collapseA style="font-size: small !important; letter-spacing: 1.3px "><font-awesome-icon :icon="searchIcon" /> Laiendatud otsing </button>
+          <!--<button class="btn btn-xs btn-link pt-0" v-b-toggle.collapseA><font-awesome-icon :icon="searchIcon"/>{{$t('main.advanceSearch')}}</button>-->
+          <button class="btn btn-xs btn-link pt-0" @click="showCollapse = !showCollapse"
+                  :class="showCollapse ? 'collapsed' : null"
+                  aria-controls="collapseA"
+                  :aria-expanded="showCollapse"><font-awesome-icon :icon="searchIcon" v-if="!showCollapse"/>&ensp;{{showCollapse ? $t('main.advanceSearchHide') : $t('main.advanceSearch')}}</button>
         </div>
-        <div class="col-lg-12 pb-5"><mode-buttons/></div>
-        <b-collapse id="collapseA"  class="col-lg-12 border border-light medium p-4"  v-if="rockPropertyTypes.length > 0">
+        <b-collapse v-model="showCollapse" id="collapseA"  class="col-lg-12 border border-light medium p-4"  v-if="rockPropertyTypes.length > 0">
+          <div class="col-lg-12 pb-3"><mode-buttons/></div>
           <div class="row">
             <h4>{{$t('main.searchInstructions')}}</h4>
           </div>
@@ -31,8 +35,8 @@
                 <button type="button" class="btn form-control btn-secondary" @click="searchType = 3;clearSearch()" :class="searchType === 3 ? 'active': ''">Mineral</button>
               </div>
             </div>
-            <div class="col-lg-12">
-              <div class="row well"  v-if="searchType === 1">
+            <div class="col-lg-12 well"  style="text-align: right;">
+              <div class="row"  v-if="searchType === 1">
                 <div class="col-lg-5">
                   <select class="searchCriterionType" v-model="searchParameters.propertyType">
                     <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en }"></option>
@@ -58,8 +62,8 @@
                     <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
                 </div>
               </div>
-              <div class="row well" v-if="searchType === 2">
-                <div class="col-lg-4 label"  style="text-align: left;padding: 10px"><label>Chemical element name:</label></div>
+              <div class="row" v-if="searchType === 2">
+                <div class="col-lg-4 label" ><label style="padding: 10px 5px;">Chemical element name:</label></div>
                 <div class="col-lg-6">
                   <input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>
                 </div>
@@ -68,9 +72,9 @@
                     <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
                 </div>
               </div>
-              <div class="row well" v-if="searchType === 3">
-                <div class="col-lg-4" style="text-align: right">
-                  <label class="typo__label" style="padding: 10px">Mineral:</label>
+              <div class="row" v-if="searchType === 3">
+                <div class="col-lg-4">
+                  <label class="typo__label" style="padding: 10px 5px;">Mineral:</label>
                 </div>
                 <div class="col-lg-6">
                   <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'"
@@ -85,8 +89,8 @@
             </div>
             <div class="col-lg-12" style="text-align: left;">
               <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
-              <!--<h3 v-if="searchResults.length === 0">{{$t('main.searchInstructions')}}</h3>-->
               <h3 v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
+              <h3 v-if="noSearchResults">{{$t('main.noSearchResults')}}</h3>
               <div class="row" v-if="searchResults.length > 0">
                 <div class="col-md-3 pb-2 "  v-for="item in searchResults"><router-link :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link></div>
               </div>
@@ -131,7 +135,7 @@
             <div class="col-lg-8" style="text-align: left;">
               <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
               <!--<h3 v-if="searchResults.length === 0">{{$t('main.searchInstructions')}}</h3>-->
-              <h3 v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
+              <h3>{{ searchResults.length === 0 ? $t('main.noSearchResults') : $t('main.searchResults')}}</h3>
               <div class="row" v-if="searchResults.length > 0">
                 <div class="col-md-3 pb-2 "  v-for="item in searchResults"><router-link :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link></div>
               </div>
@@ -200,8 +204,8 @@
     },
     data() {
       return {
-        searchParameters: this.setDefaultSearchParams(), mineralList:[], loading:false, searchType: 1,
-        searchResults:[], lastChangedRocks: [],rockPropertyTypes: [],isAdvancedSearch:false,
+        searchParameters: this.setDefaultSearchParams(), mineralList:[], loading:false, searchType: 1, showCollapse:false,
+        searchResults:[], noSearchResults : false, lastChangedRocks: [],rockPropertyTypes: [],isAdvancedSearch:false,
         operands: [
           {'id':1, 'value':'icontains', 'name' : 'contains'},
           {'id':2, 'value':'gte', 'name' : 'isGreaterThan'},
@@ -213,7 +217,7 @@
     },
     computed: {
       lang() {return this.$i18n.locale},
-      searchIcon() { return faSearchPlus },
+      searchIcon() { return faSearchPlus }
     },
     created() {
       this.$emit('page-loaded',false);
@@ -226,6 +230,7 @@
       fetchMineralList().then((response) => {
         this.mineralList = response.results ? response.results : [];
       });
+
     },
     methods: {
       isValidForm() {
@@ -242,22 +247,23 @@
           return;
         }
         this.loading = true;
-        let query, mineralsIds = this.getSelectedMineralIds();
+        let query, mineralsIds = this.getSelectedMineralIds(), mode = this.$localStorage.get('kivid_mode');
         if (this.searchType === 3) {
           //hack >> minera l search accepts more than one value
           mineralsIds.push(0);
-          query = fetchSearchByMineral(mineralsIds);
+          query = fetchSearchByMineral(mineralsIds, mode);
         } else if (this.searchType === 1) {
           query = this.searchParameters.propertyOperand !== 'range'?
-            fetchSearchByPropertyType(this.searchParameters.propertyType, this.searchParameters.propertyOperand,this.searchParameters.propertyValue) :
-            fetchSearchByPropertyType(this.searchParameters.propertyType, this.searchParameters.propertyOperand,this.searchParameters.propertyValueFrom+','+this.searchParameters.propertyValueTo)
+            fetchSearchByPropertyType(this.searchParameters.propertyType, this.searchParameters.propertyOperand,this.searchParameters.propertyValue,mode) :
+            fetchSearchByPropertyType(this.searchParameters.propertyType, this.searchParameters.propertyOperand,this.searchParameters.propertyValueFrom+','+this.searchParameters.propertyValueTo, mode)
         } else if (this.searchType === 2) {
-          query = fetchSearchByChemicalElement(this.searchParameters.chemicalElement);
+          query = fetchSearchByChemicalElement(this.searchParameters.chemicalElement, mode);
         }
-
+        this.noSearchResults = false;
         query.then((response) => {
           this.searchResults = response.results ? this.reorderResultsByRockName(response.results) : [];
           this.loading = false;
+          this.noSearchResults = this.searchResults.length === 0 ? true : false;
         });
       },
       clearSearch() {
@@ -319,7 +325,7 @@
 }
 
 .searchCriterionType {
-  padding: 10px 5px;
+  padding: 15px 10px;
   border: none;
   background-color: #f5f5f5;
   /*margin-bottom: 2px;*/
@@ -338,6 +344,13 @@
   border-radius: 2px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}
+.btn-link {
+  font-size: small !important; letter-spacing: 1.3px; color:#F05F40; font-weight: bolder; text-decoration: none
+}
+.btn-link:hover {
+  color:#eb3812;
+  font-weight: bold;
 }
 
 </style>

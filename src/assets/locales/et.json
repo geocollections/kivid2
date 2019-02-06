@@ -21,7 +21,10 @@
     "industrialRawMaterials":"Tööstustoormed",
     "buildingSupplies":"Ehitusmaavarad",
     "searchInstructions": "Otsingu juhend",
-    "searchResults":"Otsingu tulemused"
+    "searchResults":"Otsingu tulemused",
+    "noSearchResults":"Sorry, we couldn't find any results matching your search criteria.",
+    "advanceSearch":"Laiendatud otsing",
+    "advanceSearchHide":"Peida otsing"
   },
   "item": {
     "type":"Tüüp/tase",

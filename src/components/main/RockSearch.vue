@@ -68,11 +68,7 @@
 </script>
 
 <style scoped>
-  .multiselect {
-    line-height: 1.0;
-    z-index: 999 !important;
-    width: 100%
-  }
+
 
 
 </style>

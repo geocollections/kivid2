@@ -18,11 +18,11 @@
             <form class="form-inline my-lg-0 mr-5" style="width: 300px">
               <rock-search></rock-search>
             </form>
-            <b-nav-item-dropdown  right v-if="isMounted">
-              <template slot="button-content" >{{$t(mode)}}</template>
-              <b-dropdown-item @click="changeMode('in_estonia')" :class="currentMode === 'in_estonia'? 'font-weight-bold' : ''">{{$t('header.in_estonia_mode')}}</b-dropdown-item>
-              <b-dropdown-item @click="changeMode('in_global')" :class="currentMode === 'in_global'? 'font-weight-bold' : ''">{{$t('header.global_mode')}}</b-dropdown-item>
-            </b-nav-item-dropdown>
+            <!--<b-nav-item-dropdown  right v-if="isMounted">-->
+              <!--<template slot="button-content" >{{$t(mode)}}</template>-->
+              <!--<b-dropdown-item @click="changeMode('in_estonia')" :class="currentMode === 'in_estonia'? 'font-weight-bold' : ''">{{$t('header.in_estonia_mode')}}</b-dropdown-item>-->
+              <!--<b-dropdown-item @click="changeMode('in_global')" :class="currentMode === 'in_global'? 'font-weight-bold' : ''">{{$t('header.global_mode')}}</b-dropdown-item>-->
+            <!--</b-nav-item-dropdown>-->
             <b-nav-item-dropdown  right v-if="isMounted">
               <template slot="button-content" >{{$i18n.locale | getLangCode}}</template>
               <b-dropdown-item  @click="changeLang('et')" :class="$i18n.locale === 'et'? 'font-weight-bold' : ''" class="p-2">EST</b-dropdown-item>
@@ -49,10 +49,10 @@
     },
     computed: {
       currentLang() { return this.$localStorage.get('kivid_lang') ? this.$localStorage.get('kivid_lang') : '' },
-      mode(){
-        if(this.currentMode === 'in_estonia') return 'header.in_estonia_mode';
-        else return 'header.global_mode';
-      }
+      // mode(){
+      //   if(this.currentMode === 'in_estonia') return 'header.in_estonia_mode';
+      //   else return 'header.global_mode';
+      // }
     },
     data ()  {
       return {isMounted : false, scroll:false, currentMode: this.$localStorage.get('kivid_mode')}
@@ -75,10 +75,10 @@
         // this.$cookies.set('fossils_lang',lang)
         // this.$router.push({ path: this.$router.currentRoute.path});
       },
-      changeMode: function(mode) {
-        this.currentMode = mode;
-        this.$localStorage.set('kivid_mode', mode);
-      },
+      // changeMode: function(mode) {
+      //   this.currentMode = mode;
+      //   this.$localStorage.set('kivid_mode', mode);
+      // },
       handleScroll (e) {
         this.scroll =  document.documentElement.scrollTop > 1;
       }

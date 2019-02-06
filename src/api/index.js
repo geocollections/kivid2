@@ -20,10 +20,10 @@ function fetch (child) {
         });
     });
 }
-function applyMode(mode, separator = '=', queryJoiner = '&') {
+function applyMode(mode, separator = '=', prefix = '', queryJoiner = '&') {
   let returnVal = "";
   // if(mode === 'in_baltoscandia') returnVal = `${queryJoiner}in_baltoscandia${separator}1`;
-  if (mode === 'in_estonia') returnVal = `${queryJoiner}in_estonia${separator}1`;
+  if (mode === 'in_estonia') returnVal = `${queryJoiner}${prefix}in_estonia${separator}1`;
   return returnVal
 }
 export function fetchRock (id,mode) {
@@ -97,15 +97,15 @@ export function fetchMineralsByRock (id,mode) {
 export function fetchRockPropertyType () {
   return fetch(`rock_property_type/?format=json`)
 }
-export function fetchSearchByMineral (ids) {
-  return fetch(`rock_mineral/?mineral__id__in=${ids}&fields=rock_id,rock__name,rock__name_en&format=json`)
+export function fetchSearchByMineral (ids, mode) {
+  return fetch(`rock_mineral/?mineral__id__in=${ids}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en&format=json`)
 }
-export function fetchSearchByChemicalElement (el) {
-  return fetch(`rock_mineral/?mineral__formula__icontains=${el}&fields=rock_id,rock__name,rock__name_en&distinct=true&format=json`)
+export function fetchSearchByChemicalElement (el, mode) {
+  return fetch(`rock_mineral/?mineral__formula__icontains=${el}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en&distinct=true&format=json`)
 }
 export function fetchMineralList () {
   return fetch(`rock_mineral/?fields=mineral__id,mineral__name,mineral__name_en&distinct=true&format=json`)
 }
-export function fetchSearchByPropertyType (property_type,operand,value) {
-  return fetch(`rock_property/?property_type=${property_type}&value_min__${operand}=${value}&fields=rock_id,rock__name,rock__name_en,value_min,value_max,value_txt&format=json`)
+export function fetchSearchByPropertyType (property_type,operand,value, mode) {
+  return fetch(`rock_property/?property_type=${property_type}&value_min__${operand}=${value}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en,value_min,value_max,value_txt&format=json`)
 }

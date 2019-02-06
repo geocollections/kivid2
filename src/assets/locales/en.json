@@ -21,7 +21,10 @@
     "industrialRawMaterials":"Industrial raw materials",
     "buildingSupplies":"Building supplies",
     "searchInstructions": "Search instructions",
-    "searchResults":"Search results"
+    "searchResults":"Search results",
+    "noSearchResults":"Sorry, we couldn't find any results matching your search criteria.",
+    "advanceSearch":"Advanced search",
+    "advanceSearchHide":"Hide advanced search"
   },
   "item": {
     "type":"Type/level",

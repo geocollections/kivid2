@@ -22,7 +22,10 @@
     "buildingSupplies":"Строительные материалы",
     "occurs_in_estonia":"Представлен в Эстонии",
     "searchInstructions": "Руководство по поиску",
-    "searchResults":"Результаты поиска"
+    "searchResults":"Результаты поиска",
+    "noSearchResults":"По выбранным критериям ничего не найдено.",
+    "advanceSearch":"Расширенный поиск",
+    "advanceSearchHide":"Скрыть расширенный поиск"
   },
   "item": {
     "type":"Тип/уровень",
