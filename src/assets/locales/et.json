@@ -8,11 +8,11 @@
   },
   "main": {
     "greeting":"Mineraalid, kivimid, maavarad",
-    "overlay":"Please wait...",
+    "overlay":"Palun oota ...",
     "lastChanged":"Viimati muudetud kirjed",
     "minerals":"Mineraalid",
     "gemstones":"Vääriskivid",
-    "igneousRocks":"Sardkivimid",
+    "igneousRocks":"Tardkivimid",
     "sediments":"Setted",
     "sedimentaryRocks":"Settekivimid",
     "metamorphicRocks":"Moondekivimid",
@@ -20,9 +20,9 @@
     "combustibleRocks":"Põlevmaavarad",
     "industrialRawMaterials":"Tööstustoormed",
     "buildingSupplies":"Ehitusmaavarad",
-    "searchInstructions": "Otsingu juhend",
+    "searchInstructions": "Laiendatud otsing",
     "searchResults":"Otsingu tulemused",
-    "noSearchResults":"Sorry, we couldn't find any results matching your search criteria.",
+    "noSearchResults":"Ei leidnud ühtki otsingutingimustele vastavat mineraali ega kivimit.",
     "advanceSearch":"Laiendatud otsing",
     "advanceSearchHide":"Peida otsing"
   },
@@ -50,13 +50,13 @@
     "occurs_in_estonia":"Esineb Eestis"
   },
   "map": {
-    "overlay_title":"Bedrock age"
+    "overlay_title":"Kivimite vanus"
   },
   "search": {
     "worldwide":"Maailm",
     "only_estonia":"Ainult Eesti",
     "only_images":"Ainult piltidega",
-    "per_page":"Per page",
+    "per_page":"Lehekülel",
     "specimen": {
       "id": "ID",
       "number": "Number",
@@ -70,16 +70,16 @@
     },
     "chooseType":"Vali ...",
     "operand": {
-      "contains":"contains",
-      "isGreaterThan":"greater than",
-      "isSmallerThan":"smaller than",
-      "equals":"equals",
-      "isBetween":"between"
+      "contains":"sisaldab",
+      "isGreaterThan":"suurem kui",
+      "isSmallerThan":"väiksem kui",
+      "equals":"võrdub",
+      "isBetween":"vahemikus"
     },
-    "additionalCriteria":"Additional criteria",
-    "value":"value",
-    "from":"from",
-    "to":"to"
+    "additionalCriteria":"Täiendavad kriteeriumid",
+    "value":"väärtus",
+    "from":"alates",
+    "to":"kuni"
   },
   "fancybox": {
     "author": "Autor",
