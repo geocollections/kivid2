@@ -35,46 +35,46 @@
                 <button type="button" class="btn form-control btn-secondary" @click="searchType = 3;clearSearch()" :class="searchType === 3 ? 'active': ''">Mineral</button>
               </div>
             </div>
-            <div class="col-lg-12 well"  style="text-align: right;">
-              <div class="row"  v-if="searchType === 1">
+            <form v-on:submit.prevent="searchByAdditionalCriteria" class="col-lg-12 well"  style="text-align: right;">
+              <div class="row"  v-for="property,idx in searchParameters.properties"   v-if="searchType === 1">
                 <div class="col-lg-5">
-                  <select class="searchCriterionType" v-model="searchParameters.propertyType">
+                  <select class="searchCriterionType" v-model="property.propertyType" v-on:change="setDefaultOperand(property)">
                     <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en }"></option>
                   </select>
                 </div>
                 <div class="col-lg-2">
-                  <select class="searchCriterionType"  v-model="searchParameters.propertyOperand">
-                    <option v-bind:value="item.value" v-for="item in operands">{{$t('search.operand.'+item.name)}}</option>
+                  <select class="searchCriterionType"  v-model="property.propertyOperand">
+                    <option v-bind:value="item.value" v-for="item in onlyAllowedOperands(operands)">{{$t('search.operand.'+item.name)}}</option>
                   </select>
                 </div>
-                <div class="col-lg-3" v-if="searchParameters.propertyOperand !== 'range'">
-                  <input type="text" class="form-control" v-model="searchParameters.propertyValue"/>
+                <div class="col-lg-4" v-if="property.propertyOperand !== 'range'">
+                  <input type="text" class="form-control" v-model="property.propertyValue"/>
                 </div>
 
-                <div class="col-lg-2" v-if="searchParameters.propertyOperand === 'range'">
-                  <input type="number" class="form-control" v-model="searchParameters.propertyValueFrom"/>
+                <div class="col-lg-2" v-if="property.propertyOperand === 'range'">
+                  <input type="number" class="form-control" v-model="property.propertyValueFrom"/>
                 </div>
-                <div class="col-lg-2" v-if="searchParameters.propertyOperand === 'range'">
-                  <input type="number" class="form-control" v-model="searchParameters.propertyValueTo"/>
+                <div class="col-lg-2" v-if="property.propertyOperand === 'range'">
+                  <input type="number" class="form-control" v-model="property.propertyValueTo"/>
                 </div>
-                <div class="col-lg-1">
-                  <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
-                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
+                <div class="col-lg-1" style="text-align: right">
+                  <button v-if="searchParameters.properties.length > 1" type="button" class="btn btn-xs btn-link" aria-pressed="true" @click="removeProperty(idx)" title="Remove property">
+                    <font-awesome-icon class="mr-1" :icon="removeRow"/></button>
                 </div>
               </div>
               <div class="row" v-if="searchType === 2">
-                <div class="col-lg-4 label" ><label style="padding: 10px 5px;">Chemical element name:</label></div>
+                <div class="col-lg-4 label" ><label style="padding: 10px 5px;">{{$t('main.search.chemicalEl')}}:</label></div>
                 <div class="col-lg-6">
                   <input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>
                 </div>
                 <div class="col-lg-1">
                   <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
-                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
+                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>c</button>
                 </div>
               </div>
               <div class="row" v-if="searchType === 3">
                 <div class="col-lg-4">
-                  <label class="typo__label" style="padding: 10px 5px;">Mineral:</label>
+                  <label class="typo__label" style="padding: 10px 5px;">{{$t('main.search.mineral')}}:</label>
                 </div>
                 <div class="col-lg-6">
                   <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'"
@@ -83,59 +83,24 @@
                 </div>
                 <div class="col-lg-1">
                   <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
-                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
+                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>{{$t('main.search.search')}}</button>
                 </div>
               </div>
-            </div>
+              <div class="row" v-if="searchType === 1">
+                <div class="col-lg-6" style="text-align: left;">
+                  <button type="button" class="btn btn-xs btn-link" aria-pressed="true" @click="addProperty" title="Add new property">
+                    <font-awesome-icon :icon="addRow"/>&ensp;{{$t('main.search.addRow')}}</button>
+                </div>
+                <div class="col-lg-6">
+                  <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
+                    <font-awesome-icon :icon="searchIcon"/>{{$t('main.search.search')}}</button>
+                </div>
+              </div>
+            </form>
             <div class="col-lg-12" style="text-align: left;">
               <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
               <h3 v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
               <h3 v-if="noSearchResults">{{$t('main.noSearchResults')}}</h3>
-              <div class="row" v-if="searchResults.length > 0">
-                <div class="col-md-3 pb-2 "  v-for="item in searchResults"><router-link :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row" v-if="false">
-            <div class="col-lg-4">
-              <div class="well ml-0 mr-0 p-3">
-                <div class="row">
-                  <select class="searchCriterionType" v-model="searchParameters.propertyType">
-                    <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en }"></option>
-                  </select>
-                  <select class="searchCriterionType"  v-model="searchParameters.propertyOperand">
-                    <option v-bind:value="item.value" v-for="item in operands">{{$t('search.operand.'+item.name)}}</option>
-                  </select>
-
-                  <div class="col-lg-12"  v-if="searchParameters.propertyOperand !== 'range'">
-                    <input type="text" class="form-control" v-model="searchParameters.propertyValue"/>
-                  </div>
-                  <div class="col-lg-6 pr-0" v-if="searchParameters.propertyOperand === 'range'">
-                    <input type="number" class="form-control" v-model="searchParameters.propertyValueFrom"/>
-                  </div>
-                  <div class="col-lg-6  pl-0" v-if="searchParameters.propertyOperand === 'range'">
-                    <input type="number" class="form-control" v-model="searchParameters.propertyValueTo"/>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-12">
-                    <label style="text-align: left">Mineral</label>
-                    <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'" v-model="searchParameters.selectedMinerals" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="mineral__name" track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true" @tag="addTag"></vue-multiselect>
-                    <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en }"></span>
-                  </div>
-                </div>
-              </div>
-              <div style="text-align: right;">
-                <button type="button" class="btn btn-xs btn-outline-danger" aria-pressed="true" @click="clearSearch" title="Clears search fields">Clear</button>
-                <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
-                  <font-awesome-icon class="mr-1" :icon="searchIcon"/>Search</button>
-              </div>
-            </div>
-            <div class="col-lg-8" style="text-align: left;">
-              <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
-              <!--<h3 v-if="searchResults.length === 0">{{$t('main.searchInstructions')}}</h3>-->
-              <h3>{{ searchResults.length === 0 ? $t('main.noSearchResults') : $t('main.searchResults')}}</h3>
               <div class="row" v-if="searchResults.length > 0">
                 <div class="col-md-3 pb-2 "  v-for="item in searchResults"><router-link :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link></div>
               </div>
@@ -189,13 +154,17 @@
     fetchSearchByMineral,
     fetchSearchByChemicalElement
   } from '../api'
+  import Vue from 'vue'
   import Spinner from 'vue-simple-spinner'
   import VueMultiselect from 'vue-multiselect'
   import RockSearch from "../components/main/RockSearch";
   import LangButtons from "../components/main/LangButtons";
   import ModeButtons from "../components/main/ModeButtons";
   import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-  import faSearchPlus from '@fortawesome/fontawesome-free-solid/faSearchPlus'
+  import faSearchPlus from '@fortawesome/fontawesome-free-solid/faSearchPlus';
+  import faPlus from '@fortawesome/fontawesome-free-solid/faPlus';
+  import faTrash from '@fortawesome/fontawesome-free-solid/faTrash';
+
   export default {
     name: "front-page",
     components: {ModeButtons, LangButtons, RockSearch, VueMultiselect,FontAwesomeIcon,Spinner},
@@ -206,10 +175,23 @@
       return {
         searchParameters: this.setDefaultSearchParams(), mineralList:[], loading:false, searchType: 1, showCollapse:false,
         searchResults:[], noSearchResults : false, lastChangedRocks: [],rockPropertyTypes: [],isAdvancedSearch:false,
+        propertiesConf: [
+          {'id':1, 'allowedOperands': [1,4,5]},
+          {'id':2, 'allowedOperands': [1,4,5]},
+          {'id':3, 'allowedOperands': [1,4,5]},
+          {'id':4, 'allowedOperands': [1,4,5]},
+          {'id':5, 'allowedOperands': [1,4]},
+          {'id':6, 'allowedOperands': [1,4,5]},
+          {'id':7, 'allowedOperands': [1,4,5]},
+          {'id':8, 'allowedOperands': [1,4,5]},
+          {'id':9, 'allowedOperands': [1,4,]},
+          {'id':10, 'allowedOperands': [1,4,5]},
+          {'id':11, 'allowedOperands': [1,4,5]},
+          ],
         operands: [
           {'id':1, 'value':'icontains', 'name' : 'contains'},
-          {'id':2, 'value':'gte', 'name' : 'isGreaterThan'},
-          {'id':3, 'value':'lte', 'name' : 'isSmallerThan'},
+          // {'id':2, 'value':'gte', 'name' : 'isGreaterThan'},
+          // {'id':3, 'value':'lte', 'name' : 'isSmallerThan'},
           {'id':4, 'value':'iexact', 'name' : 'equals'},
           {'id':5, 'value':'range', 'name' : 'isBetween'}
           ]
@@ -217,12 +199,17 @@
     },
     computed: {
       lang() {return this.$i18n.locale},
-      searchIcon() { return faSearchPlus }
+      searchIcon() { return faSearchPlus },
+      addRow() { return faPlus},
+      removeRow() { return faTrash}
     },
     created() {
       this.$emit('page-loaded',false);
       fetchRockPropertyType().then((response) => {
         this.rockPropertyTypes = response.results ? response.results : [];
+        // Object.assign(this.searchParameters, this.setDefaultSearchParams())
+        this.searchParameters.properties[0].propertyType = this.rockPropertyTypes[0].id;
+        this.searchParameters.properties[0].propertyOperand = this.rockPropertyTypes[0].default_search;
       });
       fetchLastChangedRocks(this.mode).then((response) => {
         this.lastChangedRocks = response.results ? response.results : [];
@@ -232,14 +219,59 @@
       });
 
     },
+    mounted() {
+      //watch search parameters
+      // for (let k in this.searchParameters) {this.$watch('searchParameters.' + k, function (val, oldVal) { console.log(k, val, oldVal) }) }
+    },
     methods: {
+      onlyAllowedOperands(operands) {
+        return operands
+      },
+      setDefaultOperand(property) {
+        let prop = this.rockPropertyTypes.filter(function (val, i) {
+          return val.id === property.propertyType;
+        }, this);
+        //remove gte from the data ?range
+        property.propertyOperand=prop[0].default_search === 'gte' ? 'range' : prop[0].default_search
+      },
       isValidForm() {
-        return !((this.searchParameters.propertyOperand !== 'range' && (this.searchParameters.propertyValue === null || this.searchParameters.propertyValue.length === 0))
-        && (this.searchParameters.propertyOperand === 'range' && (this.searchParameters.propertyValueFrom === null || this.searchParameters.propertyValueTo === null))
-        && (this.searchParameters.selectedMinerals.length === 0) && this.searchParameters.chemicalElement === null)
+        // return !((this.searchParameters.propertyOperand !== 'range' && (this.searchParameters.propertyValue === null || this.searchParameters.propertyValue.length === 0))
+        // && (this.searchParameters.propertyOperand === 'range' && (this.searchParameters.propertyValueFrom === null || this.searchParameters.propertyValueTo === null))
+        // && (this.searchParameters.selectedMinerals.length === 0) && this.searchParameters.chemicalElement === null)
+        let isValid = true;
+        this.searchParameters.properties.forEach(function (prop) {
+          prop.isValid =
+            !(prop.propertyValue === null || prop.propertyValue === '') ||
+            !(prop.propertyValueFrom === null || prop.propertyValueFrom === '') ||
+            !(prop.propertyValueTo === null || prop.propertyValueTo === '');
+          isValid &= prop.isValid;
+        });
+        return isValid ;
       },
       getSelectedMineralIds(){
         return Array.from(this.searchParameters.selectedMinerals.map(item => item.mineral__id))
+      },
+      isValueNotNullAndNotEmptyString(val) {
+        return val !== null && val !== ''
+      },
+      getProperties() {
+        let query = '', vm = this;
+        this.searchParameters.properties.forEach(function(prop){
+          console.log(prop)
+          if(prop.propertyOperand === 'icontains') query += ` (rp.property_type_id=${prop.propertyType} AND rp.value_txt like '%${prop.propertyValue}%') OR`;
+          else if(prop.propertyOperand === 'iexact') query += ` (rp.property_type_id=${prop.propertyType} AND rp.value_txt like '${prop.propertyValue}') OR`;
+          else if(prop.propertyOperand === 'range') {
+            let val = '';
+            if (vm.isValueNotNullAndNotEmptyString(prop.propertyValueFrom)) val = `rp.value_min >= ${prop.propertyValueFrom}`;
+            if (vm.isValueNotNullAndNotEmptyString(prop.propertyValueFrom) && vm.isValueNotNullAndNotEmptyString(prop.propertyValueTo)) val += ` AND `;
+            if (vm.isValueNotNullAndNotEmptyString(prop.propertyValueTo)) val = `rp.value_max <= ${prop.propertyValueTo}`;
+            query += `( rp.property_type_id=${prop.propertyType} AND ${val}) OR`
+          }
+
+        });
+        query = query.substring(0,query.length-3);
+        console.log(query)
+        return query
       },
       searchByAdditionalCriteria() {
         if(!this.isValidForm()) {
@@ -248,16 +280,17 @@
         }
         this.loading = true;
         let query, mineralsIds = this.getSelectedMineralIds(), mode = this.$localStorage.get('kivid_mode');
-        if (this.searchType === 3) {
+        if (this.searchType === 1) {
+          query = fetchSearchByPropertyType(this.getProperties(),this.searchParameters.properties.length);
+          // query = this.searchParameters.propertyOperand !== 'range'?
+          //   fetchSearchByPropertyType(this.searchParameters.propertyType.id, this.searchParameters.propertyOperand,this.searchParameters.propertyValue,mode) :
+          //   fetchSearchByPropertyType(this.searchParameters.propertyType.id, this.searchParameters.propertyOperand,this.searchParameters.propertyValueFrom+','+this.searchParameters.propertyValueTo, mode)
+        } else if (this.searchType === 2) {
+          query = fetchSearchByChemicalElement(this.searchParameters.chemicalElement, mode);
+        } else if (this.searchType === 3) {
           //hack >> minera l search accepts more than one value
           mineralsIds.push(0);
           query = fetchSearchByMineral(mineralsIds, mode);
-        } else if (this.searchType === 1) {
-          query = this.searchParameters.propertyOperand !== 'range'?
-            fetchSearchByPropertyType(this.searchParameters.propertyType, this.searchParameters.propertyOperand,this.searchParameters.propertyValue,mode) :
-            fetchSearchByPropertyType(this.searchParameters.propertyType, this.searchParameters.propertyOperand,this.searchParameters.propertyValueFrom+','+this.searchParameters.propertyValueTo, mode)
-        } else if (this.searchType === 2) {
-          query = fetchSearchByChemicalElement(this.searchParameters.chemicalElement, mode);
         }
         this.noSearchResults = false;
         query.then((response) => {
@@ -274,20 +307,32 @@
         return {
           chemicalElement: null,
           selectedMinerals: [],
-          propertyType:'1',
-          propertyOperand: 'icontains',
-          propertyValue: null, propertyValueFrom:null,propertyValueTo:null
+          properties: [this.addNewProperty()]
+
         }
       },
       reorderResultsByRockName: function(searchResults){
         return this.lang === 'et' ?
             searchResults.filter(x => !!x.rock__name).sort((a,b) => (a.rock__name.toLowerCase() > b.rock__name.toLowerCase()) ? 1 : ((b.rock__name.toLowerCase() > a.rock__name.toLowerCase()) ? -1 : 0)) :
-            searchResults.filter(x => x.rock__name_en).sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
+            searchResults.filter(x => !!x.rock__name_en).sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
       },
 
       displayMineralResults: function (item) {
         return this.lang === 'et' ? `${item.mineral__name}` : `${item.mineral__name_en}`
       },
+      removeProperty: function(idx) {
+        this.searchParameters.properties.splice(idx, 1);
+      },
+      addProperty : function() {
+        this.searchParameters.properties.push(this.addNewProperty());
+      },
+      addNewProperty: function() {
+        return {
+          propertyType: this.rockPropertyTypes ? this.rockPropertyTypes[0].id : '1',
+          propertyOperand: this.rockPropertyTypes ? this.rockPropertyTypes[0].default_search : 'icontains',
+          propertyValue: null, propertyValueFrom:null,propertyValueTo:null
+        }
+      }
     },
     watch: {
       'searchParameters.propertyOperand': {
@@ -300,6 +345,13 @@
             this.searchResults.propertyValueFrom = null
             this.searchResults.propertyValueTo = null
           }
+        },
+        deep: true
+      },
+      'searchParameters.properties': {
+        handler: function (after, before) {
+
+
         },
         deep: true
       },

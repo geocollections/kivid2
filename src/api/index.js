@@ -95,7 +95,7 @@ export function fetchMineralsByRock (id,mode) {
   return fetch(`rock_mineral/?mineral__id=${id}&format=json`)
 }
 export function fetchRockPropertyType () {
-  return fetch(`rock_property_type/?format=json`)
+  return fetch(`rock_property_type/?order_by=-sort&format=json`)
 }
 export function fetchSearchByMineral (ids, mode) {
   return fetch(`rock_mineral/?mineral__id__in=${ids}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en&format=json`)
@@ -106,6 +106,8 @@ export function fetchSearchByChemicalElement (el, mode) {
 export function fetchMineralList () {
   return fetch(`rock_mineral/?fields=mineral__id,mineral__name,mineral__name_en&distinct=true&format=json`)
 }
-export function fetchSearchByPropertyType (property_type,operand,value, mode) {
-  return fetch(`rock_property/?property_type=${property_type}&value_min__${operand}=${value}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en,value_min,value_max,value_txt&format=json`)
+export function fetchSearchByPropertyType (properties, numberOfParams) {
+  // properties = `(rp.property_type_id=9 AND rp.value_txt like '%kuld%') OR (rp.property_type_id=1 AND rp.value_min >= 2) OR (rp.property_type_id=2 AND rp.value_min >= 2)`;
+  // return fetch(`rock_property/?${properties}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en,value_min,value_max,value_txt&format=json`)
+  return fetch(`rock/?sql=rock_property_search&keyword=${properties}&paginate_by=${numberOfParams}&format=json`)
 }

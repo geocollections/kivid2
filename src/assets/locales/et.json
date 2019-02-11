@@ -24,7 +24,13 @@
     "searchResults":"Otsingu tulemused",
     "noSearchResults":"Ei leidnud ühtki otsingutingimustele vastavat mineraali ega kivimit.",
     "advanceSearch":"Laiendatud otsing",
-    "advanceSearchHide":"Peida otsing"
+    "advanceSearchHide":"Peida otsing",
+    "search": {
+      "mineral": "Mineral",
+      "chemicalEl": "Chemical element name",
+      "addRow":"Add row",
+      "search":"Search"
+    }
   },
   "item": {
     "type":"Tüüp/tase",

@@ -25,7 +25,13 @@
     "searchResults":"Результаты поиска",
     "noSearchResults":"По выбранным критериям ничего не найдено.",
     "advanceSearch":"Расширенный поиск",
-    "advanceSearchHide":"Скрыть расширенный поиск"
+    "advanceSearchHide":"Скрыть расширенный поиск",
+    "search": {
+      "mineral": "Mineral",
+      "chemicalEl": "Chemical element name",
+      "addRow":"Add row",
+      "search":"Search"
+    }
   },
   "item": {
     "type":"Тип/уровень",

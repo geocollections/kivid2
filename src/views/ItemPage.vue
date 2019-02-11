@@ -320,7 +320,7 @@
       },
       setFancyBoxCaption: function(el) {
         let text = "",
-          rock = this.isDefinedAndNotNull(el.rock_id) ?
+          rock = this.isDefinedAndNotNull(el.rock_id) && el.rock_id !== this.rock.id ?
             "<a href=\"/"+el.rock_id+"\" style=\"color:#c82333 !important\" ')\">" +
             "<h5>"+(this.$localStorage.get('kivid_lang') === 'et'? el.name : el.name_en)+"</h5></a>"
             :"" ,

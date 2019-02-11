@@ -24,7 +24,13 @@
     "searchResults":"Search results",
     "noSearchResults":"Sorry, we couldn't find any results matching your search criteria.",
     "advanceSearch":"Advanced search",
-    "advanceSearchHide":"Hide advanced search"
+    "advanceSearchHide":"Hide advanced search",
+    "search": {
+      "mineral": "Mineral",
+      "chemicalEl": "Chemical element name",
+      "addRow":"Add row",
+      "search":"Search"
+    }
   },
   "item": {
     "type":"Type/level",
