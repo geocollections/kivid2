@@ -74,7 +74,6 @@
                   <vue-multiselect :open-direction="'bottom'" label="element__element"
                                     v-model="searchParameters.selectedChemicalElements" placeholder="Search chemical element" track-by="element" :options="chemicalElList" :multiple="true" :taggable="true">
                   </vue-multiselect>
-
                   <!--<input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>-->
                 </div>
                 <div class="col-lg-1">
@@ -112,7 +111,10 @@
               <h3 v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
               <h3 v-if="noSearchResults">{{$t('main.noSearchResults')}}</h3>
               <div class="row" v-if="searchResults.length > 0">
-                <div class="col-md-3 pb-2 "  v-for="item in searchResults"><router-link :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link></div>
+                <div class="col-md-3 pb-2 "  v-for="item in searchResults">
+                  <router-link v-if="item.rock_id" :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link>
+                  <router-link v-if="!item.rock_id" :to="'/'+item.id" v-translate="{ et: item.name, en: item.name_en }"></router-link>
+                </div>
               </div>
             </div>
           </div>
@@ -263,9 +265,9 @@
         let query = '';
         this.searchParameters.selectedChemicalElements.forEach(function(el){
           console.log(el)
-          query += `mineral__formula__icontains=${el.element__element}&`
+          query += `rockelement__element__element=${el.element__element}&`
         });
-        return query.substring(0,query.length-2)
+        return query.substring(0,query.length-1)
       },
       getSelectedMineralsQuery() {
         let query = '';
@@ -290,7 +292,8 @@
         }
         this.noSearchResults = false;
         query.then((response) => {
-          this.searchResults = response.results ? this.reorderResultsByRockName(response.results) : [];
+          this.searchResults = response.results ?
+            this.searchType === 2 ? this.reorderResultsByRockName(response.results,'name','name_en') : this.reorderResultsByRockName(response.results,'rock__name','rock__name_en') : [];
           this.loading = false;
           this.noSearchResults = this.searchResults.length === 0;
         });
@@ -307,10 +310,10 @@
 
         }
       },
-      reorderResultsByRockName: function(searchResults){
+      reorderResultsByRockName: function(searchResults,rock__name,rock__name_en){
         return this.lang === 'et' ?
-            searchResults.filter(x => !!x.rock__name).sort((a,b) => (a.rock__name.toLowerCase() > b.rock__name.toLowerCase()) ? 1 : ((b.rock__name.toLowerCase() > a.rock__name.toLowerCase()) ? -1 : 0)) :
-            searchResults.filter(x => !!x.rock__name_en).sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
+            searchResults.filter(x => !!x[rock__name]).sort((a,b) => (a[rock__name].toLowerCase() > b[rock__name].toLowerCase()) ? 1 : ((b[rock__name].toLowerCase() > a[rock__name].toLowerCase()) ? -1 : 0)) :
+            searchResults.filter(x => !!x[rock__name_en]).sort((a,b) => (a[rock__name_en].toLowerCase() > b[rock__name_en].toLowerCase()) ? 1 : ((b[rock__name_en].toLowerCase() > a[rock__name_en].toLowerCase()) ? -1 : 0))
       },
       displayChemicalElResults: function (item) {
         return this.lang === 'et' ? `${item.element__element} (${item.element__name})` : `${item.element__element} (${item.element__name_en})`
