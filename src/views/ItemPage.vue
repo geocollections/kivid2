@@ -25,7 +25,7 @@
                       <th>{{$t('item.type')}}</th><td>{{rock.rocktype}} | {{rock.rockrank}}</td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.formula_html)">
-                      <th>{{$t('item.composition')}}</th><td v-html="rock.formula_html"></td>
+                      <th>{{$t('item.composition')}}</th><td v-html="rock.formula_html+' '+rock.elComposition"></td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.description) || isDefinedAndNotNull(rock.description_en)">
                       <th>{{$t('item.description')}}</th><td v-translate="{ et: rock.description, en: rock.description_en }"></td>
@@ -191,6 +191,7 @@
   import Vue from 'vue'
   import {
     fetchRock,
+    fetchRockElement,
     fetchRockImages,
     fetchRockProperties,
     fetchRockSynonyms,
@@ -373,6 +374,18 @@
             this.$emit('throw-error',`This rock with id <strong>${ id }</strong> is not existing or not available `);
             this.$router.push({name:'FrontPage'})
           }
+        });
+        fetchRockElement(this.rock.id).then((response) => {
+          let vm = this;
+          let elements = this.handleResponse(response);
+          if(elements.length > 0) {
+            this.rock.elComposition = ''
+            elements.forEach(function (el)  {
+              vm.rock.elComposition += `${el.element__element}=${el.content}%, `
+            });
+            vm.rock.elComposition = `(${vm.rock.elComposition.substring(0,vm.rock.elComposition.length-2)})`
+          }
+
         });
         fetchRockImages(this.rock.id, this.mode).then((response) => {
           this.rock.images = this.isDefinedAndNotEmpty(response.results) ?

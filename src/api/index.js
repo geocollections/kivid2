@@ -116,3 +116,6 @@ export function fetchSearchByPropertyType (properties, numberOfParams) {
   // return fetch(`rock_property/?${properties}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en,value_min,value_max,value_txt&format=json`)
   return fetch(`rock/?sql=rock_property_search&keyword=${properties}&paginate_by=${numberOfParams}&format=json`)
 }
+export function fetchRockElement (id) {
+  return fetch(`rock_element/?rock=${id}&fields=element__element,content&order_by=-content&format=json`)
+}
