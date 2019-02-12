@@ -64,6 +64,9 @@
                     </tbody>
                   </table>
                 </div>
+                <div class="card-footer">
+                  <i style='font-size: 0.8em;'> {{rock.description_author}} {{rock.date_changed | moment}}</i>
+                </div>
               </div>
             </div>
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.minerals)">
@@ -192,6 +195,7 @@
 </template>
 
 <script>
+  import moment from 'moment'
   import Vue from 'vue'
   import {
     fetchRock,
@@ -253,6 +257,12 @@
     created() {
       this.$emit('page-loaded',true);
       this.loadFullRockInfo()
+    },
+    filters: {
+      moment: function (date) {
+        return moment(date).format('YYYY-MM-DD');
+        // return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+      }
     },
     methods: {
       initialData() {return {
