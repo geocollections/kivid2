@@ -47,14 +47,14 @@
                     <option v-bind:value="item.value" v-for="item in onlyAllowedOperands(property)">{{$t('search.operand.'+item.name)}}</option>
                   </select>
                 </div>
-                <div class="col-lg-4" v-if="property.propertyOperand !== 'range'">
+                <div class="col-lg-4" v-if="property.propertyOperand !== 'number'">
                   <input type="text" class="form-control" v-model="property.propertyValue"/>
                 </div>
 
-                <div class="col-lg-2" v-if="property.propertyOperand === 'range'">
+                <div class="col-lg-2" v-if="property.propertyOperand === 'number'">
                   <input type="number" class="form-control" v-model="property.propertyValueFrom"/>
                 </div>
-                <div class="col-lg-2" v-if="property.propertyOperand === 'range'">
+                <div class="col-lg-2" v-if="property.propertyOperand === 'number'">
                   <input type="number" class="form-control" v-model="property.propertyValueTo"/>
                 </div>
                 <div class="col-lg-1" style="text-align: right">
@@ -63,20 +63,24 @@
                 </div>
               </div>
               <div class="row" v-if="searchType === 2">
-                <div class="col-lg-4 label" ><label style="padding: 10px 5px;">{{$t('main.search.chemicalEl')}}:</label></div>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>
+                <div class="col-lg-2 label" ><label style="padding: 10px 5px;" v-if="false">{{$t('main.search.chemicalEl')}}:</label></div>
+                <div class="col-lg-8">
+                  <vue-multiselect :open-direction="'bottom'" label="element__element"
+                                    v-model="searchParameters.selectedChemicalElements" placeholder="Search chemical element" track-by="element" :options="chemicalElList" :multiple="true" :taggable="true">
+                  </vue-multiselect>
+
+                  <!--<input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>-->
                 </div>
                 <div class="col-lg-1">
                   <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
-                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>c</button>
+                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>{{$t('main.search.search')}}</button>
                 </div>
               </div>
               <div class="row" v-if="searchType === 3">
-                <div class="col-lg-4">
-                  <label class="typo__label" style="padding: 10px 5px;">{{$t('main.search.mineral')}}:</label>
+                <div class="col-lg-2 label">
+                  <label class="typo__label" style="padding: 10px 5px;" v-if="false">{{$t('main.search.mineral')}}:</label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                   <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'"
                                     v-model="searchParameters.selectedMinerals" placeholder="Search mineral" track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true"></vue-multiselect>
                   <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en }"></span>
@@ -152,7 +156,8 @@
     fetchSearchByPropertyType,
     fetchMineralList,
     fetchSearchByMineral,
-    fetchSearchByChemicalElement
+    fetchSearchByChemicalElement,
+    fetchChemicalElementList
   } from '../api'
   import Vue from 'vue'
   import Spinner from 'vue-simple-spinner'
@@ -173,7 +178,7 @@
     },
     data() {
       return {
-        searchParameters: this.setDefaultSearchParams(), mineralList:[], loading:false, searchType: 1, showCollapse:false,
+        searchParameters: this.setDefaultSearchParams(), mineralList:[], chemicalElList:[], loading:false, searchType: 1, showCollapse:false,
         searchResults:[], noSearchResults : false, lastChangedRocks: [],rockPropertyTypes: [],isAdvancedSearch:false,
         propertiesConf: [
           {'id':1, 'allowedOperands': [1,4,5]},
@@ -189,11 +194,11 @@
           {'id':11, 'allowedOperands': [1,4]},
           ],
         operands: [
-          {'id':1, 'value':'icontains', 'name' : 'contains'},
+          {'id':1, 'value':'text', 'name' : 'contains'},//icontains
           // {'id':2, 'value':'gte', 'name' : 'isGreaterThan'},
           // {'id':3, 'value':'lte', 'name' : 'isSmallerThan'},
           {'id':4, 'value':'iexact', 'name' : 'equals'},
-          {'id':5, 'value':'range', 'name' : 'isBetween'}
+          {'id':5, 'value':'number', 'name' : 'isBetween'}//range
           ]
       }
     },
@@ -217,6 +222,9 @@
       fetchMineralList().then((response) => {
         this.mineralList = response.results ? response.results : [];
       });
+      fetchChemicalElementList().then((response) => {
+        this.chemicalElList = response.results ? response.results : [];
+      });
 
     },
     mounted() {
@@ -234,20 +242,25 @@
           return val.id === property.propertyType;
         }, this);
         //remove gte from the data ?range
-        property.propertyOperand=prop[0].default_search === 'gte' ? 'range' : prop[0].default_search
+        property.propertyOperand=prop[0].default_search === 'gte' ? 'number' : prop[0].default_search
       },
       isValidForm() {
         // return !((this.searchParameters.propertyOperand !== 'range' && (this.searchParameters.propertyValue === null || this.searchParameters.propertyValue.length === 0))
         // && (this.searchParameters.propertyOperand === 'range' && (this.searchParameters.propertyValueFrom === null || this.searchParameters.propertyValueTo === null))
         // && (this.searchParameters.selectedMinerals.length === 0) && this.searchParameters.chemicalElement === null)
         let isValid = true;
-        this.searchParameters.properties.forEach(function (prop) {
-          prop.isValid =
-            !(prop.propertyValue === null || prop.propertyValue === '') ||
-            !(prop.propertyValueFrom === null || prop.propertyValueFrom === '') ||
-            !(prop.propertyValueTo === null || prop.propertyValueTo === '');
-          isValid &= prop.isValid;
-        });
+        if(this.searchType === 1) {
+          this.searchParameters.properties.forEach(function (prop) {
+            prop.isValid =
+              !(prop.propertyValue === null || prop.propertyValue === '') ||
+              !(prop.propertyValueFrom === null || prop.propertyValueFrom === '') ||
+              !(prop.propertyValueTo === null || prop.propertyValueTo === '');
+            isValid &= prop.isValid;
+          });
+        } else if(this.searchType === 2) {
+          isValid &= !(this.searchParameters.selectedChemicalElements.length === 0)
+        }
+
         return isValid ;
       },
       getSelectedMineralIds(){
@@ -260,9 +273,9 @@
         let query = '', vm = this;
         this.searchParameters.properties.forEach(function(prop){
           console.log(prop)
-          if(prop.propertyOperand === 'icontains') query += ` (rp.property_type_id=${prop.propertyType} AND rp.value_txt like '%${prop.propertyValue}%') OR`;
+          if(prop.propertyOperand === 'text') query += ` (rp.property_type_id=${prop.propertyType} AND rp.value_txt like '%${prop.propertyValue}%') OR`;
           else if(prop.propertyOperand === 'iexact') query += ` (rp.property_type_id=${prop.propertyType} AND rp.value_txt like '${prop.propertyValue}') OR`;
-          else if(prop.propertyOperand === 'range') {
+          else if(prop.propertyOperand === 'number') {
             let val = '';
             if (vm.isValueNotNullAndNotEmptyString(prop.propertyValueFrom)) val = `rp.value_min >= ${prop.propertyValueFrom}`;
             if (vm.isValueNotNullAndNotEmptyString(prop.propertyValueFrom) && vm.isValueNotNullAndNotEmptyString(prop.propertyValueTo)) val += ` AND `;
@@ -274,6 +287,14 @@
         query = query.substring(0,query.length-3);
         console.log(query)
         return query
+      },
+      getSelectedChemicalElementQuery() {
+        let query = '';
+        this.searchParameters.selectedChemicalElements.forEach(function(el){
+          console.log(el)
+          query += `mineral__formula__icontains=${el.element__element}&`
+        });
+        return query.substring(0,query.length-2)
       },
       searchByAdditionalCriteria() {
         if(!this.isValidForm()) {
@@ -288,7 +309,7 @@
           //   fetchSearchByPropertyType(this.searchParameters.propertyType.id, this.searchParameters.propertyOperand,this.searchParameters.propertyValue,mode) :
           //   fetchSearchByPropertyType(this.searchParameters.propertyType.id, this.searchParameters.propertyOperand,this.searchParameters.propertyValueFrom+','+this.searchParameters.propertyValueTo, mode)
         } else if (this.searchType === 2) {
-          query = fetchSearchByChemicalElement(this.searchParameters.chemicalElement, mode);
+          query = fetchSearchByChemicalElement(this.getSelectedChemicalElementQuery(), mode);
         } else if (this.searchType === 3) {
           //hack >> minera l search accepts more than one value
           mineralsIds.push(0);
@@ -307,7 +328,7 @@
       },
       setDefaultSearchParams() {
         return {
-          chemicalElement: null,
+          selectedChemicalElements: [],
           selectedMinerals: [],
           properties: [this.addNewProperty()]
 
@@ -318,7 +339,9 @@
             searchResults.filter(x => !!x.rock__name).sort((a,b) => (a.rock__name.toLowerCase() > b.rock__name.toLowerCase()) ? 1 : ((b.rock__name.toLowerCase() > a.rock__name.toLowerCase()) ? -1 : 0)) :
             searchResults.filter(x => !!x.rock__name_en).sort((a,b) => (a.rock__name_en.toLowerCase() > b.rock__name_en.toLowerCase()) ? 1 : ((b.rock__name_en.toLowerCase() > a.rock__name_en.toLowerCase()) ? -1 : 0))
       },
-
+      displayChemicalElResults: function (item) {
+        return this.lang === 'et' ? `${item.element__element} (${item.element__name})` : `${item.element__element} (${item.element__name_en})`
+      },
       displayMineralResults: function (item) {
         return this.lang === 'et' ? `${item.mineral__name}` : `${item.mineral__name_en}`
       },
