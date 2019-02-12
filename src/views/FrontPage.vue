@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-lg-2">
                   <select class="searchCriterionType"  v-model="property.propertyOperand">
-                    <option v-bind:value="item.value" v-for="item in onlyAllowedOperands(operands)">{{$t('search.operand.'+item.name)}}</option>
+                    <option v-bind:value="item.value" v-for="item in onlyAllowedOperands(property)">{{$t('search.operand.'+item.name)}}</option>
                   </select>
                 </div>
                 <div class="col-lg-4" v-if="property.propertyOperand !== 'range'">
@@ -178,15 +178,15 @@
         propertiesConf: [
           {'id':1, 'allowedOperands': [1,4,5]},
           {'id':2, 'allowedOperands': [1,4,5]},
-          {'id':3, 'allowedOperands': [1,4,5]},
-          {'id':4, 'allowedOperands': [1,4,5]},
+          {'id':3, 'allowedOperands': [1,4]},
+          {'id':4, 'allowedOperands': [1,4]},
           {'id':5, 'allowedOperands': [1,4]},
-          {'id':6, 'allowedOperands': [1,4,5]},
+          {'id':6, 'allowedOperands': [1,4]},
           {'id':7, 'allowedOperands': [1,4,5]},
           {'id':8, 'allowedOperands': [1,4,5]},
           {'id':9, 'allowedOperands': [1,4,]},
-          {'id':10, 'allowedOperands': [1,4,5]},
-          {'id':11, 'allowedOperands': [1,4,5]},
+          {'id':10, 'allowedOperands': [1,4]},
+          {'id':11, 'allowedOperands': [1,4]},
           ],
         operands: [
           {'id':1, 'value':'icontains', 'name' : 'contains'},
@@ -224,8 +224,10 @@
       // for (let k in this.searchParameters) {this.$watch('searchParameters.' + k, function (val, oldVal) { console.log(k, val, oldVal) }) }
     },
     methods: {
-      onlyAllowedOperands(operands) {
-        return operands
+      onlyAllowedOperands(property) {
+        return [3,4,5,6,9,10,11].indexOf(property.propertyType) >=0 ?
+          this.operands.filter(function (val, i) {return val.id !== 5;}, this) :
+          this.operands.filter(function (val, i) {return val.id === 5;}, this);
       },
       setDefaultOperand(property) {
         let prop = this.rockPropertyTypes.filter(function (val, i) {
