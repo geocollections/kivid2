@@ -42,10 +42,16 @@
                     <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en }"></option>
                   </select>
                 </div>
-                <div class="col-lg-2">
-                  <select class="searchCriterionType"  v-model="property.propertyOperand">
-                    <option v-bind:value="item.value" v-for="item in onlyAllowedOperands(property)">{{$t('search.operand.'+item.name)}}</option>
-                  </select>
+                <div class="col-lg-2 searchCriterionType label-check">
+                  <div v-if="property.propertyOperand !== 'number'">
+                    <input type="checkbox" class="form-control"  :id="idx+'_checkbox'" v-model="property.checked"
+                           v-on:change="property.propertyOperand = property.checked ? 'iexact' : 'text' ">
+                    <label class="label" :for="idx+'_checkbox'">Exact</label>
+                  </div>
+
+                  <!--<select class="searchCriterionType"  v-model="property.propertyOperand">-->
+                    <!--<option v-bind:value="item.value" v-for="item in onlyAllowedOperands(property)">{{$t('search.operand.'+item.name)}}</option>-->
+                  <!--</select>-->
                 </div>
                 <div class="col-lg-4" v-if="property.propertyOperand !== 'number'">
                   <input type="text" class="form-control" v-model="property.propertyValue"/>
@@ -180,26 +186,6 @@
       return {
         searchParameters: this.setDefaultSearchParams(), mineralList:[], chemicalElList:[], loading:false, searchType: 1, showCollapse:false,
         searchResults:[], noSearchResults : false, lastChangedRocks: [],rockPropertyTypes: [],isAdvancedSearch:false,
-        propertiesConf: [
-          {'id':1, 'allowedOperands': [1,4,5]},
-          {'id':2, 'allowedOperands': [1,4,5]},
-          {'id':3, 'allowedOperands': [1,4]},
-          {'id':4, 'allowedOperands': [1,4]},
-          {'id':5, 'allowedOperands': [1,4]},
-          {'id':6, 'allowedOperands': [1,4]},
-          {'id':7, 'allowedOperands': [1,4,5]},
-          {'id':8, 'allowedOperands': [1,4,5]},
-          {'id':9, 'allowedOperands': [1,4,]},
-          {'id':10, 'allowedOperands': [1,4]},
-          {'id':11, 'allowedOperands': [1,4]},
-          ],
-        operands: [
-          {'id':1, 'value':'text', 'name' : 'contains'},//icontains
-          // {'id':2, 'value':'gte', 'name' : 'isGreaterThan'},
-          // {'id':3, 'value':'lte', 'name' : 'isSmallerThan'},
-          {'id':4, 'value':'iexact', 'name' : 'equals'},
-          {'id':5, 'value':'number', 'name' : 'isBetween'}//range
-          ]
       }
     },
     computed: {
@@ -227,22 +213,12 @@
       });
 
     },
-    mounted() {
-      //watch search parameters
-      // for (let k in this.searchParameters) {this.$watch('searchParameters.' + k, function (val, oldVal) { console.log(k, val, oldVal) }) }
-    },
     methods: {
-      onlyAllowedOperands(property) {
-        return [3,4,5,6,9,10,11].indexOf(property.propertyType) >=0 ?
-          this.operands.filter(function (val, i) {return val.id !== 5;}, this) :
-          this.operands.filter(function (val, i) {return val.id === 5;}, this);
-      },
       setDefaultOperand(property) {
         let prop = this.rockPropertyTypes.filter(function (val, i) {
           return val.id === property.propertyType;
         }, this);
-        //remove gte from the data ?range
-        property.propertyOperand=prop[0].default_search === 'gte' ? 'number' : prop[0].default_search
+        property.propertyOperand = prop[0].default_search
       },
       isValidForm() {
         // return !((this.searchParameters.propertyOperand !== 'range' && (this.searchParameters.propertyValue === null || this.searchParameters.propertyValue.length === 0))
@@ -265,17 +241,10 @@
 
         return isValid ;
       },
-      //REMOVE ME
-      getSelectedMineralIds(){
-        return Array.from(this.searchParameters.selectedMinerals.map(item => item.mineral__id))
-      },
-      isValueNotNullAndNotEmptyString(val) {
-        return val !== null && val !== ''
-      },
+      isValueNotNullAndNotEmptyString(val) { return val !== null && val !== ''},
       getProperties() {
         let query = '', vm = this;
         this.searchParameters.properties.forEach(function(prop){
-          console.log(prop)
           if(prop.propertyOperand === 'text') query += ` (rp.property_type_id=${prop.propertyType} AND rp.value_txt like '%${prop.propertyValue}%') OR`;
           else if(prop.propertyOperand === 'iexact') query += ` (rp.property_type_id=${prop.propertyType} AND rp.value_txt like '${prop.propertyValue}') OR`;
           else if(prop.propertyOperand === 'number') {
@@ -311,7 +280,7 @@
           return;
         }
         this.loading = true;
-        let query, mineralsIds = this.getSelectedMineralIds(), mode = this.$localStorage.get('kivid_mode');
+        let query, mode = this.$localStorage.get('kivid_mode');
         if (this.searchType === 1) {
           query = fetchSearchByPropertyType(this.getProperties(),this.searchParameters.properties.length);
         } else if (this.searchType === 2) {
@@ -323,7 +292,7 @@
         query.then((response) => {
           this.searchResults = response.results ? this.reorderResultsByRockName(response.results) : [];
           this.loading = false;
-          this.noSearchResults = this.searchResults.length === 0 ? true : false;
+          this.noSearchResults = this.searchResults.length === 0;
         });
       },
       clearSearch() {
@@ -358,32 +327,10 @@
       addNewProperty: function() {
         return {
           propertyType: this.rockPropertyTypes ? this.rockPropertyTypes[0].id : '1',
-          propertyOperand: this.rockPropertyTypes ? this.rockPropertyTypes[0].default_search : 'icontains',
+          propertyOperand: this.rockPropertyTypes ? this.rockPropertyTypes[0].default_search : 'text',
           propertyValue: null, propertyValueFrom:null,propertyValueTo:null
         }
       }
-    },
-    watch: {
-      'searchParameters.propertyOperand': {
-        handler: function (oldVal,newVal) {
-          if(oldVal === 'range') {
-            this.searchResults.propertyValue = null
-          }
-
-          if(oldVal !== 'range') {
-            this.searchResults.propertyValueFrom = null
-            this.searchResults.propertyValueTo = null
-          }
-        },
-        deep: true
-      },
-      'searchParameters.properties': {
-        handler: function (after, before) {
-
-
-        },
-        deep: true
-      },
     }
   }
 </script>
@@ -406,7 +353,7 @@
 }
 
 .searchCriterionType {
-  padding: 15px 10px;
+  padding: 5px 10px;
   border: none;
   background-color: #f5f5f5;
   /*margin-bottom: 2px;*/
@@ -433,5 +380,24 @@
   color:#eb3812;
   font-weight: bold;
 }
+.label-check input {  display:none; }
 
+.label-check label::before {
+  width: 1.4em;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  color: black;
+  transition: color .3s ease;
+  text-shadow: 0px 0px 1px #cccccc;
+}
+.label-check label:hover::before {
+  text-shadow: 0px 0px 1px #6286d0;
+}
+.label-check [type='checkbox']:checked + label::before{
+  color: #056dce;
+}
+
+.label-check [type='checkbox']         + label::before {  content: "\2610";}
+.label-check [type='checkbox']:checked + label::before {  content: "\2611";}
 </style>
