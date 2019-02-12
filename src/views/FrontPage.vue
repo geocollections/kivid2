@@ -182,7 +182,7 @@
     name: "front-page",
     components: {ModeButtons, LangButtons, RockSearch, VueMultiselect,FontAwesomeIcon,Spinner},
     metaInfo: {
-      title: 'Rock.info'
+      title: 'Mineraalid, kivimid, maavarad'
     },
     data() {
       return {

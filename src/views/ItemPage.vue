@@ -376,11 +376,15 @@
           });
         }
       },
+      setMetaInfo(){
+        document.title = `${this.capitalizeFirstLetter(this.rock.name)} | ${this.capitalizeFirstLetter(this.rock.name_en)}`
+      },
       loadFullRockInfo() {
         fetchRock(this.rock.id, this.mode).then((response) => {
           this.$emit('page-loaded',false);
           if(this.isDefinedAndNotEmpty(response.results)) {
             this.rock = Object.assign(this.rock,response.results[0])
+            this.setMetaInfo();
             this.basicInfoLoaded = true;
           } else {
             this.error = true;
@@ -512,9 +516,7 @@
 
     },
 
-    metaInfo: {
-      title: ''
-    },
+
   }
 </script>
 <style scope>
