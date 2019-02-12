@@ -259,10 +259,13 @@
           });
         } else if(this.searchType === 2) {
           isValid &= !(this.searchParameters.selectedChemicalElements.length === 0)
+        } else if(this.searchType === 3) {
+          isValid &= !(this.searchParameters.selectedMinerals.length === 0)
         }
 
         return isValid ;
       },
+      //REMOVE ME
       getSelectedMineralIds(){
         return Array.from(this.searchParameters.selectedMinerals.map(item => item.mineral__id))
       },
@@ -285,7 +288,6 @@
 
         });
         query = query.substring(0,query.length-3);
-        console.log(query)
         return query
       },
       getSelectedChemicalElementQuery() {
@@ -296,6 +298,13 @@
         });
         return query.substring(0,query.length-2)
       },
+      getSelectedMineralsQuery() {
+        let query = '';
+        this.searchParameters.selectedMinerals.forEach(function(el){
+          query += ` rm.mineral_id=${el.mineral__id} OR`
+        });
+        return query.substring(0,query.length-3)
+      },
       searchByAdditionalCriteria() {
         if(!this.isValidForm()) {
           this.$emit('throw-error',`Search is not allowed. Please choose some search criteria`);
@@ -305,15 +314,10 @@
         let query, mineralsIds = this.getSelectedMineralIds(), mode = this.$localStorage.get('kivid_mode');
         if (this.searchType === 1) {
           query = fetchSearchByPropertyType(this.getProperties(),this.searchParameters.properties.length);
-          // query = this.searchParameters.propertyOperand !== 'range'?
-          //   fetchSearchByPropertyType(this.searchParameters.propertyType.id, this.searchParameters.propertyOperand,this.searchParameters.propertyValue,mode) :
-          //   fetchSearchByPropertyType(this.searchParameters.propertyType.id, this.searchParameters.propertyOperand,this.searchParameters.propertyValueFrom+','+this.searchParameters.propertyValueTo, mode)
         } else if (this.searchType === 2) {
           query = fetchSearchByChemicalElement(this.getSelectedChemicalElementQuery(), mode);
         } else if (this.searchType === 3) {
-          //hack >> minera l search accepts more than one value
-          mineralsIds.push(0);
-          query = fetchSearchByMineral(mineralsIds, mode);
+          query = fetchSearchByMineral(this.getSelectedMineralsQuery(),this.searchParameters.selectedMinerals.length, mode);
         }
         this.noSearchResults = false;
         query.then((response) => {

@@ -97,8 +97,9 @@ export function fetchMineralsByRock (id,mode) {
 export function fetchRockPropertyType () {
   return fetch(`rock_property_type/?order_by=-sort&format=json`)
 }
-export function fetchSearchByMineral (ids, mode) {
-  return fetch(`rock_mineral/?mineral__id__in=${ids}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en&format=json`)
+export function fetchSearchByMineral (q,numberOfParams, mode) {
+  // return fetch(`rock_mineral/?mineral__id__in=${ids}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en&format=json`)
+  return fetch(`rock/?sql=rock_mineral_search&keyword=${q}&paginate_by=${numberOfParams}${applyMode(mode)}&format=json`)
 }
 export function fetchSearchByChemicalElement (q, mode) {
   // return fetch(`rock_mineral/?mineral__formula__icontains=${el}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en&distinct=true&format=json`)
