@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12">
           <h1 v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en) }"></h1>
-          <h6><i v-translate="{ et: rock.name_en, en: rock.name }"></i></h6>
+          <h6><i v-translate="{ et: rock.rock_type__name, en: rock.rock_type__name_en }"></i></h6>
         </div>
       </div>
       <div class="col-md-12">  
