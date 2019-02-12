@@ -93,6 +93,21 @@
     "date": "Date",
     "licence": "Licence",
     "detailView": "Picture detail view"
+  },
+  "footer": {
+    "licence":"Except where otherwise noted, content on this site is licensed under CC BY-NC Licence.",
+    "collections":"Geological collections in",
+    "estonia":"Estonia",
+    "sweden":"Sweden",
+    "finland":"Finland",
+    "related":"Related web resources",
+    "gi":"Department of Geology, TalTech",
+    "emu": "Estonian University of Life Sciences",
+    "ut":"Natural History Museum, University of Tartu",
+    "fmnh":"Finnish Museum of Natural History",
+    "nrm":"Swedish Museum of Natural History",
+    "elm":"Estonian Museum of Natural History",
+    "founders":"Founding institutions"
   }
 
 }

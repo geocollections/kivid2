@@ -93,5 +93,21 @@
     "date": "Kuupäev",
     "licence": "Litsents",
     "detailView": "Pildi detailvaade"
+  },
+
+  "footer": {
+    "licence":"Kui ei ole märgitud teisiti, siis on lehe sisu kasutatav CC BY-NC litsentsi alusel.",
+    "collections":"Geoloogilised kollektsioonid",
+    "estonia":"Eestis",
+    "sweden":"Rootsis",
+    "finland":"Soomes",
+    "related":"Vaata ka",
+    "gi":"TalTech Geoloogia Instituut",
+    "emu": "Estonian University of Life Sciences",
+    "ut":"TÜ Loodusmuuseum",
+    "fmnh":"Soome Loodusmuuseum",
+    "nrm":"Rootsi Loodusmuuseum",
+    "elm":"Eesti Loodusmuuseum",
+    "founders":"Asutused Eestis"
   }
 }
