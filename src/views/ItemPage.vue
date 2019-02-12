@@ -86,7 +86,7 @@
                 <div class="card-header">{{$t('item.references')}}</div>
                 <div class="card-body">
                   <div :class="idx === rock.references.length -1 ? '' : 'my-3'" v-for=" reference,idx in rock.references" style="padding-left: 3em; text-indent: -3em;">
-                    <a href="#" @click="openUrl({parent_url:'http://geocollections.info/reference',object:reference.reference_id, width:500,height:500})">
+                    <a href="#" @click.prevent="openUrl({parent_url:'http://geocollections.info/reference',object:reference.reference_id, width:500,height:500})">
                       {{reference.reference__author}} {{reference.reference__year}}.
                     </a>
                     <!--$author, $year. $title. $journal_name: $number or $book, $pages. DOI:$doi.-->
