@@ -21,6 +21,10 @@
                 <div class="card-body">
                   <table class='table basicInfoTable' v-if="basicInfoLoaded">
                     <tbody>
+                    <tr v-if="isDefinedAndNotNull(rock.synonym_of)">
+                      <th></th><td><strong v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en) }"></strong> {{$t('item.synonymOf')}}
+                      <router-link :to="'/'+rock.synonym_of" v-translate="{ et: rock.synonym_of__name, en: rock.synonym_of__name_en }"></router-link></td>
+                    </tr>
                     <tr v-if="isDefinedAndNotNull(rock.rocktype) || isDefinedAndNotNull(rock.rockrank)">
                       <th>{{$t('item.type')}}</th><td>{{rock.rocktype}} | {{rock.rockrank}}</td>
                     </tr>

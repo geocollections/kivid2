@@ -35,6 +35,7 @@
   },
   "item": {
     "type":"Тип/уровень",
+    "synonymOf":"is synonym of",
     "composition":"Состав",
     "description":"Описание",
     "in_estonia":"В Эстонии",

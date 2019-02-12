@@ -34,6 +34,7 @@
   },
   "item": {
     "type":"Type/level",
+    "synonymOf":"is synonym of",
     "composition":"Composition",
     "description":"Description",
     "in_estonia":"In Estonia",
