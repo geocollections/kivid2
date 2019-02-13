@@ -29,6 +29,10 @@ function applyMode(mode, separator = '=', prefix = '', queryJoiner = '&') {
 export function fetchRock (id,mode) {
     return fetch(`rock/?id=${id}&format=json`)
 }
+export function fetchPage (page) {
+    return fetch(`page/?id=${page}&format=json`)
+}
+
 export function fetchRockImages (id,mode) {
   return fetch(`rock_image/?rock_id=${id}&format=json`)
 }
