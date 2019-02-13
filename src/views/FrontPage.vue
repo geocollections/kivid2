@@ -23,16 +23,18 @@
         </div>
         <b-collapse v-model="showCollapse" id="collapseA"  class="col-lg-12 border border-light medium p-4"  v-if="rockPropertyTypes.length > 0">
           <div class="col-lg-12 pb-3"><mode-buttons/></div>
+          
+          <!--
           <div class="row">
             <h4>{{$t('main.searchInstructions')}}</h4>
           </div>
-
+			-->
           <div>
             <div class="row">
               <div class="input-group" role="group" aria-label="Basic example">
-                <button type="button" class="btn form-control btn-secondary" @click="searchType = 1;clearSearch()" :class="searchType === 1 ? 'active': ''">Property</button>
-                <button type="button" class="btn form-control btn-secondary" @click="searchType = 2;clearSearch()" :class="searchType === 2 ? 'active': ''">Chemical element</button>
-                <button type="button" class="btn form-control btn-secondary" @click="searchType = 3;clearSearch()" :class="searchType === 3 ? 'active': ''">Mineral</button>
+                <button type="button" class="btn form-control btn-secondary" @click="searchType = 1;clearSearch()" :class="searchType === 1 ? 'active': ''">{{$t('search.property')}}</button>
+                <button type="button" class="btn form-control btn-secondary" @click="searchType = 2;clearSearch()" :class="searchType === 2 ? 'active': ''">{{$t('search.element')}}</button>
+                <button type="button" class="btn form-control btn-secondary" @click="searchType = 3;clearSearch()" :class="searchType === 3 ? 'active': ''">{{$t('search.mineral')}}</button>
               </div>
             </div>
             <form v-on:submit.prevent="searchByAdditionalCriteria" class="col-lg-12 well"  style="text-align: right;">
@@ -46,7 +48,7 @@
                   <div v-if="property.propertyOperand !== 'number'">
                     <input type="checkbox" class="form-control"  :id="idx+'_checkbox'" v-model="property.checked"
                            v-on:change="property.propertyOperand = property.checked ? 'iexact' : 'text' ">
-                    <label class="label" :for="idx+'_checkbox'">Exact</label>
+                    <label class="label" :for="idx+'_checkbox'">{{$t('search.exact')}}</label>
                   </div>
 
                   <!--<select class="searchCriterionType"  v-model="property.propertyOperand">-->
@@ -121,26 +123,22 @@
         </b-collapse>
         <div class="col-lg-12">
           <router-link :to="'/'+232">
-            <img src="https://files.geocollections.info/medium/9d/b5/9db5b4d9-7e83-471f-a2dd-cf2f440064f1.jpg" alt="kaltsiit" style="max-width: 750px; width: 100%;"/>
+            <img src="https://files.geocollections.info/img/kivid/kivid2.jpg" alt="kaltsiit" title="Kaltsiit | Calcite" style="max-width: 650px; width: 100%;"/>
           </router-link>
         </div>
         <div class="col-lg-12">
-          |
           <router-link :to="'/'+3">{{$t('main.minerals')}}</router-link> |
-          <router-link :to="'/'+799">{{$t('main.gemstones')}}</router-link> |
-          <br>
-          |
           <router-link :to="'/'+113">{{$t('main.igneousRocks')}}</router-link> |
           <router-link :to="'/'+21">{{$t('main.sediments')}}</router-link> |
           <router-link :to="'/'+6">{{$t('main.sedimentaryRocks')}}</router-link> |
-          <router-link :to="'/'+114">{{$t('main.metamorphicRocks')}}</router-link> |
+          <router-link :to="'/'+114">{{$t('main.metamorphicRocks')}}</router-link> 
 
           <br>
-          |
+          <router-link :to="'/'+799">{{$t('main.gemstones')}}</router-link> |
           <router-link :to="'/'+793">{{$t('main.ores')}}</router-link> |
           <router-link :to="'/'+796">{{$t('main.combustibleRocks')}}</router-link> |
           <router-link :to="'/'">{{$t('main.industrialRawMaterials')}}</router-link> |
-          <router-link :to="'/'">{{$t('main.buildingSupplies')}}</router-link> |
+          <router-link :to="'/'">{{$t('main.buildingSupplies')}}</router-link> 
 
           <br>
           <div style="padding: 5px 0; font-size: 0.8em;" v-if="lastChangedRocks && lastChangedRocks.length > 0">{{$t('main.lastChanged')}}:
@@ -345,6 +343,11 @@
   margin-left: auto;
   margin-right: auto;
 }
+  .front-page h1 {
+  	font-weight: bold;
+  	color: #2A68A5;
+  	opacity: 0.9;
+  }
 .btn-search {
   color:#ffffff  !important;
   border-color:#eb3812  !important;
@@ -362,7 +365,10 @@
   /*margin-bottom: 2px;*/
 }
 #collapseA {
-  background-color: #F4FBFD;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  border: solid 2px #ccc !important; 
+  
 }
 .well {
   padding: 10px;
@@ -371,10 +377,10 @@
   min-height: 20px;
   margin-bottom: 20px;
   background-color: #f5f5f5;
-  border: 1px solid #e3e3e3;
+  /*border: 1px solid #e3e3e3;
   border-radius: 2px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.05);*/
 }
 .btn-link {
   font-size: small !important; letter-spacing: 1.3px; color:#F05F40; font-weight: bolder; text-decoration: none

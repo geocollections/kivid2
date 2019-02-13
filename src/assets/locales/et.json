@@ -26,10 +26,10 @@
     "advanceSearch":"Laiendatud otsing",
     "advanceSearchHide":"Peida otsing",
     "search": {
-      "mineral": "Mineral",
-      "chemicalEl": "Chemical element name",
-      "addRow":"Add row",
-      "search":"Search"
+      "mineral": "Mineraal",
+      "chemicalEl": "Keemiline element",
+      "addRow":"Lisa rida",
+      "search":"Otsi"
     }
   },
   "item": {
@@ -64,6 +64,10 @@
     "only_estonia":"Ainult Eesti",
     "only_images":"Ainult piltidega",
     "per_page":"Lehekülel",
+  	"property": "Omadused",
+  	"element": "Keemiline koostis",
+  	"mineral": "Mineraalne koostis",
+  	"exact": "täpne vaste",
     "specimen": {
       "id": "ID",
       "number": "Number",
@@ -88,6 +92,7 @@
     "from":"alates",
     "to":"kuni"
   },
+  
   "fancybox": {
     "author": "Autor",
     "date": "Kuupäev",

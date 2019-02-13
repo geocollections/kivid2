@@ -2,35 +2,31 @@
   <div>
     <footer class="footer">
       <div style="margin: 10px 0 10px 0; border-left: solid 0px #ccc; border-right: dotted 0px #ccc;">
-        {{ $t(' footer.licence ') }}
-        <div><br/>
-          <a class="cc-large" href="http://creativecommons.org/licences/by-nc/3.0/">
-            <img width="88px" height="31px"
-                 alt="Creative Commons Licence"
-                 src="/static/images/ccbync.png"
-                 typeof="foaf:Image"></a>
-          <br/>
-
-        </div>
+      <a href="https://natarc.ut.ee" target="_blank">
+        <img border="0" style="height: 50px; padding: 0 10px;"  src="https://files.geocollections.info/img/natarclogovalge1.png" alt="NATARC" title="NATARC">
+      </a>      
+      <a href="https://taltech.ee/geoloogia-instituut" target="_blank">
+        <img border="0" style="height: 50px;"  src="https://files.geocollections.info/img/tutaltech2.png" alt="SARV" title="TalTech geoloogia instituut">
+      </a>
+      <a href="http://www.natmuseum.ut.ee/et/content/geoloogiakogud" target="_blank">
+        <img border="0" style="height: 60px; padding: 0 10px;"  src="https://files.geocollections.info/img/TY_logo_ring_jooneta_valge.png" alt="TÜ Loodusmuuseumi geokogud" title="TÜ Loodusmuuseumi geokogud">
+      </a>
+      <a href="https://loodusmuuseum.ee/geoloogilised-kogud" target="_blank">
+        <img border="0" style="height: 60px; padding: 0 10px;"  src="https://files.geocollections.info/img/ELM_logo_white1.png" alt="Eesti Loodusmuuseumi geoloogia osakond" title="Eesti Loodusmuuseumi geoloogia osakond">
+      </a>      
+      <br />
       </div>
-      <div style="margin: 10px 0 10px 0;">
-        <a href="http://geokogud.info">
-          <img border="0" style="height: 50px;"  src="https://files.geocollections.info/img/sarv_logo.svg" alt="SARV"
-               title="SARV: geokogude infosÃ¼steem">
-        </a>
-        <a href="http://natarc.ut.ee">
-          <img border="0" style="height: 50px; margin-left: 25px;"  src="https://elurikkus.ee/assets/images/natarc_logo_black.svg"
-               alt="Natural History Archives and Information Network (NATARC)"
-               title="SARV is part of national infrastructure Natural History Archives and Information Network (NATARC)">
-        </a>
-        <a href="http://struktuurifondid.ee">
-          <img border="0" style="height: 50px; margin-left: 25px;" src="http://geokogud.info/images/EL_mv.png" alt="EU" title="Euroopa Liit">
-        </a>
+    
+    <div style="margin: 10px 0 10px 0;">
+    &copy; Data contributors 2019. 
+    Content on this site is licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA Licence</a>, if not indicated otherwise.<br />
+    Developed as part of <a href="https://natarc.ut.ee">NATARC</a> infrastructure and a component of <a href="https://geocollections.info">SARV</a>. 
+    Hosted by the <a href="https://taltech.ee/geoloogia-instituut">Department of Geology, TalTech</a>
+    </div>
+</footer>
 
-      </div>
-    </footer>
-    <div class="underFooter"><a style="color: #bbb !important;" target="_blank" href="http://ttu.ee/geoloogia-instituut">Developed and hosted by the Department of Geology, Tallinn University of Technology</a></div>
-  </div>
+
+</div>
 
 
 </template>
@@ -58,12 +54,13 @@
     bottom: 0;
     width: 100%;
     font-size: 0.7rem;
-    padding: 5px 15px 50px;
+    padding: 5px 15px 10px;
     text-align: center;
-    background-color: #FFFFFF;
+    background-color: #A52A2A;
     border-top: 2px solid rgba(0, 68, 148, .1);
-    color: #333;
+    color: #fff;
     opacity: 0.9;
+    font-family: arial, sans-serif;
   }
   .underFooter {
     position: absolute;
@@ -72,14 +69,16 @@
     font-size: 0.7rem;
     padding: 15px 15px;
     text-align: center;
-    background-color: #342b60;
+    background-color: #222;
     opacity: 0.9;
   }
 
-  #eitrawLogo {
-    height: 50px;
-    margin: 10px;
+  .footer a {
+    color: #ccc;
   }
+  .footer a:hover {
+    color: #fff;
+  } 
 
   /* Footer logo is 40px for small mobile screens */
   @media (max-width: 401px) {

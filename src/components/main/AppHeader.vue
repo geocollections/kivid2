@@ -2,12 +2,12 @@
   <header class="border-bottom">
     <span id="top"></span>
     <div class="container-fluid">
-      <b-navbar toggleable="md" type="light"id="mainNav" class="border-bottom fixed-top">
+      <b-navbar toggleable="md" type="light" id="mainNav" class="border-bottom fixed-top">
         <router-link
           :style="{
-                  'color':scroll ? '#eb3812' : '',
+                  'color':scroll ? '#A52A2A' : '#A52A2A',
                   // 'letter-spacing': scroll ? '0px':'2px',
-                  'font-size':scroll ? '18px' : 'larger',
+                  'font-size':scroll ? '' : 'larger',
                   'text-transform': 'uppercase','font-weight':'700 !important'}"
           to="/">kivid.info</router-link>
         <b-navbar-toggle class="mb-2 mt-2" target="nav_collapse"></b-navbar-toggle>
@@ -88,10 +88,13 @@
 <style>
   #mainNav {
     background-color : white;
-    box-shadow: 0 0 50px #9c9d9e;
-    background-image: -webkit-linear-gradient(left, #f7f7f7 0%, #d6d6d6 100%), -webkit-linear-gradient(left, #f7f7f7  0%, #d6d6d6 100%);
+    box-shadow: 0 0 15px #9c9d9e;
+    /*background-image: -webkit-linear-gradient(left, #f7f7f7 0%, #d6d6d6 100%), -webkit-linear-gradient(left, #f7f7f7  0%, #d6d6d6 100%);
     background-image: -moz-linear-gradient(left, #f7f7f7  0%, #d6d6d6 100%), -moz-linear-gradient(left, #f7f7f7  0%, #d6d6d6 100%);
     background-image: linear-gradient(to right, #f7f7f7  0%, #d6d6d6 100%), linear-gradient(to right, #f7f7f7  0%, #d6d6d6 100%);
-    background-image: -o-linear-gradient(left, #f7f7f7 0%, #d6d6d6 100%), -o-linear-gradient(left, #f7f7f7  0%, #d6d6d6 100%);
+    background-image: -o-linear-gradient(left, #f7f7f7 0%, #d6d6d6 100%), -o-linear-gradient(left, #f7f7f7  0%, #d6d6d6 100%);*/
+  }
+  .multiselect__tags {
+  border: solid 2px #ccc;
   }
 </style>
