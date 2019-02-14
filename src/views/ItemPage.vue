@@ -3,8 +3,8 @@
     <div v-if="error === false">
       <div class="row">
         <div class="col-md-12">
-          <h1 v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en) }"></h1>
-          <h6><i v-translate="{ et: rock.rock_type__name, en: rock.rock_type__name_en }"></i></h6>
+          <h1 v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en), ru: capitalizeFirstLetter(rock.name_ru) }"></h1>
+          <h6><i v-translate="{ et: rock.rock_type__name, en: rock.rock_type__name_en, ru: rock.rock_type__name_en }"></i></h6>
         </div>
       </div>
       <div class="col-md-12">  
@@ -537,6 +537,18 @@
     margin-left: auto;
     margin-right: auto;
   }
+  .item-page h1 {
+  	font-weight: bold;
+  	color: #2A68A5;
+  	opacity: 0.9;
+  }
+  .navbar-toggler {
+  	margin: 0 !important;
+  	padding: 3px 6px;
+  }
+  .navbar-toggler-icon {
+  	width: 25px;
+  }  
   .basicInfoTable {
     width: 100%;
     max-width: 1024px;
@@ -544,7 +556,7 @@
   }
   .col-md-8 {
     padding-right:0.1rem !important;
-  }
+  }	
   .col-md-4 {
     padding-left:0.1rem !important;
   }
