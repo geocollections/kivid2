@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Meta from "vue-meta"; // https://github.com/declandewet/vue-meta
 
 Vue.use(Router);
-Vue.use(Meta);
+Vue.use(Meta,{keyName: 'metaInfo'});
 
 const FrontPage = () => import('../views/FrontPage.vue')
 const ItemPage = () => import('../views/ItemPage.vue')

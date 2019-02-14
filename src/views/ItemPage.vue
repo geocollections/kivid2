@@ -378,6 +378,7 @@
       },
       setMetaInfo(){
         document.title = `${this.capitalizeFirstLetter(this.rock.name)} | ${this.capitalizeFirstLetter(this.rock.name_en)}`
+        console.log(document)
       },
       loadFullRockInfo() {
         fetchRock(this.rock.id, this.mode).then((response) => {
@@ -515,7 +516,17 @@
       }
 
     },
-
+    metaInfo: {
+      meta: [
+        {
+          'property': 'og:title',
+          'content': 'Test title',
+          'template': chunk => `${chunk} - My page`, //or as string template: '%s - My page',
+          'vmid': 'og:title'
+        }
+      ]
+      // set a title
+    },
 
   }
 </script>

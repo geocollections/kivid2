@@ -30,7 +30,10 @@
       "chemicalEl": "Chemical element name",
       "addRow":"Add row",
       "search":"Search"
-    }
+    },
+    "policyAgreeBtn":"Agree",
+    "policyHeader":"Terms of Service, Cookie policy, Privacy Policy",
+    "policyMessage":"Sellel veebilehel kasutatakse küpsiseid. Kasutamist jätkates nõustute küpsiste ja veebilehe"
   },
   "item": {
     "type":"Type/level",

@@ -39,7 +39,29 @@ export default {
       })
 
     }
-  }
+  },
+  metaInfo: {
+    meta: [
+      {
+        'property': 'og:title',
+        'content': 'App title',
+        'template': chunk => `${chunk} - My page`, //or as string template: '%s - My page',
+        'vmid': 'og:title'
+      }
+    ]
+    // set a title
+  },
+  // metaInfo: {
+  //   meta: [
+  //     { property: 'og:url', content: 'https://dev.kivid.info/' },
+  //     { property: 'og:type', content: 'website' },
+  //     { property: 'og:description', content: 'Mineraalide, kivimite ja maavarade portaal description' },
+  //     { property: 'og:title', content: 'Mineraalide, kivimite ja maavarade portaal' },
+  //     { property: 'og:image', content: 'https://files.geocollections.info/medium/9d/b5/9db5b4d9-7e83-471f-a2dd-cf2f440064f1.jpg' }
+  //   ]
+  //   // set a title
+  // },
+
 }
 </script>
 

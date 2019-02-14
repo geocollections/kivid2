@@ -28,9 +28,12 @@
     "search": {
       "mineral": "Mineral",
       "chemicalEl": "Chemical element name",
-      "addRow":"Add row",
+      "addRow":"Lisa uus",
       "search":"Search"
-    }
+    },
+    "policyAgreeBtn":"Nõustun",
+    "policyHeader":"Kasutustingimused, küpsised, privaatsuspoliitika",
+    "policyMessage":"Sellel veebilehel kasutatakse küpsiseid. Kasutamist jätkates nõustute küpsiste ja veebilehe"
   },
   "item": {
     "type":"Tüüp/tase",

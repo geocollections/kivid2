@@ -2,9 +2,9 @@
   <div>
     <div class="p-2" id="cookie_ribbon"  >
       <div class="col-lg-12">
-        Sellel veebilehel kasutatakse küpsiseid. Kasutamist jätkates nõustute küpsiste ja veebilehe
+        {{$t('main.policyMessage')}}
         <span style="margin-left: -10px"><button type="button" class="btn btn-link"  data-toggle="modal" data-target="#myModal" >üldtingimustega</button></span>
-        <span  class="pl-2"  ><button type="button" class="btn btn-outline-primary btn-cookie-agree" @click.prevent="agreePolicy()">Nõustun</button></span>
+        <span  class="pl-2"  ><button type="button" class="btn btn-outline-primary btn-cookie-agree" @click.prevent="agreePolicy()">{{$t('main.policyAgreeBtn')}}</button></span>
         <span class="pb-3" style=" position: fixed;bottom: 0;right:0;">
           <button class="btn btn-link" style="color:white;font-size: small" @click.prevent="$parent.cookiePolicy = false"><font-awesome-icon :icon="icon"/></button></span>
       </div>
@@ -21,14 +21,13 @@
 
           <!-- Modal Header -->
           <div class="modal-header">
-            <h3 class="modal-title">Terms of Service, Cookie policy, Privacy Policy</h3>
+            <h3 class="modal-title">{{$t('main.policyHeader')}}</h3>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
 
           <!-- Modal body -->
           <div class="modal-body" style="font-size: 0.85rem !important;">
             <span class="p-3" v-if="termsOfService !== null" v-translate="{ et: termsOfService.content_et, en: termsOfService.content_en }"></span><hr>
-
             <span class="p-3" v-if="cookiePolicyList !== null" v-translate="{ et: cookiePolicyList.content_et, en: cookiePolicyList.content_en }"></span><hr>
             <span class="p-3" v-if="privicyPolicy !== null" v-translate="{ et: privicyPolicy.content_et, en: privicyPolicy.content_en }"></span>
           </div>
