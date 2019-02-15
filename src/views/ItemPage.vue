@@ -252,7 +252,7 @@
       widthOfHidden() {
         return (($('.wrapper').outerWidth())-this.widthOfList-this.tabListLeftPosi);
       },
-
+      title() { return this.rock.name}
     },
     created() {
       this.$emit('page-loaded',true);
@@ -266,6 +266,7 @@
     },
     methods: {
       initialData() {return {
+        meta: {},
         kividUrl: 'https://dev.kivid.info',
         fossilsUrl: 'http://fossiilid.info',
         fileUrl:'https://files.geocollections.info',
@@ -373,10 +374,19 @@
           fetchPhotoGallery(this.currentClf.parent_string, this.mode).then((response) => {
             this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
               this.composeImageUrls(response.results) : [];
+            if(this.rock.images.length > 0) this.meta.image = this.rock.images[0]
           });
         }
       },
       setMetaInfo(){
+
+        this.meta = {
+          title : `${this.capitalizeFirstLetter(this.rock.name)} | ${this.capitalizeFirstLetter(this.rock.name_en)}`,
+          url: `${this.kividUrl}${this.$route.fullPath}`,
+          description: this.rock.description,
+
+        };
+        console.log(this.meta)
         document.title = `${this.capitalizeFirstLetter(this.rock.name)} | ${this.capitalizeFirstLetter(this.rock.name_en)}`
         console.log(document)
       },
@@ -409,6 +419,7 @@
         fetchRockImages(this.rock.id, this.mode).then((response) => {
           this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
            this.composeImageUrls(response.results) : [];
+          if(this.rock.images.length > 0) this.meta.image = this.rock.images[0]
         });
         fetchRockProperties(this.rock.id, this.mode).then((response) => {
           this.rock.properties = this.handleResponse(response);
@@ -516,15 +527,18 @@
       }
 
     },
-    metaInfo: {
-      meta: [
-        {
-          'property': 'og:title',
-          'content': 'Test title',
-          'template': chunk => `${chunk} - My page`, //or as string template: '%s - My page',
-          'vmid': 'og:title'
-        }
-      ]
+    metaInfo() {
+      return {
+        title : this.meta.title,
+        meta: [
+          {'property': 'og:title', 'content': this.meta.title, 'template': chunk => `${chunk}`, 'vmid': 'og:title'},
+          {'property': 'og:url', 'content': this.meta.url, 'vmid': 'og:url'},
+          {'property': 'og:description', 'content': this.meta.description, 'vmid': 'og:description'},
+          {'property': 'og:image', 'content': this.meta.image, 'vmid': 'og:image'},
+          {'property': 'og:type', 'content': 'website','vmid': 'og:type'},
+
+        ]
+      }
       // set a title
     },
 

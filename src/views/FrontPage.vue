@@ -332,7 +332,20 @@
           propertyValue: null, propertyValueFrom:null,propertyValueTo:null
         }
       }
-    }
+    },
+    metaInfo() {
+      return {
+        title : 'Mineraalide, kivimite ja maavarade portaal',
+        meta: [
+          {'property': 'og:title', 'content': 'Mineraalide, kivimite ja maavarade portaal', 'template': chunk => `${chunk}`, 'vmid': 'og:title'},
+          {'property': 'og:url', 'content': 'https://dev.kivid.info/', 'vmid': 'og:url'},
+          {'property': 'og:description', 'content': 'Mineraalide, kivimite ja maavarade portaal', 'vmid': 'og:description'},
+          {'property': 'og:image', 'content': 'https://files.geocollections.info/medium/9d/b5/9db5b4d9-7e83-471f-a2dd-cf2f440064f1.jpg', 'vmid': 'og:image'},
+          {'property': 'og:type', 'content': 'website','vmid': 'og:type'},
+
+        ]
+      }
+    },
   }
 </script>
 
