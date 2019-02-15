@@ -374,7 +374,7 @@
           fetchPhotoGallery(this.currentClf.parent_string, this.mode).then((response) => {
             this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
               this.composeImageUrls(response.results) : [];
-            if(this.rock.images.length > 0) this.meta.image = this.rock.images[0]
+            if(this.rock.images.length > 0) this.meta.image = this.rock.images[0].src
           });
         }
       },
@@ -383,12 +383,9 @@
         this.meta = {
           title : `${this.capitalizeFirstLetter(this.rock.name)} | ${this.capitalizeFirstLetter(this.rock.name_en)}`,
           url: `${this.kividUrl}${this.$route.fullPath}`,
-          description: this.rock.description,
-
+          description: this.rock.description
         };
-        console.log(this.meta)
         document.title = `${this.capitalizeFirstLetter(this.rock.name)} | ${this.capitalizeFirstLetter(this.rock.name_en)}`
-        console.log(document)
       },
       loadFullRockInfo() {
         fetchRock(this.rock.id, this.mode).then((response) => {
@@ -419,7 +416,7 @@
         fetchRockImages(this.rock.id, this.mode).then((response) => {
           this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
            this.composeImageUrls(response.results) : [];
-          if(this.rock.images.length > 0) this.meta.image = this.rock.images[0]
+          if(this.rock.images.length > 0) this.meta.image = this.rock.images[0].src
         });
         fetchRockProperties(this.rock.id, this.mode).then((response) => {
           this.rock.properties = this.handleResponse(response);
