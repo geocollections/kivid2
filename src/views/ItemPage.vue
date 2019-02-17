@@ -29,7 +29,7 @@
                       <th>{{$t('item.type')}}</th><td>{{rock.rocktype}} | {{rock.rockrank}}</td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.formula_html)">
-                      <th>{{$t('item.composition')}}</th><td v-html="rock.formula_html+' '+rock.elComposition"></td>
+                      <th>{{$t('item.composition')}}</th><td v-html="rock.formula_html"></td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.description) || isDefinedAndNotNull(rock.description_en)">
                       <th>{{$t('item.description')}}</th><td v-translate="{ et: rock.description, en: rock.description_en }"></td>
@@ -47,14 +47,14 @@
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.name)">
                       <th>SARV</th><td>
-                      <a :href="'http://geocollections.info/specimen?name_geology_1=1&name_geology='+rock.name+'&currentTable=specimen&paginateBy=25&sort=id&sortdir=DESC'" target='_blank'>{{$t('item.sarv')}}</a> | <a :href="'http://geocollections.info/specimen?name_geology_1=1&name_geology='+rock.name+'&search_images=1&currentTable=specimen&paginateBy=25&sort=id&sortdir=DESC'" target='_blank'>{{$t('item.sarvPics')}}</a>
+                      <a :href="'http://geocollections.info/specimen?name_geology_1=1&name_geology='+rock.name+'&currentTable=specimen&paginateBy=25&sort=id&sortdir=DESC'" target='_blank' rel='noopener'>{{$t('item.sarv')}}</a> | <a :href="'http://geocollections.info/specimen?name_geology_1=1&name_geology='+rock.name+'&search_images=1&currentTable=specimen&paginateBy=25&sort=id&sortdir=DESC'" target='_blank'  rel='noopener'>{{$t('item.sarvPics')}}</a>
                     </td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.mindat_id)">
                       <th>Mindat ID</th><td><a :href="'http://mindat.org/min-'+rock.mindat_id+'.html'">{{rock.mindat_id}}</a></td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.link_wikipedia) || isDefinedAndNotNull(rock.link_wikipedia_en)">
-                      <th>Wikipedia</th><td><a target='_blank' :href="'http://et.wikipedia.org/wiki/'+rock.link_wikipedia">{{rock.link_wikipedia}}</a> | <a target='_blank' :href="'http://en.wikipedia.org/wiki/'+rock.link_wikipedia_en">{{rock.link_wikipedia_en}}</a></td>
+                      <th>Wikipedia</th><td><a target='_blank' rel='noopener' :href="'http://et.wikipedia.org/wiki/'+rock.link_wikipedia">{{rock.link_wikipedia}}</a> | <a target='_blank' rel='noopener' :href="'http://en.wikipedia.org/wiki/'+rock.link_wikipedia_en">{{rock.link_wikipedia_en}}</a></td>
                     </tr>
                     <!--
                     <tr v-if="rock.in_estonia">
@@ -120,14 +120,30 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="row m-1"  v-if="isDefinedAndNotNull(rock.in_estonia) && isDefinedAndNotEmpty(rock.localities)">
+            
+            <!-- === ROCK PROPERTIES === -->
+            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.properties)">
               <div class="card rounded-0">
-                <div class="card-header">{{$t('item.localities')}}</div>
-                <div class="card-body no-padding">
-                  <map-component></map-component>
+                <div class="card-header">{{$t('item.features')}}</div>
+                <div class="card-body">
+                  <div style="padding-bottom: 8px;" v-if="isDefinedAndNotNull(rock.elComposition)">
+                    <span style="font-weight: bolder">{{$t('item.composition')}}</span>: {{rock.elComposition}}
+                  </div>                  
+                  <div v-for="item in rock.properties">
+                    <span style="font-weight: bolder" v-translate="{ et: item.property_type__property, en: item.property_type__property_en }"></span>:
+                    <span v-if="isDefinedAndNotNull(item.value_min) || isDefinedAndNotNull(item.value_max)">
+                    	<span v-if="(item.value_min === item.value_max) || (isDefinedAndNotNull(item.value_min) && !item.value_max)">
+                    		{{item.value_min}}</span>
+                    	<span v-else>                		
+                    		{{item.value_min}} - {{item.value_max}}</span></span>
+                    <span v-if="isDefinedAndNotNull(item.value_txt)">{{item.value_txt}}</span>
+                  </div>
+
                 </div>
               </div>
-            </div>
+            </div>            
+
+            <!-- === ROCK TREES === -->
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications)">
               <div class="card rounded-0" id="tab-block">
                 <div class="card-header">{{$t('item.classification')}}</div>
@@ -148,22 +164,16 @@
                 </div>
               </div>
             </div>
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.properties)">
+            <!-- === ROCK MAP === -->
+            <div class="row m-1"  v-if="isDefinedAndNotNull(rock.in_estonia) && isDefinedAndNotEmpty(rock.localities)">
               <div class="card rounded-0">
-                <div class="card-header">{{$t('item.features')}}</div>
-                <div class="card-body">
-                  <div v-for="item in rock.properties">
-                    <span style="font-weight: bolder" v-translate="{ et: item.property_type__property, en: item.property_type__property_en }"></span>:
-                    <span v-if="isDefinedAndNotNull(item.value_min) || isDefinedAndNotNull(item.value_max)">
-                    	<span v-if="(item.value_min === item.value_max) || (isDefinedAndNotNull(item.value_min) && !item.value_max)">
-                    		{{item.value_min}}</span>
-                    	<span v-else>                		
-                    		{{item.value_min}} - {{item.value_max}}</span></span>
-                    <span v-if="isDefinedAndNotNull(item.value_txt)">{{item.value_txt}}</span>
-                  </div>
+                <div class="card-header">{{$t('item.localities')}}</div>
+                <div class="card-body no-padding">
+                  <map-component></map-component>
                 </div>
               </div>
             </div>
+            <!-- === ROCK SYNONYMS === -->
             <div class="row m-1"  v-if="isDefinedAndNotEmpty(rock.synonyms)">
               <div class="card rounded-0">
                 <div class="card-header">{{$t('item.synonyms')}}</div>
@@ -409,7 +419,7 @@
             elements.forEach(function (el)  {
               vm.rock.elComposition += `${el.element__element}=${el.content}%, `
             });
-            vm.rock.elComposition = `(${vm.rock.elComposition.substring(0,vm.rock.elComposition.length-2)})`
+            vm.rock.elComposition = `${vm.rock.elComposition.substring(0,vm.rock.elComposition.length-2)}`
           }
 
         });

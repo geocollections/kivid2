@@ -1,7 +1,7 @@
 <template>
   <div class="front-page">
     <div class="row">
-      <div class="col-md-12" style="text-align: right; margin-top: -5rem !important;">
+      <div class="col-md-12" style="text-align: right; margin-top: -4rem !important;">
         <lang-buttons/>
       </div>
     </div>
