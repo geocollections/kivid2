@@ -104,7 +104,13 @@
   },
 
   "footer": {
-    "licence":"Kui ei ole märgitud teisiti, siis on lehe sisu kasutatav CC BY-NC litsentsi alusel.",
+    "copyright":"Andmete omanikud",
+    "licence1":"Lehel leiduvad materjalid on kasutamiseks", 
+    "licence2":"litsentsi alusel, kui pole näidatud teisiti",
+    "developed1":"Portaal on osaks",
+    "developed2":"teadustaristust ning infosüsteemist",
+    "hosted1":"Majutab",
+    "hosted2":"TalTech Geoloogia Instituut",
     "collections":"Geoloogilised kollektsioonid",
     "estonia":"Eestis",
     "sweden":"Rootsis",

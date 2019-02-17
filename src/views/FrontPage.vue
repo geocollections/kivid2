@@ -123,7 +123,7 @@
         </b-collapse>
         <div class="col-lg-12">
           <router-link :to="'/'+232">
-            <img src="https://files.geocollections.info/img/kivid/kivid2.jpg" alt="kaltsiit" title="Kaltsiit | Calcite" style="max-width: 650px; width: 100%;"/>
+            <img src="https://files.geocollections.info/img/kivid/kivid2.jpg" alt="kaltsiit" title="Kaltsiit | Calcite" style="max-width: 600px; width: 100%;"/>
           </router-link>
         </div>
         <div class="col-lg-12">
@@ -132,14 +132,14 @@
           <router-link :to="'/'+21">{{$t('main.sediments')}}</router-link> |
           <router-link :to="'/'+6">{{$t('main.sedimentaryRocks')}}</router-link> |
           <router-link :to="'/'+114">{{$t('main.metamorphicRocks')}}</router-link> 
-
+<!-- omit this before we get the classifications updated
           <br>
           <router-link :to="'/'+799">{{$t('main.gemstones')}}</router-link> |
           <router-link :to="'/'+793">{{$t('main.ores')}}</router-link> |
           <router-link :to="'/'+796">{{$t('main.combustibleRocks')}}</router-link> |
           <router-link :to="'/'">{{$t('main.industrialRawMaterials')}}</router-link> |
           <router-link :to="'/'">{{$t('main.buildingSupplies')}}</router-link> 
-
+-->
           <br>
           <div style="padding: 5px 0; font-size: 0.8em;" v-if="lastChangedRocks && lastChangedRocks.length > 0">{{$t('main.lastChanged')}}:
             <span v-for="item in lastChangedRocks">

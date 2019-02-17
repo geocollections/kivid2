@@ -100,7 +100,7 @@
   }
   #cookie_ribbon {
     position: fixed;
-    height: 50px;
+    /*height: 50px;*/
     bottom: 0;
     text-align: center;
     width: 100%;

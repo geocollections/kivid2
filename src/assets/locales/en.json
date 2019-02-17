@@ -102,7 +102,13 @@
     "detailView": "Picture detail view"
   },
   "footer": {
-    "licence":"Except where otherwise noted, content on this site is licensed under CC BY-NC Licence.",
+    "copyright":"Data contributors",
+    "licence1":"Content on this site is licensed under the",
+    "licence2":"Licence, if not indicated otherwise",
+    "developed1":"Developed as part of",
+    "developed2":"infrastructure and a component of",
+    "hosted1":"Hosted by the",
+    "hosted2":"Department of Geology, TalTech",
     "collections":"Geological collections in",
     "estonia":"Estonia",
     "sweden":"Sweden",

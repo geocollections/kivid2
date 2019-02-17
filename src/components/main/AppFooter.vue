@@ -1,27 +1,26 @@
 <template>
   <div>
     <footer class="footer">
-      <div style="margin: 10px 0 10px 0; border-left: solid 0px #ccc; border-right: dotted 0px #ccc;">
+      <div class="footerLogos" style="margin: 10px 0 10px 0; border-left: solid 0px #ccc; border-right: dotted 0px #ccc;">
       <a href="https://natarc.ut.ee" target="_blank">
-        <img border="0" style="height: 50px; padding: 0 10px;"  src="https://files.geocollections.info/img/natarclogovalge1.png" alt="NATARC" title="NATARC">
+        <img class="footerLogo" border="0" style="height: 50px; padding: 0 10px;"  src="https://files.geocollections.info/img/natarclogovalge1.png" alt="NATARC" title="NATARC">
       </a>      
       <a href="https://taltech.ee/geoloogia-instituut" target="_blank">
-        <img border="0" style="height: 50px;"  src="https://files.geocollections.info/img/tutaltech2.png" alt="SARV" title="TalTech geoloogia instituut">
+        <img class="footerLogo" border="0" style="height: 50px;"  src="https://files.geocollections.info/img/tutaltech2.png" alt="SARV" title="TalTech geoloogia instituut">
       </a>
       <a href="http://www.natmuseum.ut.ee/et/content/geoloogiakogud" target="_blank">
-        <img border="0" style="height: 60px; padding: 0 10px;"  src="https://files.geocollections.info/img/TY_logo_ring_jooneta_valge.png" alt="TÜ Loodusmuuseumi geokogud" title="TÜ Loodusmuuseumi geokogud">
+        <img class="footerLogo" border="0" style="height: 60px; padding: 0 10px;"  src="https://files.geocollections.info/img/TY_logo_ring_jooneta_valge.png" alt="TÜ Loodusmuuseumi geokogud" title="TÜ Loodusmuuseumi geokogud">
       </a>
       <a href="https://loodusmuuseum.ee/geoloogilised-kogud" target="_blank">
-        <img border="0" style="height: 60px; padding: 0 10px;"  src="https://files.geocollections.info/img/ELM_logo_white1.png" alt="Eesti Loodusmuuseumi geoloogia osakond" title="Eesti Loodusmuuseumi geoloogia osakond">
+        <img class="footerLogo" border="0" style="height: 60px; padding: 0 10px;"  src="https://files.geocollections.info/img/ELM_logo_white1.png" alt="Eesti Loodusmuuseumi geoloogia osakond" title="Eesti Loodusmuuseumi geoloogia osakond">
       </a>      
       <br />
       </div>
     
     <div style="margin: 10px 0 10px 0;">
-    &copy; Data contributors 2019. 
-    Content on this site is licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA Licence</a>, if not indicated otherwise.<br />
-    Developed as part of <a href="https://natarc.ut.ee">NATARC</a> infrastructure and a component of <a href="https://geocollections.info">SARV</a>. 
-    Hosted by the <a href="https://taltech.ee/geoloogia-instituut">Department of Geology, TalTech</a>
+    &copy; {{ new Date().getFullYear() }} {{$t('footer.copyright')}}. {{$t('footer.licence1')}} <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA</a> {{$t('footer.licence2')}}.<br />
+    {{$t('footer.developed1')}} <a href="https://natarc.ut.ee">NATARC</a> {{$t('footer.developed2')}} <a href="https://geocollections.info">SARV</a>. 
+    {{$t('footer.hosted1')}} <a href="https://taltech.ee/geoloogia-instituut">{{$t('footer.hosted2')}}</a>
     </div>
 </footer>
 
@@ -80,11 +79,17 @@
     color: #fff;
   } 
 
+  .footerLogos {
+    max-height: 3.8rem;
+    overflow: hidden;
+  }
+  
   /* Footer logo is 40px for small mobile screens */
-  @media (max-width: 401px) {
-    #eitrawLogo {
-      height: 40px;
+  @media (max-width: 601px) {
+    .footerLogo {
+      height: 40px !important;
     }
+    
   }
 
 </style>
