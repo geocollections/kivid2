@@ -1,18 +1,20 @@
 <template>
-  <div class="page-container item-page" >
-    <div v-if="error === false">
+  <div class="page-container item-page" v-if="error === false">{{clientWidth}}
       <div class="row">
         <div class="col-md-12">
           <h1 v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en), ru: capitalizeFirstLetter(rock.name_ru) }"></h1>
           <h6><i v-translate="{ et: rock.rock_type__name, en: rock.rock_type__name_en, ru: rock.rock_type__name_ru }"></i></h6>
         </div>
       </div>
-      <div class="col-md-12">  
+      <div class="col-md-12">
         <div class="row" v-if="isDefinedAndNotEmpty(rock.images)" >
           <lingallery ref="lingallery" :items="rock.images"/>
         </div>
       </div>
-      <tabs v-on:tab-changed="setActiveTab"></tabs>
+      <div class="col-md-12">
+        <tabs v-on:tab-changed="setActiveTab"></tabs>
+      </div>
+
       <tab-specimens :search-parameters="searchParameters" v-if="activeTab === 'specimens'" v-on:specimen-filter-applied="setSpecimenCollectionCnt"></tab-specimens>
         <div class="row" v-if="activeTab  === 'overview'">
           <div :class="isWideScreenDevice ? 'col-md-6':'col-md-8'">
@@ -115,8 +117,8 @@
                                        {{reference.reference__publisher}}, {{reference.reference__publisher_place}}, lk. {{reference.reference__pages}}.
                                        </span>
                     <span v-if="reference.pages || reference.figures"><!-- if specific pages on mineral provided -->
-                                       [lk. {{reference.pages}}] 
-                                       </span>                         
+                                       [lk. {{reference.pages}}]
+                                       </span>
                     <span v-if="reference.reference__doi !== null" ><a :href="'https://doi.org/'+reference.reference__doi" rel="noopener" target="_blank">DOI:{{reference.reference__doi}}</a></span>
                   </div>
                 </div>
@@ -124,7 +126,7 @@
             </div>
           </div>
           <div :class="isWideScreenDevice ? 'col-md-3':'col-md-4'">
-            
+
             <!-- === ROCK PROPERTIES === -->
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.properties)">
               <div class="card rounded-0">
@@ -132,20 +134,20 @@
                 <div class="card-body">
                   <div style="padding-bottom: 8px;" v-if="isDefinedAndNotNull(rock.elComposition)">
                     <span style="font-weight: bolder">{{$t('item.composition')}}</span>: {{rock.elComposition}}
-                  </div>                  
+                  </div>
                   <div v-for="item in rock.properties">
                     <span style="font-weight: bolder" v-translate="{ et: item.property_type__property, en: item.property_type__property_en, ru: item.property_type__property_ru }"></span>:
                     <span v-if="isDefinedAndNotNull(item.value_min) || isDefinedAndNotNull(item.value_max)">
                     	<span v-if="(item.value_min === item.value_max) || (isDefinedAndNotNull(item.value_min) && !item.value_max)">
                     		{{item.value_min}}</span>
-                    	<span v-else>                		
+                    	<span v-else>
                     		{{item.value_min}} - {{item.value_max}}</span></span>
                     <span v-if="isDefinedAndNotNull(item.value_txt)">{{item.value_txt}}</span>
                   </div>
 
                 </div>
               </div>
-            </div>            
+            </div>
 
             <!-- === ROCK TREES === -->
             <taxonomical-tree v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true && isWideScreenDevice === false"
@@ -193,8 +195,6 @@
                               v-on:set-tab-list-left-posi="setLeftPosi"/>
           </div>
         </div>
-
-    </div>
   </div>
 </template>
 

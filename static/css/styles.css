@@ -67,6 +67,36 @@ img {
   .navbar-brand {
     font-size: 11px;
   }
+  .navbar-nav {
+    margin-left: -5px !important;
+    padding: 20px 0px 20px 0 !important;
+  }
+  .mr-5 {
+    margin-right:0 !important;
+  }
+  #app {
+    font-size: 0.75rem !important;
+    overflow-x: hidden !important;
+  }
+
+  section {
+    padding-top: 0rem !important;
+    padding-bottom: 5rem !important ;
+  }
+
+  th,td,
+  .col-md-12,
+  .col-md-8,
+  .col-md-4{
+    padding-right: 2px !important;
+    padding-left: 2px !important;
+  }
+  .card-header {
+    font-size: 0.9rem !important;
+  }
+  .card-body {
+    padding: 0.4rem
+  }
 }
 @media screen and (min-width : 363px) and (max-width : 439px) {
   .navbar-brand {
@@ -82,7 +112,8 @@ img {
     margin-left: 0.2rem !important;
     padding-top: 0.2rem ;
   }
-
+  .col-md-8,
+  .col-md-4,
   .col-lg-8,
   .col-lg-4{
     padding-right: 0 !important;

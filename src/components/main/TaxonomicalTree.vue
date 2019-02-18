@@ -275,5 +275,12 @@
     color:#efefef;
     vertical-align:middle;
   }
-
+  @media screen and (min-width : 0px) and (max-width : 362px) {
+    .scroller-left {
+      margin-left: -5px !important;
+    }
+    .scroller-right{
+      margin-right: -5px !important;
+    }
+  }
 </style>

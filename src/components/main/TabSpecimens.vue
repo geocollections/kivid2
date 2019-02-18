@@ -68,12 +68,11 @@
                               v-translate="{et:item.original_status,en:item.original_status_en}"></span>
                     </td>
                     -->
-                    <td v-if="$parent.isDefinedAndNotNull(item.image_preview_url)">
-                        <a data-fancybox="gallery3" :href="item.image_url" :data-caption="item.caption">
+                    <td v-if="!isSmallScreenDevice || (isSmallScreenDevice && ($parent.isDefinedAndNotNull(item.image_preview_url)))">
+                      <a data-fancybox="gallery3" :href="item.image_url" :data-caption="item.caption" v-if="$parent.isDefinedAndNotNull(item.image_preview_url)">
                         <img class="img-thumbnail previewImage" :src="item.image_preview_url" style="max-height: 6rem;max-width:3rem "/>
                         </a>
                     </td>
-                    <td v-else></td>
                 </tr>
                 </tbody>
             </table>
