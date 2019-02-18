@@ -225,5 +225,55 @@
   .clt ul > li:last-child::after {
     height: 8px;
   }
+  .fa-arrow-alt-circle-left, .fa-arrow-alt-circle-right {
+    color:#6c757d  !important;
+  }
+  .scroller {
+    text-align:center;
+    cursor:pointer;
+    display: none;
+    padding-top:11px;
+    white-space:no-wrap;
+    vertical-align:middle;
+    background-color:#fff;
+
+
+  }
+
+  .scroller-right{
+    float:right;
+    margin-right: -20px !important;
+  }
+
+  .scroller-left {
+    float:left;
+    margin-left: -20px !important;
+  }
+
+  .wrapper {
+    position:relative;
+    margin:0 auto;
+    overflow:hidden;
+    padding:5px;
+    /*height:50px;*/
+  }
+  .list {
+    position:absolute;
+    left:0px;
+    top:0px;
+    min-width:3000px;
+    margin-left:12px;
+    margin-top:0px;
+  }
+
+  .list li{
+    display:table-cell;
+    position:relative;
+    text-align:center;
+    cursor:grab;
+    cursor:-webkit-grab;
+    color:#efefef;
+    vertical-align:middle;
+  }
 
 </style>

@@ -148,7 +148,7 @@
             </div>            
 
             <!-- === ROCK TREES === -->
-            <taxonomical-tree v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true"
+            <taxonomical-tree v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true && isWideScreenDevice === false"
             v-on:set-active-clf-tab="setActiveClfTab" :activeClfTab="activeClfTab" :tabListLeftPosi="tabListLeftPosi"
             v-on:set-tab-list-left-posi="setLeftPosi"/>
 
@@ -186,7 +186,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3" v-if="isWideScreenDevice">
+          <div class="col-md-3" v-if="isWideScreenDevice === true">
             <!-- === ROCK TREES === -->
             <taxonomical-tree v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true"
                               v-on:set-active-clf-tab="setActiveClfTab" :activeClfTab="activeClfTab" :tabListLeftPosi="tabListLeftPosi"
@@ -231,6 +231,11 @@
     data() {
       return this.initialData()
     },
+    reAdjust() {
+      window.addEventListener('resize', () => {
+        this.clientWidth = document.documentElement.clientWidth;
+      });
+    },
     beforeMount() {
       window.addEventListener('resize', this.reAdjust);
     },
@@ -249,9 +254,7 @@
       this.loadFullRockInfo()
     },
     mounted() {
-      window.addEventListener('resize', () => {
-        this.clientWidth = document.documentElement.clientWidth;
-      });
+      this.clientWidth = document.documentElement.clientWidth;
     },
     filters: {
       moment: function (date) {
@@ -580,55 +583,4 @@
     background-color:#26a69a  !important;
     color:#ffffff  !important;
   }
-  .fa-arrow-alt-circle-left, .fa-arrow-alt-circle-right {
-    color:#6c757d  !important;
-  }
-  .scroller {
-    text-align:center;
-    cursor:pointer;
-    display: none;
-    padding-top:11px;
-    white-space:no-wrap;
-    vertical-align:middle;
-    background-color:#fff;
-
-
-  }
-
-  .scroller-right{
-    float:right;
-    margin-right: -20px !important;
-  }
-
-  .scroller-left {
-    float:left;
-    margin-left: -20px !important;
-  }
-
-  .wrapper {
-    position:relative;
-    margin:0 auto;
-    overflow:hidden;
-    padding:5px;
-    /*height:50px;*/
-  }
-  .list {
-    position:absolute;
-    left:0px;
-    top:0px;
-    min-width:3000px;
-    margin-left:12px;
-    margin-top:0px;
-  }
-
-  .list li{
-    display:table-cell;
-    position:relative;
-    text-align:center;
-    cursor:grab;
-    cursor:-webkit-grab;
-    color:#efefef;
-    vertical-align:middle;
-  }
-
 </style>
