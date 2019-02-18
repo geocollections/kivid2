@@ -87,7 +87,7 @@ export function fetchSearch (name,mode) {
 }
 export function fetchLastChangedRocks (mode) {
   //return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)
-  return fetch(`rock/?paginate_by=5&page=1&order_by=-date_changed&format=json`)//fields=id,name,name_en,date_changed&
+  return fetch(`rock/?fields=id,name,name_en,name_ru,date_changed&paginate_by=5&page=1&order_by=-date_changed&format=json`)
 }
 export function fetchPhotoGallery (parentString,mode) {
   return fetch(`rock/?sql=rock_photo_gallery&keyword=${parentString}&page=1&paginate_by=25&format=json`)
@@ -108,13 +108,13 @@ export function fetchSearchByMineral (q,numberOfParams, mode) {
 export function fetchSearchByChemicalElement (q, mode) {
   // return fetch(`rock_mineral/?mineral__formula__icontains=${el}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en&distinct=true&format=json`)
   // return fetch(`rock_mineral/?${q}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en&distinct=true&format=json`)
-  return fetch(`rock/?${q}${applyMode(mode,'=','')}&format=json`)//&fields=id,name,name_en
+  return fetch(`rock/?${q}${applyMode(mode,'=','')}&fields=id,name,name_en,name_ru&format=json`)
 }
 export function fetchMineralList () {
-  return fetch(`rock_mineral/?fields=mineral__id,mineral__name,mineral__name_en&distinct=true&format=json`)
+  return fetch(`rock_mineral/?fields=mineral__id,mineral__name,mineral__name_en,mineral__name_ru&distinct=true&format=json`)
 }
 export function fetchChemicalElementList () {
-  return fetch(`rock_element/?fields=element,element__element,element__name,element__name_en&distinct=true&format=json`)
+  return fetch(`rock_element/?fields=element,element__element,element__name,element__name_en,element__name_ru&distinct=true&format=json`)
 }
 export function fetchSearchByPropertyType (properties, numberOfParams) {
   // properties = `(rp.property_type_id=9 AND rp.value_txt like '%kuld%') OR (rp.property_type_id=1 AND rp.value_min >= 2) OR (rp.property_type_id=2 AND rp.value_min >= 2)`;
