@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container item-page" v-if="error === false">{{clientWidth}}
+  <div class="page-container item-page" v-if="error === false">
       <div class="row">
         <div class="col-md-12">
           <h1 v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en), ru: capitalizeFirstLetter(rock.name_ru) }"></h1>

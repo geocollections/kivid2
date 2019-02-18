@@ -74,14 +74,15 @@ img {
   .mr-5 {
     margin-right:0 !important;
   }
+
   #app {
     font-size: 0.75rem !important;
     overflow-x: hidden !important;
   }
 
   section {
-    padding-top: 0rem !important;
-    padding-bottom: 5rem !important ;
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important ;
   }
 
   th,td,
