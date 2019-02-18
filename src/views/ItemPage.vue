@@ -335,7 +335,7 @@
       isDefinedAndNotNull(value) { return !!value && value !== null },
       isDefinedAndNotEmpty(value) { return !!value && value.length > 0 },
       capitalizeFirstLetter(string) {
-        return string ? string.charAt(0).toUpperCase() + string.slice(1):'';
+        return string ? string.charAt(0).toUpperCase() + string.slice(1):undefined;
       },
       navigate: function(id) {
         this.$router.push({ path: `/${id}`});
