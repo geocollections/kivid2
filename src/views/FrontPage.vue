@@ -31,6 +31,7 @@
                 <button type="button" class="btn form-control btn-secondary" @click="searchType = 3;clearSearch()" :class="searchType === 3 ? 'active': ''">{{$t('search.mineral')}}</button>
               </div>
             </div>
+
             <form v-on:submit.prevent="searchByAdditionalCriteria" class="col-lg-12 well"  style="text-align: right;">
               <div class="row"  v-for="property,idx in searchParameters.properties"   v-if="searchType === 1">
                 <div class="col-lg-5">
@@ -67,14 +68,13 @@
               <div class="row" v-if="searchType === 2">
                 <div class="col-lg-2 label" ><label style="padding: 10px 5px;" v-if="false">{{$t('main.search.chemicalEl')}}:</label></div>
                 <div class="col-lg-8">
-                  <vue-multiselect :open-direction="'bottom'" label="element__element"
+                  <vue-multiselect :open-direction="'bottom'" label="element__element" @select="onSelect"
                                     v-model="searchParameters.selectedChemicalElements" :placeholder="$t('main.search.chemicalElPlaceholder')" track-by="element" :options="chemicalElList" :multiple="true" :taggable="true">
                   </vue-multiselect>
                   <!--<input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>-->
                 </div>
                 <div class="col-lg-1">
-                  <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
-                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>{{$t('main.search.search')}}</button>
+                  <search-button v-on:search-btn-pressed="searchByAdditionalCriteria"/>
                 </div>
               </div>
               <div class="row" v-if="searchType === 3">
@@ -82,23 +82,20 @@
                   <label class="typo__label" style="padding: 10px 5px;" v-if="false">{{$t('main.search.mineral')}}:</label>
                 </div>
                 <div class="col-lg-8">
-                  <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'"
+                  <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'" @select="onSelect"
                                     v-model="searchParameters.selectedMinerals" :placeholder="$t('main.search.mineralPlaceholder')"  track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true"></vue-multiselect>
                   <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en, en: searchParameters.selectedMinerals.mineral__name_ru }"></span>
                 </div>
                 <div class="col-lg-1">
-                  <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
-                    <font-awesome-icon class="mr-1" :icon="searchIcon"/>{{$t('main.search.search')}}</button>
+                  <search-button  v-on:search-btn-pressed="searchByAdditionalCriteria"/>
                 </div>
               </div>
               <div class="row" v-if="searchType === 1">
                 <div class="col-lg-6" style="text-align: left;">
-                  <button type="button" class="btn btn-xs btn-link" aria-pressed="true" @click="addProperty" title="Add new property">
-                    <font-awesome-icon :icon="addRow"/>&ensp;{{$t('main.search.addRow')}}</button>
+                  <search-button  v-on:search-btn-pressed="searchByAdditionalCriteria"/>
                 </div>
                 <div class="col-lg-6">
-                  <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
-                    <font-awesome-icon :icon="searchIcon"/>{{$t('main.search.search')}}</button>
+
                 </div>
               </div>
             </form>
@@ -169,13 +166,12 @@
   import faSearchPlus from '@fortawesome/fontawesome-free-solid/faSearchPlus';
   import faPlus from '@fortawesome/fontawesome-free-solid/faPlus';
   import faTrash from '@fortawesome/fontawesome-free-solid/faTrash';
+  import SearchButton from "../components/main/SearchButton";
 
   export default {
     name: "front-page",
-    components: {ModeButtons, LangButtons, RockSearch, VueMultiselect,FontAwesomeIcon,Spinner},
-    metaInfo: {
-      title: 'Mineraalid, kivimid, maavarad'
-    },
+    components: {SearchButton, ModeButtons, LangButtons, RockSearch, VueMultiselect,FontAwesomeIcon,Spinner},
+
     data() {
       return {
         searchParameters: this.setDefaultSearchParams(), mineralList:[], chemicalElList:[], loading:false, searchType: 1, showCollapse:false,
@@ -186,7 +182,14 @@
       lang() {return this.$i18n.locale},
       searchIcon() { return faSearchPlus },
       addRow() { return faPlus},
-      removeRow() { return faTrash}
+      removeRow() { return faTrash},
+      getValue() {
+        if (!this.multiple && !Array.isArray(this.value)) {
+          this.value = [this.value];
+        }
+
+        return this.value;
+      },
     },
     created() {
       this.$emit('page-loaded',false);
@@ -208,6 +211,9 @@
 
     },
     methods: {
+      onSelect () {
+        document.getElementById('searchBtn').focus()
+      },
       setDefaultOperand(property) {
         let prop = this.rockPropertyTypes.filter(function (val, i) {
           return val.id === property.propertyType;
@@ -270,6 +276,7 @@
         return query.substring(0,query.length-3)
       },
       searchByAdditionalCriteria() {
+        console.log('submit')
         if(!this.isValidForm()) {
           this.$emit('throw-error',`Search is not allowed. Please choose some search criteria`);
           return;
