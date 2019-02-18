@@ -30,7 +30,7 @@
           this.addTopRock();
           let level = 0,prevNode;
           level,prevNode = this.addHierarchy(hierarchy,level);
-          if(this.sisters.length === 1) {this.addSiblings(this.reorderSiblings(), level,prevNode);}
+          if(this.sisters.length === 1 && this.sisters[0].parent_id === null) {this.addSiblings(this.reorderSiblings(), level,prevNode);}
           else this.addSisters(this.reorderSisters(),level,prevNode)
         },
         reorderSisters: function(){
