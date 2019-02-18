@@ -239,14 +239,15 @@
       getProperties() {
         let query = '', vm = this;
         this.searchParameters.properties.forEach(function(prop){
-          if(prop.propertyOperand === 'text') query += ` (rp.property_type_id=${prop.propertyType} AND rp.value_txt like '%${prop.propertyValue}%') OR`;
-          else if(prop.propertyOperand === 'iexact') query += ` (rp.property_type_id=${prop.propertyType} AND rp.value_txt like '${prop.propertyValue}') OR`;
+          if(prop.propertyOperand === 'text') query += `(rp.property_type_id=${prop.propertyType} AND rp.value_txt like '%${prop.propertyValue}%') OR`;
+          else if(prop.propertyOperand === 'iexact') query += `(rp.property_type_id=${prop.propertyType} AND rp.value_txt like '${prop.propertyValue}') OR`;
           else if(prop.propertyOperand === 'number') {
+            console.log(prop.propertyValueFrom +' ' +prop.propertyValueTo)
             let val = '';
-            if (vm.isValueNotNullAndNotEmptyString(prop.propertyValueFrom)) val = `rp.value_min >= ${prop.propertyValueFrom}`;
+            if (vm.isValueNotNullAndNotEmptyString(prop.propertyValueFrom)) val = `rp.value_min>=${prop.propertyValueFrom}`;
             if (vm.isValueNotNullAndNotEmptyString(prop.propertyValueFrom) && vm.isValueNotNullAndNotEmptyString(prop.propertyValueTo)) val += ` AND `;
-            if (vm.isValueNotNullAndNotEmptyString(prop.propertyValueTo)) val = `rp.value_max <= ${prop.propertyValueTo}`;
-            query += `( rp.property_type_id=${prop.propertyType} AND ${val}) OR`
+            if (vm.isValueNotNullAndNotEmptyString(prop.propertyValueTo)) val += `rp.value_max<=${prop.propertyValueTo}`;
+            query += `(rp.property_type_id=${prop.propertyType} AND ${val}) OR`
           }
 
         });
