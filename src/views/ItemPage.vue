@@ -54,7 +54,11 @@
                       <th>Mindat ID</th><td><a :href="'http://mindat.org/min-'+rock.mindat_id+'.html'">{{rock.mindat_id}}</a></td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.link_wikipedia) || isDefinedAndNotNull(rock.link_wikipedia_en)">
-                      <th>Wikipedia</th><td><a target='_blank' rel='noopener' :href="'http://et.wikipedia.org/wiki/'+rock.link_wikipedia">{{rock.link_wikipedia}}</a> | <a target='_blank' rel='noopener' :href="'http://en.wikipedia.org/wiki/'+rock.link_wikipedia_en">{{rock.link_wikipedia_en}}</a></td>
+                      <th>Wikipedia</th><td>
+                      <a target='_blank' rel='noopener' :href="'http://et.wikipedia.org/wiki/'+rock.link_wikipedia">{{rock.link_wikipedia}}</a>
+                      <span v-if="isDefinedAndNotNull(rock.link_wikipedia_en)">| <a target='_blank' rel='noopener' :href="'http://en.wikipedia.org/wiki/'+rock.link_wikipedia_en">{{rock.link_wikipedia_en}}</a></span>
+                      <span v-if="isDefinedAndNotNull(rock.link_wikipedia_ru)">| <a target='_blank' rel='noopener' :href="'http://ru.wikipedia.org/wiki/'+rock.link_wikipedia_ru">{{rock.link_wikipedia_ru}}</a></span>
+                    </td>
                     </tr>
                     <!--
                     <tr v-if="rock.in_estonia">
