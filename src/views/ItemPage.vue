@@ -15,7 +15,7 @@
       <tabs v-on:tab-changed="setActiveTab"></tabs>
       <tab-specimens :search-parameters="searchParameters" v-if="activeTab === 'specimens'" v-on:specimen-filter-applied="setSpecimenCollectionCnt"></tab-specimens>
         <div class="row" v-if="activeTab  === 'overview'">
-          <div class="col-md-8">
+          <div :class="isWideScreenDevice ? 'col-md-6':'col-md-8'">
             <div class="row m-1">
               <div class="card rounded-0">
                 <div class="card-body">
@@ -123,7 +123,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div :class="isWideScreenDevice ? 'col-md-3':'col-md-4'">
             
             <!-- === ROCK PROPERTIES === -->
             <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.properties)">
@@ -148,26 +148,10 @@
             </div>            
 
             <!-- === ROCK TREES === -->
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.classifications)">
-              <div class="card rounded-0" id="tab-block">
-                <div class="card-header">{{$t('item.classification')}}</div>
-                <div class="card-body">
-                  <div class="m-1 mt-3">
-                    <div class="scroller scroller-left" @click="scrollLeft()"><font-awesome-icon class="tabArrow" :icon="arrowLeft"/></div>
-                    <div class="scroller scroller-right" @click="scrollRight()"><font-awesome-icon class="tabArrow" :icon="arrowRight"/></div>
-                    <div class="wrapper">
-                    <ul class="nav nav-tabs tab-links list" style="flex-wrap: nowrap !important;font-size: small">
-                      <li class="nav-item" v-for="cls in rock.classifications">
-                        <a :id="'id_'+cls.rock_classification_id" href="#" @click.prevent="setActiveClfTab(cls.rock_classification_id)" class="nav-link"
-                           :class="{ active: activeClfTab === cls.rock_classification_id }" v-translate="{ et: cls.rock_classification__name, en: cls.rock_classification__name_en, ru: cls.rock_classification__name_ru }"></a>
-                      </li>
-                    </ul>
-                    <taxonomical-tree v-if="isClassificationTreeLoaded === true" style="margin-top: 3rem !important;"></taxonomical-tree>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <taxonomical-tree v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true"
+            v-on:set-active-clf-tab="setActiveClfTab" :activeClfTab="activeClfTab" :tabListLeftPosi="tabListLeftPosi"
+            v-on:set-tab-list-left-posi="setLeftPosi"/>
+
             <!-- === ROCK MAP === -->
             <div class="row m-1"  v-if="isDefinedAndNotNull(rock.in_estonia) && isDefinedAndNotEmpty(rock.localities)">
               <div class="card rounded-0">
@@ -202,6 +186,12 @@
               </div>
             </div>
           </div>
+          <div class="col-md-3" v-if="isWideScreenDevice">
+            <!-- === ROCK TREES === -->
+            <taxonomical-tree v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true"
+                              v-on:set-active-clf-tab="setActiveClfTab" :activeClfTab="activeClfTab" :tabListLeftPosi="tabListLeftPosi"
+                              v-on:set-tab-list-left-posi="setLeftPosi"/>
+          </div>
         </div>
 
     </div>
@@ -230,8 +220,6 @@
   } from '../api'
   import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
   import faExternalLink from '@fortawesome/fontawesome-free-solid/faExternalLinkAlt'
-  import faArrowRight from '@fortawesome/fontawesome-free-solid/faArrowAltCircleRight'
-  import faArrowLeft from '@fortawesome/fontawesome-free-solid/faArrowAltCircleLeft'
   import Lingallery from "../components/main/Lingallery";
   import TaxonomicalTree from "../components/main/TaxonomicalTree";
   import MapComponent from "../components/main/MapComponent";
@@ -253,24 +241,17 @@
       isClassificationTreeLoaded() {
         return this.isCurrentClfSistersLoaded === true && this.isCurrenClfHierarchyLoaded === true && this.isCurrentClfSiblingsLoaded === true},
       icon() { return faExternalLink },
-      arrowRight() { return faArrowRight },
-      arrowLeft() { return faArrowLeft },
-      widthOfList() {
-        let itemsWidth = 0;
-        $('.list li').each(function(){
-          let itemWidth = $(this).outerWidth();
-          itemsWidth+=itemWidth;
-        });
-        return itemsWidth;
-      },
-      widthOfHidden() {
-        return (($('.wrapper').outerWidth())-this.widthOfList-this.tabListLeftPosi);
-      },
-      title() { return this.rock.name}
+      isWideScreenDevice () {return this.clientWidth >= 1600}
+
     },
     created() {
       this.$emit('page-loaded',true);
       this.loadFullRockInfo()
+    },
+    mounted() {
+      window.addEventListener('resize', () => {
+        this.clientWidth = document.documentElement.clientWidth;
+      });
     },
     filters: {
       moment: function (date) {
@@ -286,6 +267,7 @@
         fileUrl:'https://files.geocollections.info',
         geocollectionUrl: "http://geocollections.info",
         error : false,
+        clientWidth : 800,
         tabListLeftPosi : 0,
         mode: this.$localStorage.get('kivid_mode'),
         rock : {
@@ -307,35 +289,13 @@
         isCurrentClfSistersLoaded: false,
         isCurrenClfHierarchyLoaded: false,
         isCurrentClfSiblingsLoaded: false,
-        leftAnimation: false,
-        rightAnimation: false,
+
         searchParameters: {
           specimens: { page: 1, paginateBy: 25, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
           onlyImgs: false,git: false,tug: false,elm: false, hackToFixComponentReload: ''},
         },
       }},
-      reAdjust() {
-        console.log('resize')
-        this.$nextTick(() => this.setArrows())
-      },
-      scrollArrows(animation, isLeft) {
-        let this_ = this;
-        if(animation === true) return
-        animation = true
-        $('.list').animate({left:(isLeft? '+': '-')+"="+10+"rem"},'fast',function(){
-          isLeft ? this_.leftAnimation = false : this_.rightAnimation = false
-          this_.tabListLeftPosi = $('.list').position().left
-          this_.setArrows();
-        });
-      },
-      scrollRight() {
-        if(this.widthOfHidden > 0) return;
-        this.scrollArrows(this.rightAnimation,false)
-      },
-      scrollLeft() {
-        if(this.tabListLeftPosi >= 0) return;
-        this.scrollArrows(this.leftAnimation,true)
-      },
+
       isDefinedAndNotNull(value) { return !!value && value !== null },
       isDefinedAndNotEmpty(value) { return !!value && value.length > 0 },
       capitalizeFirstLetter(string) {
@@ -470,28 +430,13 @@
           return val.rock_classification_id === itemID;
         }, this);
       },
-      setArrows: function() {
 
-        setTimeout(() => {
-          // console.log( $('#id_'+this.activeClfTab).offset().left)
-          // $(".list").delay(1000).animate({left: - $('#id_'+this.activeClfTab).offset().left }, 1000);
-          // console.log(this.widthOfHidden > 0)
-          // console.log('outer ' + $('.wrapper').outerWidth())
-          // console.log('width of list '+this.widthOfList)
-          // console.log('left pos '+this.tabListLeftPosi)
-          this.widthOfHidden < 0 ? $('.scroller-right').fadeIn('fast') : $('.scroller-right').fadeOut('fast');
-          this.tabListLeftPosi < 0 ? $('.scroller-left').fadeIn('fast') : $('.scroller-left').fadeOut('fast');
-
-        }, 100)
-
-      },
       setActiveTab: function(tab) {
         this.activeTab = tab
       },
       setActiveClfTab: function(tab) {
         this.activeClfTab = tab;
         this.currentClf = this.getCurrentClassification(this.rock.classifications,tab)[0]
-        this.$nextTick(() => this.setArrows())
       },
       formatHierarchyString: function(value) { return value ? value.replace(/-/g, ',') : value;},
       composeTree: function () {
@@ -515,6 +460,9 @@
       },
       setSpecimenCollectionCnt: function(specimentAmount) {
         this.rock.specimenCollectionCntFiltered = specimentAmount;
+      },
+      setLeftPosi:function() {
+        this.tabListLeftPosi = $('.list').position().left;
       }
 
     },

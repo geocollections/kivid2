@@ -1,29 +1,126 @@
 <template>
-  <div class="clt mt-2" >
-    <tree :tree-data="tree" :current-rock-id="$parent.rock.id"></tree>
+  <div class="row m-1">
+    <div class="card rounded-0" id="tab-block">
+      <div class="card-header">{{$t('item.classification')}}</div>
+      <div class="card-body">
+        <div class="m-1 mt-3">
+          <div class="scroller scroller-left" @click="scrollLeft()"><font-awesome-icon class="tabArrow" :icon="arrowLeft"/></div>
+          <div class="scroller scroller-right" @click="scrollRight()"><font-awesome-icon class="tabArrow" :icon="arrowRight"/></div>
+          <div class="wrapper">
+            <ul class="nav nav-tabs tab-links list" style="flex-wrap: nowrap !important;font-size: small">
+              <li class="nav-item" v-for="cls in $parent.rock.classifications">
+                <a :id="'id_'+cls.rock_classification_id" href="#" @click.prevent="setActiveClfTab(cls.rock_classification_id)" class="nav-link"
+                   :class="{ active: $props.activeClfTab === cls.rock_classification_id }" v-translate="{ et: cls.rock_classification__name, en: cls.rock_classification__name_en, ru: cls.rock_classification__name_ru }"></a>
+              </li>
+            </ul>
+            <div class="clt mt-2"  style="margin-top: 3rem !important;">
+              <tree :tree-data="tree" :current-rock-id="$parent.rock.id"></tree>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
 </template>
 
 <script>
   import Tree from "./Tree";
+  import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+  import faArrowRight from '@fortawesome/fontawesome-free-solid/faArrowAltCircleRight'
+  import faArrowLeft from '@fortawesome/fontawesome-free-solid/faArrowAltCircleLeft'
     export default {
       name: "taxonomical-tree",
-      components: {Tree},
+      components: {Tree,FontAwesomeIcon},
       data() {
         return {
-          tree: {}
+          tree: {},
+          leftAnimation: false,
+          rightAnimation: false,
         }
+      },
+      props: {
+        activeClfTab: Number,
+        tabListLeftPosi: Number
       },
       computed: {
         lang() {return this.$i18n.locale},
         hierarchy() { return this.$parent.currenClfHierarchy},
         sisters() { return this.$parent.currentClfSisters},
-        siblings() { return this.$parent.currentClfSiblings}
+        siblings() { return this.$parent.currentClfSiblings},
+        arrowRight() { return faArrowRight },
+        arrowLeft() { return faArrowLeft },
+        widthOfList() {
+          let itemsWidth = 0;
+          $('.list li').each(function(){
+            let itemWidth = $(this).outerWidth();
+            itemsWidth+=itemWidth;
+          });
+          return itemsWidth;
+        },
+        widthOfHidden() {
+          return (($('.wrapper').outerWidth())-this.widthOfList-this.$props.tabListLeftPosi);
+        },
+      },
+      beforeMount() {
+        window.addEventListener('resize', this.reAdjust);
+      },
+      beforeDestroy () {
+        window.addEventListener('resize', this.reAdjust);
       },
       mounted() {
         this.composeTaxonomicTree()
+        if(this.$props.tabListLeftPosi >= 0) {
+          $('.list').animate({left: '-'+"="+this.$props.tabListLeftPosi+"px"}, 50);
+        } else {
+          $('.list').animate({left:'+'+"="+this.$props.tabListLeftPosi+"px"}, 50);
+        }
+        this.$nextTick(() => this.setArrows())
+
       },
       methods: {
+        reAdjust() {
+          this.$nextTick(() => this.setArrows())
+        },
+        setArrows: function() {
+
+          setTimeout(() => {
+            // console.log( $('#id_'+this.activeClfTab).offset().left)
+            // $(".list").delay(1000).animate({left: - $('#id_'+this.activeClfTab).offset().left }, 1000);
+            // console.log(this.widthOfHidden)
+            // console.log('outer ' + $('.wrapper').outerWidth())
+            // console.log('width of list '+this.widthOfList)
+            // console.log('left pos '+this.tabListLeftPosi)
+            this.widthOfHidden < 0 ? $('.scroller-right').fadeIn('fast') : $('.scroller-right').fadeOut('fast');
+            this.$props.tabListLeftPosi < 0 ? $('.scroller-left').fadeIn('fast') : $('.scroller-left').fadeOut('fast');
+
+          }, 100)
+
+        },
+
+        scrollArrows(animation, isLeft) {
+          let this_ = this;
+          if(animation === true) return
+          animation = true
+          $('.list').animate({left:(isLeft? '+': '-')+"="+10+"rem"},'fast',function(){
+            isLeft ? this_.leftAnimation = false : this_.rightAnimation = false
+
+            this_.$emit('set-tab-list-left-posi',true);
+            this_.setArrows();
+          });
+        },
+        scrollRight() {
+          if(this.widthOfHidden > 0) return;
+          this.scrollArrows(this.rightAnimation,false)
+        },
+        scrollLeft() {
+          if(this.$props.tabListLeftPosi >= 0) return;
+          this.scrollArrows(this.leftAnimation,true)
+        },
+        setActiveClfTab: function(id) {
+          this.$emit('set-active-clf-tab',id);
+          this.$nextTick(() => this.setArrows())
+        },
         composeTaxonomicTree: function() {
           let hierarchy = this.reorderHierarchy();
           if (hierarchy === undefined) return;
@@ -128,4 +225,5 @@
   .clt ul > li:last-child::after {
     height: 8px;
   }
+
 </style>
