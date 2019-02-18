@@ -3,6 +3,9 @@
 </template>
 
 <script>
+  import '../../../static/js/leaflet-1.3.4/leaflet.js'
+  import '../../../static/js/leaflet-coordinates-0.1.5/leaflet.coordinates.min.js'
+  import '../../../static/js/leaflet-wicket/wicket.js'
     export default {
         name: "map-component",
         data() {
@@ -28,7 +31,9 @@
             }
 
         },
+
         methods: {
+
             checkAllLayers() {
                 this.layers.sort((a, b) => a.id - b.id);
                 for(let i = 0; i < this.layers.length; i++){
@@ -97,6 +102,9 @@
         }
     }
 </script>
+<style src="../../../static/js/leaflet-1.3.4/leaflet.css"></style>
+<style src="../../../static/js/leaflet-fullscreen/leaflet.fullscreen.css"></style>
+<style src="../../../static/js/leaflet-coordinates-0.1.5/leaflet.coordinates.css"></style>
 <style>
     .custom-popup-text a{
         color:#F05F40;
