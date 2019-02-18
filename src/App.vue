@@ -28,6 +28,21 @@ export default {
   name: 'App',
   data() { return  { showSpinner: true,errorMessege: false, cookiePolicy: this.$localStorage.get('kivid_cookie_policy') === null}},
   methods: {
+    translate: function(value_en,value_et,value_ru) {
+      let value;
+      switch(this.$i18n.locale)  {
+        case 'et':
+          value = (value_et === undefined || value_et === null) ? value_en : value_et;
+          break;
+        case 'ru':
+          value = (value_ru === undefined || value_ru === null) ? value_en : value_ru;
+          break;
+        default:
+          value = (value_en === undefined || value_en === null) ? value_en : value_en;
+          break;
+      }
+      return value;
+    },
     isSpinnerShown: function(isShown) {
       this.showSpinner = isShown;
     },

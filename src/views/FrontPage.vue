@@ -23,12 +23,6 @@
         </div>
         <b-collapse v-model="showCollapse" id="collapseA"  class="col-lg-12 border border-light medium p-4"  v-if="rockPropertyTypes.length > 0">
           <div class="col-lg-12 pb-3"><mode-buttons/></div>
-          
-          <!--
-          <div class="row">
-            <h4>{{$t('main.searchInstructions')}}</h4>
-          </div>
-			-->
           <div>
             <div class="row">
               <div class="input-group" role="group" aria-label="Basic example">
@@ -41,7 +35,7 @@
               <div class="row"  v-for="property,idx in searchParameters.properties"   v-if="searchType === 1">
                 <div class="col-lg-5">
                   <select class="searchCriterionType" v-model="property.propertyType" v-on:change="setDefaultOperand(property)">
-                    <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en }"></option>
+                    <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en, ru: item.property_ru }"></option>
                   </select>
                 </div>
                 <div class="col-lg-2 searchCriterionType label-check">
@@ -74,7 +68,7 @@
                 <div class="col-lg-2 label" ><label style="padding: 10px 5px;" v-if="false">{{$t('main.search.chemicalEl')}}:</label></div>
                 <div class="col-lg-8">
                   <vue-multiselect :open-direction="'bottom'" label="element__element"
-                                    v-model="searchParameters.selectedChemicalElements" placeholder="Search chemical element" track-by="element" :options="chemicalElList" :multiple="true" :taggable="true">
+                                    v-model="searchParameters.selectedChemicalElements" :placeholder="$t('main.search.chemicalElPlaceholder')" track-by="element" :options="chemicalElList" :multiple="true" :taggable="true">
                   </vue-multiselect>
                   <!--<input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>-->
                 </div>
@@ -89,8 +83,8 @@
                 </div>
                 <div class="col-lg-8">
                   <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'"
-                                    v-model="searchParameters.selectedMinerals" placeholder="Search mineral" track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true"></vue-multiselect>
-                  <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en }"></span>
+                                    v-model="searchParameters.selectedMinerals" :placeholder="$t('main.search.mineralPlaceholder')"  track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true"></vue-multiselect>
+                  <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en, en: searchParameters.selectedMinerals.mineral__name_ru }"></span>
                 </div>
                 <div class="col-lg-1">
                   <button type="button" class="btn btn-xs btn-search" aria-pressed="true" @click="searchByAdditionalCriteria" title="Sends request with inserted data">
@@ -114,8 +108,8 @@
               <h3 v-if="noSearchResults">{{$t('main.noSearchResults')}}</h3>
               <div class="row" v-if="searchResults.length > 0">
                 <div class="col-md-3 pb-2 "  v-for="item in searchResults">
-                  <router-link v-if="item.rock_id" :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en }"></router-link>
-                  <router-link v-if="!item.rock_id" :to="'/'+item.id" v-translate="{ et: item.name, en: item.name_en }"></router-link>
+                  <router-link v-if="item.rock_id" :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en, ru: item.rock__name_ru }"></router-link>
+                  <router-link v-if="!item.rock_id" :to="'/'+item.id" v-translate="{ et: item.name, en: item.name_en, ru: item.name_ru }"></router-link>
                 </div>
               </div>
             </div>
@@ -143,7 +137,7 @@
           <br>
           <div style="padding: 5px 0; font-size: 0.8em;" v-if="lastChangedRocks && lastChangedRocks.length > 0">{{$t('main.lastChanged')}}:
             <span v-for="item in lastChangedRocks">
-              <router-link :to="'/'+item.id" v-translate="{ et: item.name, en: item.name_en }"></router-link>  |
+              <router-link :to="'/'+item.id" v-translate="{ et: item.name, en: item.name_en, en: item.name_ru }"></router-link>  |
             </span></div>
         </div>
       </div>

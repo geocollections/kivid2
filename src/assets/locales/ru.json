@@ -27,11 +27,14 @@
     "advanceSearch":"Расширенный поиск",
     "advanceSearchHide":"Скрыть расширенный поиск",
     "search": {
-      "mineral": "Mineral",
-      "chemicalEl": "Chemical element name",
-      "addRow":"Add row",
-      "search":"Search"
+      "mineral": "Минерал",
+      "mineralPlaceholder": "Выберите один или более минералов",
+      "chemicalEl": "Название химического элемента",
+      "chemicalElPlaceholder": "Выберите один или более химических элементов",
+      "addRow":"Добавить строку",
+      "search":"Поиск"
     },
+
     "policyAgreeBtn":"Agree",
     "policyHeader":"Terms of Service, Cookie policy, Privacy Policy",
     "policyMessage":"Sellel veebilehel kasutatakse küpsiseid. Kasutamist jätkates nõustute küpsiste ja veebilehe"
@@ -68,6 +71,10 @@
     "only_estonia":"Только Эстония",
     "only_images":"Только с картинками",
     "per_page":"Per page",
+    "property": "Свойство",
+    "element": "Химический состав",
+    "mineral": "Минаральный состав",
+    "exact": "Точный поиск",
     "specimen": {
       "id": "Ид",
       "number": "Номер экземпляра",
@@ -87,10 +94,10 @@
       "equals":"equals",
       "isBetween":"between"
     },
-    "additionalCriteria":"Additional criteria",
-    "value":"value",
-    "from":"from",
-    "to":"to"
+    "additionalCriteria":"Дополнительные критерии",
+    "value":"значение",
+    "from":"От",
+    "to":"До"
   },
   "fancybox": {
     "author": "Автор",

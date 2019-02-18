@@ -43,7 +43,20 @@ const i18n = new VueI18n({
   messages
 })
 Vue.directive('translate', function (el, binding) {
-  let value = i18n.locale === 'et' ? binding.value.et : binding.value.en
+  let value;
+  //temporary solution. Not all values contain ru translation
+  switch(i18n.locale)  {
+    case 'et':
+      value = (binding.value.et === undefined || binding.value.et === null) ? binding.value.en : binding.value.et;
+      break;
+    case 'ru':
+      value = (binding.value.ru === undefined || binding.value.ru === null) ? binding.value.en : binding.value.ru;
+      break;
+    default:
+      value = (binding.value.en === undefined || binding.value.en === null) ? binding.value.et : binding.value.en;
+      break;
+  }
+
   el.innerHTML = value === undefined || value === null ? '' : value
 });
 // This adds session id and csrf to request | MUST BE BEFORE new Vue()

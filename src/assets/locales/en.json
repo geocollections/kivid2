@@ -27,7 +27,9 @@
     "advanceSearchHide":"Hide advanced search",
     "search": {
       "mineral": "Mineral",
+      "mineralPlaceholder": "Choose one or more minerals",
       "chemicalEl": "Chemical element name",
+      "chemicalElPlaceholder": "Choose one or more chemical elements",
       "addRow":"Add row",
       "search":"Search"
     },
@@ -67,10 +69,10 @@
     "only_estonia":"Only Estonia",
     "only_images":"With images",
     "per_page":"Per page",
-  	"property": "Property",
-  	"element": "Chemical element",
-  	"mineral": "Mineral",
-  	"exact": "Exact match",
+    "property": "Property",
+    "element": "Chemical element",
+    "mineral": "Mineral",
+    "exact": "Exact match",
     "specimen": {
       "id": "ID",
       "number": "Specimen number",

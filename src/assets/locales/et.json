@@ -27,7 +27,9 @@
     "advanceSearchHide":"Peida otsing",
     "search": {
       "mineral": "Mineraal",
+      "mineralPlaceholder": "Vali üks või rohkem mineraali",
       "chemicalEl": "Keemiline element",
+      "chemicalElPlaceholder": "Vali üks või rohkem keemilist elementi",
       "addRow":"Lisa rida",
       "search":"Otsi"
     },

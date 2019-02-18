@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12">
           <h1 v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en), ru: capitalizeFirstLetter(rock.name_ru) }"></h1>
-          <h6><i v-translate="{ et: rock.rock_type__name, en: rock.rock_type__name_en, ru: rock.rock_type__name_en }"></i></h6>
+          <h6><i v-translate="{ et: rock.rock_type__name, en: rock.rock_type__name_en, ru: rock.rock_type__name_ru }"></i></h6>
         </div>
       </div>
       <div class="col-md-12">  
@@ -22,8 +22,8 @@
                   <table class='table basicInfoTable' v-if="basicInfoLoaded">
                     <tbody>
                     <tr v-if="isDefinedAndNotNull(rock.synonym_of)">
-                      <th></th><td><strong v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en) }"></strong> {{$t('item.synonymOf')}}
-                      <router-link :to="'/'+rock.synonym_of" v-translate="{ et: rock.synonym_of__name, en: rock.synonym_of__name_en }"></router-link></td>
+                      <th></th><td><strong v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en) , ru: capitalizeFirstLetter(rock.name_ru) }"></strong> {{$t('item.synonymOf')}}
+                      <router-link :to="'/'+rock.synonym_of" v-translate="{ et: rock.synonym_of__name, en: rock.synonym_of__name_en, ru: rock.synonym_of__name_ru }"></router-link></td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.rocktype) || isDefinedAndNotNull(rock.rockrank)">
                       <th>{{$t('item.type')}}</th><td>{{rock.rocktype}} | {{rock.rockrank}}</td>
@@ -32,15 +32,15 @@
                       <th>{{$t('item.composition')}}</th><td v-html="rock.formula_html"></td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.description) || isDefinedAndNotNull(rock.description_en)">
-                      <th>{{$t('item.description')}}</th><td v-translate="{ et: rock.description, en: rock.description_en }"></td>
+                      <th>{{$t('item.description')}}</th><td v-translate="{ et: rock.description, en: rock.description_en, ru: rock.description_ru }"></td>
                     </tr>
                     <tr v-if="rock.in_estonia==1">
                       <th>{{$t('item.in_estonia')}}</th>
-                      	<td v-if="isDefinedAndNotNull(rock.description_in_estonia) | isDefinedAndNotNull(rock.description_in_estonia_en)" v-translate="{ et: rock.description_in_estonia, en: rock.description_in_estonia_en }">zz</td>
+                      	<td v-if="isDefinedAndNotNull(rock.description_in_estonia) || isDefinedAndNotNull(rock.description_in_estonia_en)" v-translate="{ et: rock.description_in_estonia, en: rock.description_in_estonia_en, ru: rock.description_in_estonia_ru }"></td>
                       	<td v-else>{{$t('item.occurs_in_estonia')}}</td>
                     </tr>
-                    <tr v-if="isDefinedAndNotNull(rock.description_usage) | isDefinedAndNotNull(rock.description_usage_en)">
-                      <th>{{$t('item.usage')}}</th><td v-translate="{ et: rock.description_usage, en: rock.description_usage_en }"></td>
+                    <tr v-if="isDefinedAndNotNull(rock.description_usage) || isDefinedAndNotNull(rock.description_usage_en)">
+                      <th>{{$t('item.usage')}}</th><td v-translate="{ et: rock.description_usage, en: rock.description_usage_en, ru: rock.description_usage_ru }"></td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.remarks)">
                       <th>{{$t('item.additionalInfo')}}</th><td>{{rock.remarks}}</td>
@@ -77,11 +77,11 @@
                       <tbody>
                         <tr v-for="item in rock.minerals">
                           <td>
-                            <a v-on:click.prevent="navigate(item.mineral__id)" href="#" v-translate="{ et: item.mineral__name, en: item.mineral__name_en }"></a>
+                            <a v-on:click.prevent="navigate(item.mineral__id)" href="#" v-translate="{ et: item.mineral__name, en: item.mineral__name_en, ru: item.mineral__name_ru }"></a>
                           </td>
                           <td v-html="item.mineral__formula_html"></td>
-                          <td v-translate="{ et: item.description, en: item.description_en }"></td>
-                          <td v-translate="{ et: item.mineral_type__name, en: item.mineral_type__name_en }"></td>
+                          <td v-translate="{ et: item.description, en: item.description_en, ru: item.description_ru }"></td>
+                          <td v-translate="{ et: item.mineral_type__name, en: item.mineral_type__name_en, ru: item.mineral_type__name_ru }"></td>
                         </tr>
                       </tbody>
                     </table>
@@ -130,7 +130,7 @@
                     <span style="font-weight: bolder">{{$t('item.composition')}}</span>: {{rock.elComposition}}
                   </div>                  
                   <div v-for="item in rock.properties">
-                    <span style="font-weight: bolder" v-translate="{ et: item.property_type__property, en: item.property_type__property_en }"></span>:
+                    <span style="font-weight: bolder" v-translate="{ et: item.property_type__property, en: item.property_type__property_en, ru: item.property_type__property_ru }"></span>:
                     <span v-if="isDefinedAndNotNull(item.value_min) || isDefinedAndNotNull(item.value_max)">
                     	<span v-if="(item.value_min === item.value_max) || (isDefinedAndNotNull(item.value_min) && !item.value_max)">
                     		{{item.value_min}}</span>
@@ -155,7 +155,7 @@
                     <ul class="nav nav-tabs tab-links list" style="flex-wrap: nowrap !important;font-size: small">
                       <li class="nav-item" v-for="cls in rock.classifications">
                         <a :id="'id_'+cls.rock_classification_id" href="#" @click.prevent="setActiveClfTab(cls.rock_classification_id)" class="nav-link"
-                           :class="{ active: activeClfTab === cls.rock_classification_id }" v-translate="{ et: cls.rock_classification__name, en: cls.rock_classification__name_en }"></a>
+                           :class="{ active: activeClfTab === cls.rock_classification_id }" v-translate="{ et: cls.rock_classification__name, en: cls.rock_classification__name_en, ru: cls.rock_classification__name_ru }"></a>
                       </li>
                     </ul>
                     <taxonomical-tree v-if="isClassificationTreeLoaded === true" style="margin-top: 3rem !important;"></taxonomical-tree>
@@ -191,7 +191,7 @@
                   <ul  class="ast-content-ul-list">
                     <li class="mb-1" v-for="item in rock.mineralsByRock">
                       <button type="button" class="btn btn-outline-primary btn-circle" style="font-size: xx-small;" v-on:click.prevent="navigate(item.rock__id)"><font-awesome-icon :icon="icon" /></button>
-                      <span class="ml-2" v-translate="{ et: capitalizeFirstLetter(item.rock__name), en: capitalizeFirstLetter(item.rock__name_en) }"></span>
+                      <span class="ml-2" v-translate="{ et: capitalizeFirstLetter(item.rock__name), en: capitalizeFirstLetter(item.rock__name_en), ru: capitalizeFirstLetter(item.rock__name_ru) }"></span>
                     </li>
                   </ul>
                 </div>
@@ -344,11 +344,12 @@
         window.open(params.parent_url + '/' + params.object, '', 'width=' + params.width +
           ',height=' + params.height, scrollbars)
       },
+      translate: function(value_en,value_et,value_ru) {return this.$parent.translate(value_en,value_et,value_ru)},
       setFancyBoxCaption: function(el) {
         let text = "",
           rock = this.isDefinedAndNotNull(el.rock_id) && el.rock_id !== this.rock.id ?
             "<a href=\"/"+el.rock_id+"\" style=\"color:#c82333 !important\" ')\">" +
-            "<h5>"+(this.$localStorage.get('kivid_lang') === 'et'? el.name : el.name_en)+"</h5></a>"
+            "<h5>"+el.name ? (this.$parent.translate(el.name_en,el.name,el.name_ru)) : (this.$parent.translate(el.rock__name_en,el.rock__name,el.rock__name_ru))+"</h5></a>"
             :"" ,
           autor = this.isDefinedAndNotNull(el.attachment__author__agent) ?
             this.$t('fancybox.author')+": <strong>"+el.attachment__author__agent +"</strong>":"" ,

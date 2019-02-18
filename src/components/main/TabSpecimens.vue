@@ -30,12 +30,12 @@
                     <td>
                         <!-- Currently both are links because rock__name is mostly null. -->
                         <div>
-                            <router-link :to="'/'+item.rock_id" v-translate="{et:item.rock,en:item.rock_en}"></router-link>
+                            <router-link :to="'/'+item.rock_id" v-translate="{et:item.rock,en:item.rock_en,ru:item.rock_ru}"></router-link>
                             <span v-if="$parent.isDefinedAndNotNull(item.rock) &&
                             $parent.isDefinedAndNotNull(item.rock_txt)"> | </span>
                             <span v-if="($parent.isDefinedAndNotNull(item.rock_txt) || $parent.isDefinedAndNotNull(item.rock_txt_en))
                             && ((item.rock !== item.rock_txt) || (item.rock_en !== item.rock_txt_en))">
-                            <i><span v-translate="{et:item.rock_txt,en:item.rock_txt_en}"></span></i>
+                            <i><span v-translate="{et:item.rock_txt,en:item.rock_txt_en,ru:item.rock_txt_ru}"></span></i>
                             </span>
                         </div>
                     </td>
@@ -43,7 +43,7 @@
                         <div v-if="$parent.isDefinedAndNotNull(item.locality) || $parent.isDefinedAndNotNull(item.locality_en)">
                             <a href="#"
                                     @click.prevent="$parent.openUrl({parent_url:$parent.geocollectionUrl+'/locality',object:item.locality_id, width:500,height:500})">
-                                <span v-translate="{et:item.locality,en:item.locality_en}"></span></a>
+                                <span v-translate="{et:item.locality,en:item.locality_en,ru:item.locality_ru}"></span></a>
                         </div>
                         <span v-if="$parent.isDefinedAndNotNull(item.locality_free)"> {{item.locality_free}}</span>
                     </td>
@@ -55,7 +55,7 @@
                     ||$parent.isDefinedAndNotNull(item.stratigraphy_txt))">
                         <a v-if="$parent.isDefinedAndNotNull(item.stratigraphy)||$parent.isDefinedAndNotNull(item.stratigraphy_en)" href="#"
                                 @click.prevent="$parent.openUrl({parent_url:$parent.geocollectionUrl+'/stratigraphy',object:item.stratigraphy_id, width:500,height:500})">
-                            <span v-translate="{et:item.stratigraphy,en:item.stratigraphy_en}"></span></a>
+                            <span v-translate="{et:item.stratigraphy,en:item.stratigraphy_en,ru:item.stratigraphy_ru}"></span></a>
 
                         <span v-if="(item.stratigraphy_en == null && item.stratigraphy == null)
                                             || (item.lithostratigraphy_en == null && item.lithostratigraphy == null)"

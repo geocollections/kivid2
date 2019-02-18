@@ -87,7 +87,7 @@
                             id: index,
                             coords: [element.locality__latitude,element.locality__longitude],
                             type: element.src,
-                            name: (this_.lang === 'et' ? element.locality__locality : element.locality__locality_en),
+                            name: this_.$parent.translate(element.locality__locality_en,element.locality__locality,element.locality__locality_ru),
                             locid: element.locality
                         });
                     }

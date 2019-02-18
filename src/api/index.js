@@ -87,7 +87,7 @@ export function fetchSearch (name,mode) {
 }
 export function fetchLastChangedRocks (mode) {
   //return fetch(`rock/?multi_search=value:${name};fields:name,name_en;lookuptype:icontains&fields=id,name,name_en${applyMode(mode)}&format=json`)
-  return fetch(`rock/?fields=id,name,name_en,date_changed&paginate_by=5&page=1&order_by=-date_changed&format=json`)
+  return fetch(`rock/?paginate_by=5&page=1&order_by=-date_changed&format=json`)//fields=id,name,name_en,date_changed&
 }
 export function fetchPhotoGallery (parentString,mode) {
   return fetch(`rock/?sql=rock_photo_gallery&keyword=${parentString}&page=1&paginate_by=25&format=json`)
@@ -108,7 +108,7 @@ export function fetchSearchByMineral (q,numberOfParams, mode) {
 export function fetchSearchByChemicalElement (q, mode) {
   // return fetch(`rock_mineral/?mineral__formula__icontains=${el}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en&distinct=true&format=json`)
   // return fetch(`rock_mineral/?${q}${applyMode(mode,'=','rock__')}&fields=rock_id,rock__name,rock__name_en&distinct=true&format=json`)
-  return fetch(`rock/?${q}${applyMode(mode,'=','')}&fields=id,name,name_en&format=json`)
+  return fetch(`rock/?${q}${applyMode(mode,'=','')}&format=json`)//&fields=id,name,name_en
 }
 export function fetchMineralList () {
   return fetch(`rock_mineral/?fields=mineral__id,mineral__name,mineral__name_en&distinct=true&format=json`)
