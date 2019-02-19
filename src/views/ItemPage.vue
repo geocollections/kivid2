@@ -317,7 +317,7 @@
           rock = this.isDefinedAndNotNull(el.rock_id) && el.rock_id !== this.rock.id ?
             "<a href=\"/"+el.rock_id+"\" style=\"color:#c82333 !important\" ')\">" +
             "<h5>"+el.name ? (this.$parent.translate(el.name_en,el.name,el.name_ru)) : (this.$parent.translate(el.rock__name_en,el.rock__name,el.rock__name_ru))+"</h5></a>"
-            :"" ,
+            :" " ,
           autor = this.isDefinedAndNotNull(el.attachment__author__agent) ?
             this.$t('fancybox.author')+": <strong>"+el.attachment__author__agent +"</strong>":"" ,
           agent = this.isDefinedAndNotNull(el.attachment__copyright_agent__agent) ?
