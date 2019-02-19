@@ -1,7 +1,8 @@
 <template>
   <section class="container-fluid mt-2">
-    <div v-if="content">
-      <span class="card-body" v-html="currentContent"></span>
+    <div class="card-body" v-if="content" v-html="currentContent"></div>
+    <div class="card-body" v-else>
+     <h5>Oops! Page does not exist.</h5>
     </div>
   </section>
 </template>
