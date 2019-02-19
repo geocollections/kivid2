@@ -7,6 +7,7 @@ Vue.use(Meta,{keyName: 'metaInfo'});
 
 const FrontPage = () => import('../views/FrontPage.vue')
 const ItemPage = () => import('../views/ItemPage.vue')
+const StaticPage = () => import('../views/StaticPage.vue')
 
 export default new Router({
   mode: 'history',
@@ -15,6 +16,7 @@ export default new Router({
   routes: [
     {path: '/:id', name: 'ItemPage', component: ItemPage},
     {path: '/', name: 'FrontPage', component: FrontPage},
+    {path: '/page/:id', component: StaticPage },
     {path: '*', redirect: '/'}
   ]
 })
