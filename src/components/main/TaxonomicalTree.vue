@@ -1,5 +1,5 @@
 <template>
-  <div class="row m-1">
+  <div class="col-lg-12 m-1">
     <div class="card rounded-0" id="tab-block">
       <div class="card-header">{{$t('item.classification')}}</div>
       <div class="card-body">

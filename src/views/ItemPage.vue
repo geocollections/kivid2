@@ -15,186 +15,179 @@
         <tabs v-on:tab-changed="setActiveTab"></tabs>
       </div>
 
-      <tab-specimens :search-parameters="searchParameters" v-if="activeTab === 'specimens'" v-on:specimen-filter-applied="setSpecimenCollectionCnt"></tab-specimens>
-        <div class="row" v-if="activeTab  === 'overview'">
-          <div :class="isWideScreenDevice ? 'col-md-6':'col-md-8'">
-            <div class="row m-1">
-              <div class="card rounded-0">
-                <div class="card-body">
-                  <table class='table basicInfoTable' v-if="basicInfoLoaded" id="basic-info">
-                    <tbody>
-                    <tr v-if="isDefinedAndNotNull(rock.synonym_of)">
-                      <th></th><td><strong v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en) , ru: capitalizeFirstLetter(rock.name_ru) }"></strong> {{$t('item.synonymOf')}}
-                      <router-link :to="'/'+rock.synonym_of" v-translate="{ et: rock.synonym_of__name, en: rock.synonym_of__name_en, ru: rock.synonym_of__name_ru }"></router-link></td>
-                    </tr>
-                    <tr v-if="isDefinedAndNotNull(rock.rocktype) || isDefinedAndNotNull(rock.rockrank)">
-                      <th>{{$t('item.type')}}</th><td>{{rock.rocktype}} | {{rock.rockrank}}</td>
-                    </tr>
-                    <tr v-if="isDefinedAndNotNull(rock.formula_html)">
-                      <th>{{$t('item.composition')}}</th><td v-html="rock.formula_html"></td>
-                    </tr>
-                    <tr v-if="isDefinedAndNotNull(rock.description) || isDefinedAndNotNull(rock.description_en)">
-                      <th>{{$t('item.description')}}</th><td><span v-translate="{ et: rock.description, en: rock.description_en, ru: rock.description_ru }"></span></td>
-                    </tr>
-                    <tr v-if="rock.in_estonia==1">
-                      <th>{{$t('item.in_estonia')}}</th>
-                      	<td v-if="isDefinedAndNotNull(rock.description_in_estonia) || isDefinedAndNotNull(rock.description_in_estonia_en)" v-translate="{ et: rock.description_in_estonia, en: rock.description_in_estonia_en, ru: rock.description_in_estonia_ru }"></td>
-                      	<td v-else>{{$t('item.occurs_in_estonia')}}</td>
-                    </tr>
-                    <tr v-if="isDefinedAndNotNull(rock.description_usage) || isDefinedAndNotNull(rock.description_usage_en)">
-                      <th>{{$t('item.usage')}}</th><td v-translate="{ et: rock.description_usage, en: rock.description_usage_en, ru: rock.description_usage_ru }"></td>
-                    </tr>
-                    <tr v-if="isDefinedAndNotNull(rock.remarks)">
-                      <th>{{$t('item.additionalInfo')}}</th><td>{{rock.remarks}}</td>
-                    </tr>
-                    <tr v-if="isDefinedAndNotNull(rock.name)">
-                      <th>SARV</th><td>
-                      <a :href="'http://geocollections.info/specimen?name_geology_1=1&name_geology='+rock.name+'&currentTable=specimen&paginateBy=25&sort=id&sortdir=DESC'" target='_blank' rel='noopener'>{{$t('item.sarv')}}</a> | <a :href="'http://geocollections.info/specimen?name_geology_1=1&name_geology='+rock.name+'&search_images=1&currentTable=specimen&paginateBy=25&sort=id&sortdir=DESC'" target='_blank'  rel='noopener'>{{$t('item.sarvPics')}}</a>
-                    </td>
-                    </tr>
-                    <tr v-if="isDefinedAndNotNull(rock.mindat_id)">
-                      <th>Mindat ID</th><td><a :href="'http://mindat.org/min-'+rock.mindat_id+'.html'">{{rock.mindat_id}}</a></td>
-                    </tr>
-                    <tr v-if="isDefinedAndNotNull(rock.link_wikipedia) || isDefinedAndNotNull(rock.link_wikipedia_en)">
-                      <th>Wikipedia</th><td>
-                      <a target='_blank' rel='noopener' :href="'http://et.wikipedia.org/wiki/'+rock.link_wikipedia">{{rock.link_wikipedia}}</a>
-                      <span v-if="isDefinedAndNotNull(rock.link_wikipedia_en)">| <a target='_blank' rel='noopener' :href="'http://en.wikipedia.org/wiki/'+rock.link_wikipedia_en">{{rock.link_wikipedia_en}}</a></span>
-                      <span v-if="isDefinedAndNotNull(rock.link_wikipedia_ru)">| <a target='_blank' rel='noopener' :href="'http://ru.wikipedia.org/wiki/'+rock.link_wikipedia_ru">{{rock.link_wikipedia_ru}}</a></span>
-                    </td>
-                    </tr>
-                    <!--
-                    <tr v-if="rock.in_estonia">
-                      <th style="white-space: nowrap;"><i>{{$t('item.occurs_in_estonia')}}</i></th><td></td>
-                    </tr>
-                    -->
-                    </tbody>
-                  </table>
-                </div>
-                <div class="card-footer">
-                  <i style='font-size: 0.8em;'> {{rock.description_author}} {{rock.date_changed | moment}}</i>
-                </div>
-              </div>
+      <tab-specimens :search-parameters="searchParameters" v-if="activeTab === 'specimens'" v-on:specimen-filter-applied="setSpecimenCollectionCnt"/>
+    <!--1,x,-->
+    <div id="parent" class="row" v-if="activeTab  === 'overview' && isScreenReadjusted === false">
+      <div class="firstColumn col-md-8">
+        <div class="colEl1 col-lg-12 m-1 order-1 order-lg-1">
+          <div class="card rounded-0">
+            <div class="card-body">
+              <table class='table basicInfoTable' v-if="basicInfoLoaded" id="basic-info">
+                <tbody>
+                <tr v-if="isDefinedAndNotNull(rock.synonym_of)">
+                  <th></th><td><strong v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en) , ru: capitalizeFirstLetter(rock.name_ru) }"></strong> {{$t('item.synonymOf')}}
+                  <router-link :to="'/'+rock.synonym_of" v-translate="{ et: rock.synonym_of__name, en: rock.synonym_of__name_en, ru: rock.synonym_of__name_ru }"></router-link></td>
+                </tr>
+                <tr v-if="isDefinedAndNotNull(rock.rocktype) || isDefinedAndNotNull(rock.rockrank)">
+                  <th>{{$t('item.type')}}</th><td>{{rock.rocktype}} | {{rock.rockrank}}</td>
+                </tr>
+                <tr v-if="isDefinedAndNotNull(rock.formula_html)">
+                  <th>{{$t('item.composition')}}</th><td v-html="rock.formula_html"></td>
+                </tr>
+                <tr v-if="isDefinedAndNotNull(rock.description) || isDefinedAndNotNull(rock.description_en)">
+                  <th>{{$t('item.description')}}</th><td><span v-translate="{ et: rock.description, en: rock.description_en, ru: rock.description_ru }"></span></td>
+                </tr>
+                <tr v-if="rock.in_estonia==1">
+                  <th>{{$t('item.in_estonia')}}</th>
+                  <td v-if="isDefinedAndNotNull(rock.description_in_estonia) || isDefinedAndNotNull(rock.description_in_estonia_en)" v-translate="{ et: rock.description_in_estonia, en: rock.description_in_estonia_en, ru: rock.description_in_estonia_ru }"></td>
+                  <td v-else>{{$t('item.occurs_in_estonia')}}</td>
+                </tr>
+                <tr v-if="isDefinedAndNotNull(rock.description_usage) || isDefinedAndNotNull(rock.description_usage_en)">
+                  <th>{{$t('item.usage')}}</th><td v-translate="{ et: rock.description_usage, en: rock.description_usage_en, ru: rock.description_usage_ru }"></td>
+                </tr>
+                <tr v-if="isDefinedAndNotNull(rock.remarks)">
+                  <th>{{$t('item.additionalInfo')}}</th><td>{{rock.remarks}}</td>
+                </tr>
+                <tr v-if="isDefinedAndNotNull(rock.name)">
+                  <th>SARV</th><td>
+                  <a :href="'http://geocollections.info/specimen?name_geology_1=1&name_geology='+rock.name+'&currentTable=specimen&paginateBy=25&sort=id&sortdir=DESC'" target='_blank' rel='noopener'>{{$t('item.sarv')}}</a> | <a :href="'http://geocollections.info/specimen?name_geology_1=1&name_geology='+rock.name+'&search_images=1&currentTable=specimen&paginateBy=25&sort=id&sortdir=DESC'" target='_blank'  rel='noopener'>{{$t('item.sarvPics')}}</a>
+                </td>
+                </tr>
+                <tr v-if="isDefinedAndNotNull(rock.mindat_id)">
+                  <th>Mindat ID</th><td><a :href="'http://mindat.org/min-'+rock.mindat_id+'.html'">{{rock.mindat_id}}</a></td>
+                </tr>
+                <tr v-if="isDefinedAndNotNull(rock.link_wikipedia) || isDefinedAndNotNull(rock.link_wikipedia_en)">
+                  <th>Wikipedia</th><td>
+                  <a target='_blank' rel='noopener' :href="'http://et.wikipedia.org/wiki/'+rock.link_wikipedia">{{rock.link_wikipedia}}</a>
+                  <span v-if="isDefinedAndNotNull(rock.link_wikipedia_en)">| <a target='_blank' rel='noopener' :href="'http://en.wikipedia.org/wiki/'+rock.link_wikipedia_en">{{rock.link_wikipedia_en}}</a></span>
+                  <span v-if="isDefinedAndNotNull(rock.link_wikipedia_ru)">| <a target='_blank' rel='noopener' :href="'http://ru.wikipedia.org/wiki/'+rock.link_wikipedia_ru">{{rock.link_wikipedia_ru}}</a></span>
+                </td>
+                </tr>
+                <!--
+                <tr v-if="rock.in_estonia">
+                  <th style="white-space: nowrap;"><i>{{$t('item.occurs_in_estonia')}}</i></th><td></td>
+                </tr>
+                -->
+                </tbody>
+              </table>
             </div>
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.minerals)">
-              <div class="card rounded-0">
-                <div class="card-header">{{$t('item.minerals')}}</div>
-                <div class="card-body">
-                    <table class='table basicInfoTable' >
-                      <tbody>
-                        <tr v-for="item in rock.minerals">
-                          <td>
-                            <a v-on:click.prevent="navigate(item.mineral__id)" href="#" v-translate="{ et: item.mineral__name, en: item.mineral__name_en, ru: item.mineral__name_ru }"></a>
-                          </td>
-                          <td v-html="item.mineral__formula_html"></td>
-                          <td v-translate="{ et: item.description, en: item.description_en, ru: item.description_ru }"></td>
-                          <td v-translate="{ et: item.mineral_type__name, en: item.mineral_type__name_en, ru: item.mineral_type__name_ru }"></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                </div>
-              </div>
+            <div class="card-footer">
+              <i style='font-size: 0.8em;'> {{rock.description_author}} {{rock.date_changed | moment}}</i>
             </div>
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.references)">
-              <div class="card rounded-0">
-                <div class="card-header">{{$t('item.references')}}</div>
-                <div class="card-body">
-                  <div :class="idx === rock.references.length -1 ? '' : 'my-3'" v-for=" reference,idx in rock.references" style="padding-left: 3em; text-indent: -3em;">
-                    <a href="#" @click.prevent="openUrl({parent_url:'http://geocollections.info/reference',object:reference.reference_id, width:500,height:500})">
-                      {{reference.reference__author}} {{reference.reference__year}}.
-                    </a>
-                    <!--$author, $year. $title. $journal_name: $number or $book, $pages. DOI:$doi.-->
-                    <span>{{reference.reference__title}}.</span>
-
-                    <span v-if="reference.reference__journal__journal_name != null"><!-- if journal article -->
-                                           <em>{{reference.reference__journal__journal_name}}</em> <strong>{{reference.reference__volume}}</strong>,
-                                           <span v-if="reference.reference__number != null">{{reference.reference__number}},</span>
-                                           <span v-if="isDefinedAndNotNull(reference.reference__pages)">{{reference.reference__pages}}. </span>
-                                       </span>
-                    <span v-else-if="isDefinedAndNotNull(reference.reference__book) && reference.reference__book!=''"><!-- if book article -->
-                                       <em>{{reference.reference__book}}</em>, lk. {{reference.reference__pages}}.
-                                       </span>
-                    <span v-else><!-- if partial record -->
-                                       {{reference.reference__publisher}}, {{reference.reference__publisher_place}}, lk. {{reference.reference__pages}}.
-                                       </span>
-                    <span v-if="reference.pages || reference.figures"><!-- if specific pages on mineral provided -->
-                                       [lk. {{reference.pages}}]
-                                       </span>
-                    <span v-if="reference.reference__doi !== null" ><a :href="'https://doi.org/'+reference.reference__doi" rel="noopener" target="_blank">DOI:{{reference.reference__doi}}</a></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div :class="isWideScreenDevice ? 'col-md-3':'col-md-4'">
-
-            <!-- === ROCK PROPERTIES === -->
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.properties)">
-              <div class="card rounded-0">
-                <div class="card-header">{{$t('item.features')}}</div>
-                <div class="card-body">
-                  <div style="padding-bottom: 8px;" v-if="isDefinedAndNotNull(rock.elComposition)">
-                    <span style="font-weight: bolder">{{$t('item.composition')}}</span>: {{rock.elComposition}}
-                  </div>
-                  <div v-for="item in rock.properties">
-                    <span style="font-weight: bolder" v-translate="{ et: item.property_type__property, en: item.property_type__property_en, ru: item.property_type__property_ru }"></span>:
-                    <span v-if="isDefinedAndNotNull(item.value_min) || isDefinedAndNotNull(item.value_max)">
-                    	<span v-if="(item.value_min === item.value_max) || (isDefinedAndNotNull(item.value_min) && !item.value_max)">
-                    		{{item.value_min}}</span>
-                    	<span v-else>
-                    		{{item.value_min}} - {{item.value_max}}</span></span>
-                    <span v-if="isDefinedAndNotNull(item.value_txt)">{{item.value_txt}}</span>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-            <!-- === ROCK TREES === -->
-            <taxonomical-tree v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true && isWideScreenDevice === false"
-            v-on:set-active-clf-tab="setActiveClfTab" :activeClfTab="activeClfTab" :tabListLeftPosi="tabListLeftPosi"
-            v-on:set-tab-list-left-posi="setLeftPosi"/>
-
-            <!-- === ROCK MAP === -->
-            <div class="row m-1"  v-if="isDefinedAndNotNull(rock.in_estonia) && isDefinedAndNotEmpty(rock.localities)">
-              <div class="card rounded-0">
-                <div class="card-header">{{$t('item.localities')}}</div>
-                <div class="card-body no-padding">
-                  <map-component></map-component>
-                </div>
-              </div>
-            </div>
-            <!-- === ROCK SYNONYMS === -->
-            <div class="row m-1"  v-if="isDefinedAndNotEmpty(rock.synonyms)">
-              <div class="card rounded-0">
-                <div class="card-header">{{$t('item.synonyms')}}</div>
-                <div class="card-body">
-                  <div v-for="item in rock.synonyms">
-                    <b>{{item.language__iso1}}</b>: {{item.name}}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row m-1" v-if="isDefinedAndNotEmpty(rock.mineralsByRock)">
-              <div class="card rounded-0">
-                <div class="card-header">{{$t('item.mineralsByRock')}}</div>
-                <div class="card-body">
-                  <ul  class="ast-content-ul-list">
-                    <li class="mb-1" v-for="item in rock.mineralsByRock">
-                      <button type="button" class="btn btn-outline-primary btn-circle" style="font-size: xx-small;" v-on:click.prevent="navigate(item.rock__id)"><font-awesome-icon :icon="icon" /></button>
-                      <span class="ml-2" v-translate="{ et: capitalizeFirstLetter(item.rock__name), en: capitalizeFirstLetter(item.rock__name_en), ru: capitalizeFirstLetter(item.rock__name_ru) }"></span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3" v-if="isWideScreenDevice === true">
-            <!-- === ROCK TREES === -->
-            <taxonomical-tree v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true"
-                              v-on:set-active-clf-tab="setActiveClfTab" :activeClfTab="activeClfTab" :tabListLeftPosi="tabListLeftPosi"
-                              v-on:set-tab-list-left-posi="setLeftPosi"/>
           </div>
         </div>
+        <div class="colEl2 col-lg-12 m-1 order-7 order-lg-2" v-if="isDefinedAndNotEmpty(rock.minerals)">
+          <div class="card rounded-0">
+            <div class="card-header">{{$t('item.minerals')}}</div>
+            <div class="card-body">
+              <table class='table basicInfoTable' >
+                <tbody>
+                <tr v-for="item in rock.minerals">
+                  <td>
+                    <a v-on:click.prevent="navigate(item.mineral__id)" href="#" v-translate="{ et: item.mineral__name, en: item.mineral__name_en, ru: item.mineral__name_ru }"></a>
+                  </td>
+                  <td v-html="item.mineral__formula_html"></td>
+                  <td v-translate="{ et: item.description, en: item.description_en, ru: item.description_ru }"></td>
+                  <td v-translate="{ et: item.mineral_type__name, en: item.mineral_type__name_en, ru: item.mineral_type__name_ru }"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="colEl3 col-lg-12 m-1 order-8 order-lg-3" v-if="isDefinedAndNotEmpty(rock.references)">
+          <div class="card rounded-0">
+            <div class="card-header">{{$t('item.references')}}</div>
+            <div class="card-body">
+              <div :class="idx === rock.references.length -1 ? '' : 'my-3'" v-for=" reference,idx in rock.references" style="padding-left: 3em; text-indent: -3em;">
+                <a href="#" @click.prevent="openUrl({parent_url:'http://geocollections.info/reference',object:reference.reference_id, width:500,height:500})">
+                  {{reference.reference__author}} {{reference.reference__year}}.
+                </a>
+                <!--$author, $year. $title. $journal_name: $number or $book, $pages. DOI:$doi.-->
+                <span>{{reference.reference__title}}.</span>
+
+                <span v-if="reference.reference__journal__journal_name != null"><!-- if journal article -->
+                                         <em>{{reference.reference__journal__journal_name}}</em> <strong>{{reference.reference__volume}}</strong>,
+                                         <span v-if="reference.reference__number != null">{{reference.reference__number}},</span>
+                                         <span v-if="isDefinedAndNotNull(reference.reference__pages)">{{reference.reference__pages}}. </span>
+                                     </span>
+                <span v-else-if="isDefinedAndNotNull(reference.reference__book) && reference.reference__book!=''"><!-- if book article -->
+                                     <em>{{reference.reference__book}}</em>, lk. {{reference.reference__pages}}.
+                                     </span>
+                <span v-else><!-- if partial record -->
+                                     {{reference.reference__publisher}}, {{reference.reference__publisher_place}}, lk. {{reference.reference__pages}}.
+                                     </span>
+                <span v-if="reference.pages || reference.figures"><!-- if specific pages on mineral provided -->
+                                     [lk. {{reference.pages}}]
+                                     </span>
+                <span v-if="reference.reference__doi !== null" ><a :href="'https://doi.org/'+reference.reference__doi" rel="noopener" target="_blank">DOI:{{reference.reference__doi}}</a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="secondColumn  col-md-4">
+        <!-- === ROCK PROPERTIES === -->
+        <div class="colEl4 col-lg-12 m-1 order-2  order-lg-1" v-if="isDefinedAndNotEmpty(rock.properties)">
+          <div class="card rounded-0">
+            <div class="card-header">{{$t('item.features')}}</div>
+            <div class="card-body">
+              <div style="padding-bottom: 8px;" v-if="isDefinedAndNotNull(rock.elComposition)">
+                <span style="font-weight: bolder">{{$t('item.composition')}}</span>: {{rock.elComposition}}
+              </div>
+              <div v-for="item in rock.properties">
+                <span style="font-weight: bolder" v-translate="{ et: item.property_type__property, en: item.property_type__property_en, ru: item.property_type__property_ru }"></span>:
+                <span v-if="isDefinedAndNotNull(item.value_min) || isDefinedAndNotNull(item.value_max)">
+                    <span v-if="(item.value_min === item.value_max) || (isDefinedAndNotNull(item.value_min) && !item.value_max)">
+                      {{item.value_min}}</span>
+                    <span v-else>
+                      {{item.value_min}} - {{item.value_max}}</span></span>
+                <span v-if="isDefinedAndNotNull(item.value_txt)">{{item.value_txt}}</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- === ROCK TREES === -->
+        <taxonomical-tree class="colEl5 order-3  order-lg-2" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true && isWideScreenDevice === false"
+                          v-on:set-active-clf-tab="setActiveClfTab" :activeClfTab="activeClfTab" :tabListLeftPosi="tabListLeftPosi"
+                          v-on:set-tab-list-left-posi="setLeftPosi"/>
+        <!-- === ROCK MAP === -->
+        <div class="colEl6 col-lg-12 m-1 order-6  order-lg-3" v-if="isDefinedAndNotNull(rock.in_estonia) && isDefinedAndNotEmpty(rock.localities)">
+          <div class="card rounded-0">
+            <div class="card-header">{{$t('item.localities')}}</div>
+            <div class="card-body no-padding">
+              <map-component></map-component>
+            </div>
+          </div>
+        </div>
+        <!-- === ROCK SYNONYMS === -->
+        <div class="colEl7 col-lg-12 m-1 order-5  order-lg-4" v-if="isDefinedAndNotEmpty(rock.synonyms)">
+          <div class="card rounded-0">
+            <div class="card-header">{{$t('item.synonyms')}}</div>
+            <div class="card-body">
+              <div v-for="item in rock.synonyms">
+                <b>{{item.language__iso1}}</b>: {{item.name}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="colEl8 col-lg-12 m-1 order-4  order-lg-5" v-if="isDefinedAndNotEmpty(rock.mineralsByRock)">
+          <div class="card rounded-0">
+            <div class="card-header">{{$t('item.mineralsByRock')}}</div>
+            <div class="card-body">
+              <ul  class="ast-content-ul-list">
+                <li class="mb-1" v-for="item in rock.mineralsByRock">
+                  <button type="button" class="btn btn-outline-primary btn-circle" style="font-size: xx-small;" v-on:click.prevent="navigate(item.rock__id)"><font-awesome-icon :icon="icon" /></button>
+                  <span class="ml-2" v-translate="{ et: capitalizeFirstLetter(item.rock__name), en: capitalizeFirstLetter(item.rock__name_en), ru: capitalizeFirstLetter(item.rock__name_ru) }"></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </template>
 
@@ -231,11 +224,7 @@
     data() {
       return this.initialData()
     },
-    reAdjust() {
-      window.addEventListener('resize', () => {
-        this.clientWidth = document.documentElement.clientWidth;
-      });
-    },
+
     beforeMount() {
       window.addEventListener('resize', this.reAdjust);
     },
@@ -246,15 +235,17 @@
       isClassificationTreeLoaded() {
         return this.isCurrentClfSistersLoaded === true && this.isCurrenClfHierarchyLoaded === true && this.isCurrentClfSiblingsLoaded === true},
       icon() { return faExternalLink },
-      isWideScreenDevice () {return this.clientWidth >= 1600}
+      isWideScreenDevice () {return this.clientWidth >= 1600},
+      isSmallScreenDevice () {return this.clientWidth < 439}
 
     },
     created() {
       this.$emit('page-loaded',true);
       this.loadFullRockInfo()
     },
+
     mounted() {
-      this.clientWidth = document.documentElement.clientWidth;
+      this.reAdjust();
     },
     filters: {
       moment: function (date) {
@@ -271,6 +262,7 @@
         geocollectionUrl: "http://geocollections.info",
         error : false,
         clientWidth : 800,
+        isScreenReadjusted:false,
         tabListLeftPosi : 0,
         mode: this.$localStorage.get('kivid_mode'),
         rock : {
@@ -301,6 +293,66 @@
 
       isDefinedAndNotNull(value) { return !!value && value !== null },
       isDefinedAndNotEmpty(value) { return !!value && value.length > 0 },
+      rafAsync() {
+        return new Promise(resolve => {
+          requestAnimationFrame(resolve); //faster than set time out
+        });
+      },
+
+      checkElement(selector) {
+        if (document.querySelector(selector) === null) {
+          return this.rafAsync().then(() => this.checkElement(selector));
+        } else {
+          return Promise.resolve(true);
+        }
+      },
+      appendElement(i,el,lastEL) {
+        console.log(el)
+        console.log(lastEL)
+        if(lastEL === ".firstColumn") {
+          $( ".firstColumn" ).prepend($(el))
+        } else if(lastEL === ".secondColumn") {
+          $( ".secondColumn" ).prepend($(el))
+        } else {
+
+          $( el ).insertAfter($(lastEL))
+        }
+        // switch (i) {
+        //   case 1:
+        //     $( ".firstColumn" ).prepend($(".colEl1")); break;
+        //   case 2:
+        //     $( ".colEl2" ).insertAfter($(".colEl1")); break;
+        //   case 3:
+        //     $( ".colEl3" ).insertAfter($(".colEl"+lastEL)); break;
+        //   case 4:
+        //     $( ".secondColumn" ).prepend($(".colEl4")); break;
+        //   case 5:
+        //     $( ".colEl5" ).insertAfter($(".colEl4")); break;
+        //   case 6:
+        //     $( ".colEl6" ).insertAfter($(".colEl5")); break;
+        //   case 7:
+        //     $( ".colEl7" ).insertAfter($(".colEl6")); break;
+        //   case 8:
+        //     $( ".colEl8" ).insertAfter($(".colEl7")); break;
+        //   default:break;
+        // }
+      },
+      reAdjust() {
+        this.isScreenReadjusted = true;
+        this.$emit('page-loaded',true);
+        setTimeout(() => {
+          this.isScreenReadjusted = false;
+          this.$emit('page-loaded',false);
+        }, 100)
+        this.clientWidth = document.documentElement.clientWidth;
+        if(this.isSmallScreenDevice === true) {
+          for(let i = 1; i < 9; i++) {
+            this.checkElement('.colEl'+i).then((element) => {
+                $(".colEl"+i).insertBefore($( ".firstColumn" ));
+              });
+          }
+        }
+      },
       capitalizeFirstLetter(string) {
         return string ? string.charAt(0).toUpperCase() + string.slice(1):undefined;
       },
@@ -530,6 +582,9 @@
     width: 100%;
     max-width: 1024px;
     text-align: left;
+  }
+  .col-lg-12 {
+    padding: 0 !important;
   }
   .col-md-8 {
     padding-right:0.1rem !important;
