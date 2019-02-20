@@ -63,10 +63,8 @@ img {
 }
 
 /*search navigation tab*/
-@media screen and (min-width : 0px) and (max-width : 362px) {
-  .navbar-brand {
-    font-size: 11px;
-  }
+@media screen and (min-width : 0px) and (max-width : 439px) {
+
   .navbar-nav {
     margin-left: -5px !important;
     padding: 20px 0px 20px 0 !important;
@@ -97,6 +95,47 @@ img {
   }
   .card-body {
     padding: 0.4rem
+  }
+
+  /* Force table to not be like tables anymore */
+  #basic-info table,
+  #basic-info thead,
+  #basic-info tbody,
+  #basic-info th,
+  #basic-info td,
+  #basic-info tr {
+    display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  #basic-info thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  /*#table-search tr { border: 1px solid #ccc; }*/
+
+  #basic-info td {
+    /* Behave  like a "row" */
+    border: none;
+    /*border-bottom: 1px solid #eee;*/
+    position: relative;
+    /*padding-left: 50%;*/
+    padding-top: 0 !important;
+    /*padding: 0.4rem !important;*/
+    white-space: normal;
+    text-align: left;
+  }
+  #basic-info td, #basic-info th{
+    border-top:none !important;
+    /*border-bottom: 1px solid #dee2e6 !important;*/
+  }
+
+}
+@media screen and (min-width : 0px) and (max-width : 363px) {
+  .navbar-brand {
+    font-size: 11px;
   }
 }
 @media screen and (min-width : 363px) and (max-width : 439px) {

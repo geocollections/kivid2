@@ -21,7 +21,7 @@
             <div class="row m-1">
               <div class="card rounded-0">
                 <div class="card-body">
-                  <table class='table basicInfoTable' v-if="basicInfoLoaded" id="basic-info">
+                  <table class='table basicInfoTable' v-if="basicInfoLoaded">
                     <tbody>
                     <tr v-if="isDefinedAndNotNull(rock.synonym_of)">
                       <th></th><td><strong v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en) , ru: capitalizeFirstLetter(rock.name_ru) }"></strong> {{$t('item.synonymOf')}}
@@ -34,7 +34,10 @@
                       <th>{{$t('item.composition')}}</th><td v-html="rock.formula_html"></td>
                     </tr>
                     <tr v-if="isDefinedAndNotNull(rock.description) || isDefinedAndNotNull(rock.description_en)">
-                      <th>{{$t('item.description')}}</th><td><span v-translate="{ et: rock.description, en: rock.description_en, ru: rock.description_ru }"></span></td>
+                      <th>{{$t('item.description')}}</th>
+                    </tr>
+                    <tr v-if="isDefinedAndNotNull(rock.description) || isDefinedAndNotNull(rock.description_en)">
+                      <th>{{$t('item.description')}}</th><td v-translate="{ et: rock.description, en: rock.description_en, ru: rock.description_ru }"></td>
                     </tr>
                     <tr v-if="rock.in_estonia==1">
                       <th>{{$t('item.in_estonia')}}</th>
@@ -583,5 +586,4 @@
     background-color:#26a69a  !important;
     color:#ffffff  !important;
   }
-
 </style>

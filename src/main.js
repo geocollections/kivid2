@@ -50,7 +50,7 @@ Vue.directive('translate', function (el, binding) {
       value = (binding.value.et === undefined || binding.value.et === null || binding.value.et === '') ? binding.value.en : binding.value.et;
       break;
     case 'ru':
-      value = (binding.value.ru === undefined || binding.value.ru === null || binding.value.ru === '') ? binding.value.en : binding.value.ru;
+      value = (binding.value.ru === undefined || binding.value.ru === null || binding.value.ru === '') ? binding.value.en === null ? binding.value.et : binding.value.en : binding.value.ru;
       break;
     default:
       value = (binding.value.en === undefined || binding.value.en === null || binding.value.en === '') ? binding.value.et : binding.value.en;
