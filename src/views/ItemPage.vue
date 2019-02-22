@@ -294,7 +294,9 @@
       isDefinedAndNotNull(value) { return !!value && value !== null },
       isDefinedAndNotEmpty(value) { return !!value && value.length > 0 },
       rafAsync() {
+        this.isScreenReadjusted = true;
         return new Promise(resolve => {
+          this.isScreenReadjusted = false;
           requestAnimationFrame(resolve); //faster than set time out
         });
       },
@@ -306,44 +308,14 @@
           return Promise.resolve(true);
         }
       },
-      appendElement(i,el,lastEL) {
-        console.log(el)
-        console.log(lastEL)
-        if(lastEL === ".firstColumn") {
-          $( ".firstColumn" ).prepend($(el))
-        } else if(lastEL === ".secondColumn") {
-          $( ".secondColumn" ).prepend($(el))
-        } else {
 
-          $( el ).insertAfter($(lastEL))
-        }
-        // switch (i) {
-        //   case 1:
-        //     $( ".firstColumn" ).prepend($(".colEl1")); break;
-        //   case 2:
-        //     $( ".colEl2" ).insertAfter($(".colEl1")); break;
-        //   case 3:
-        //     $( ".colEl3" ).insertAfter($(".colEl"+lastEL)); break;
-        //   case 4:
-        //     $( ".secondColumn" ).prepend($(".colEl4")); break;
-        //   case 5:
-        //     $( ".colEl5" ).insertAfter($(".colEl4")); break;
-        //   case 6:
-        //     $( ".colEl6" ).insertAfter($(".colEl5")); break;
-        //   case 7:
-        //     $( ".colEl7" ).insertAfter($(".colEl6")); break;
-        //   case 8:
-        //     $( ".colEl8" ).insertAfter($(".colEl7")); break;
-        //   default:break;
-        // }
-      },
       reAdjust() {
-        this.isScreenReadjusted = true;
-        this.$emit('page-loaded',true);
-        setTimeout(() => {
-          this.isScreenReadjusted = false;
-          this.$emit('page-loaded',false);
-        }, 100)
+        // this.isScreenReadjusted = true;
+        // this.$emit('page-loaded',true);
+        // setTimeout(() => {
+        //   this.isScreenReadjusted = false;
+        //   this.$emit('page-loaded',false);
+        // }, 100)
         this.clientWidth = document.documentElement.clientWidth;
         if(this.isSmallScreenDevice === true) {
           for(let i = 1; i < 9; i++) {
