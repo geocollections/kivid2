@@ -10,6 +10,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
+// import Purgecss webpack plugin and glob-all
+const PurgecssPlugin = require('purgecss-webpack-plugin')
+const glob = require('glob-all')
+
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 // const PrerenderSpaPlugin = require('prerender-spa-plugin')
 // const Renderer = PrerenderSpaPlugin.PuppeteerRenderer
@@ -51,6 +56,15 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       sourceMap: config.build.productionSourceMap,
       parallel: true
+    }),
+    // Remove unused CSS using purgecss. See https://github.com/FullHuman/purgecss
+    // for more information about purgecss.
+    new PurgecssPlugin({
+      paths: glob.sync([
+        path.join(__dirname, './../src/index.html'),
+        path.join(__dirname, './../**/*.vue'),
+        path.join(__dirname, './../src/**/*.js')
+      ])
     }),
     // extract css into its own file
     new ExtractTextPlugin({
