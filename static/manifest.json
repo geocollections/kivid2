@@ -1,18 +1,6 @@
 {
   "short_name": "Kivid.info",
   "name": "Kivid.info",
-  "icons": [
-    {
-      "src": "images/web_hi_res_512.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "images/web_hi_res_512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
   "start_url": "/#/",
   "background_color": "#ffffff",
   "display": "standalone",
