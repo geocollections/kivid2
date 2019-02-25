@@ -1,21 +1,21 @@
 <template>
   <div class="page-container item-page" v-if="error === false">
-      <div class="row">
-        <div class="col-md-12">
-          <h1 v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en), ru: capitalizeFirstLetter(rock.name_ru) }"></h1>
-          <h6><i v-translate="{ et: rock.rock_type__name, en: rock.rock_type__name_en, ru: rock.rock_type__name_ru }"></i></h6>
-        </div>
-      </div>
+    <div class="row">
       <div class="col-md-12">
-        <div class="row" v-if="isDefinedAndNotEmpty(rock.images)" >
-          <lingallery ref="lingallery" :items="rock.images"/>
-        </div>
+        <h1 v-translate="{ et: capitalizeFirstLetter(rock.name), en: capitalizeFirstLetter(rock.name_en), ru: capitalizeFirstLetter(rock.name_ru) }"></h1>
+        <h6><i v-translate="{ et: rock.rock_type__name, en: rock.rock_type__name_en, ru: rock.rock_type__name_ru }"></i></h6>
       </div>
-      <div class="col-md-12">
-        <tabs v-on:tab-changed="setActiveTab"></tabs>
+    </div>
+    <div class="col-md-12">
+      <div class="row" v-if="isDefinedAndNotEmpty(rock.images)" >
+        <lingallery ref="lingallery" :items="rock.images"/>
       </div>
+    </div>
+    <div class="col-md-12">
+      <tabs v-on:tab-changed="setActiveTab"></tabs>
+    </div>
 
-      <tab-specimens :search-parameters="searchParameters" v-if="activeTab === 'specimens'" v-on:specimen-filter-applied="setSpecimenCollectionCnt"/>
+    <tab-specimens :search-parameters="searchParameters" v-if="activeTab === 'specimens'" v-on:specimen-filter-applied="setSpecimenCollectionCnt"/>
     <!--1,x,-->
     <div id="parent" class="row" v-if="activeTab  === 'overview' && isScreenReadjusted === false">
       <div class="firstColumn col-md-8">
@@ -149,7 +149,7 @@
           </div>
         </div>
         <!-- === ROCK TREES === -->
-        <taxonomical-tree class="colEl5 order-3  order-lg-2" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true && isWideScreenDevice === false"
+        <taxonomical-tree class="colEl5 order-3  order-lg-2" v-if="isDefinedAndNotEmpty(rock.classifications) && isClassificationTreeLoaded === true"
                           v-on:set-active-clf-tab="setActiveClfTab" :activeClfTab="activeClfTab" :tabListLeftPosi="tabListLeftPosi"
                           v-on:set-tab-list-left-posi="setLeftPosi"/>
         <!-- === ROCK MAP === -->
@@ -186,7 +186,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -224,26 +223,27 @@
     data() {
       return this.initialData()
     },
-
-    beforeMount() {
-      window.addEventListener('resize', this.reAdjust);
-    },
-    beforeDestroy () {
-      window.addEventListener('resize', this.reAdjust);
-    },
+    // beforeMount() {
+    //   window.addEventListener('resize', this.reAdjust);
+    // },
+    // beforeDestroy () {
+    //   window.addEventListener('resize', this.reAdjust);
+    // },
     computed: {
       isClassificationTreeLoaded() {
         return this.isCurrentClfSistersLoaded === true && this.isCurrenClfHierarchyLoaded === true && this.isCurrentClfSiblingsLoaded === true},
       icon() { return faExternalLink },
       isWideScreenDevice () {return this.clientWidth >= 1600},
-      isSmallScreenDevice () {return this.clientWidth < 439}
-
+      isSmallScreenDevice () {return this.clientWidth < 439},
+      isThirdColumnCreated() {
+        return this.rock && this.isWideScreenDevice === true && (this.isDefinedAndNotEmpty(this.rock.properties) || this.isDefinedAndNotNull(this.rock.in_estonia) || this.isDefinedAndNotEmpty(this.rock.localities)
+              || this.isDefinedAndNotEmpty(this.rock.synonyms) || this.isDefinedAndNotEmpty(this.rock.mineralsByRock))
+      }
     },
     created() {
       this.$emit('page-loaded',true);
       this.loadFullRockInfo()
     },
-
     mounted() {
       this.reAdjust();
     },
@@ -284,23 +284,18 @@
         isCurrentClfSistersLoaded: false,
         isCurrenClfHierarchyLoaded: false,
         isCurrentClfSiblingsLoaded: false,
-
         searchParameters: {
           specimens: { page: 1, paginateBy: 25, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
-          onlyImgs: false,git: false,tug: false,elm: false, hackToFixComponentReload: ''},
+            onlyImgs: false,git: false,tug: false,elm: false, hackToFixComponentReload: ''},
         },
       }},
-
       isDefinedAndNotNull(value) { return !!value && value !== null },
       isDefinedAndNotEmpty(value) { return !!value && value.length > 0 },
       rafAsync() {
-        this.isScreenReadjusted = true;
         return new Promise(resolve => {
-          this.isScreenReadjusted = false;
           requestAnimationFrame(resolve); //faster than set time out
         });
       },
-
       checkElement(selector) {
         if (document.querySelector(selector) === null) {
           return this.rafAsync().then(() => this.checkElement(selector));
@@ -308,20 +303,47 @@
           return Promise.resolve(true);
         }
       },
-
+      appendElement(i,el,lastEL) {
+        console.log(el)
+        console.log(lastEL)
+        if(lastEL === ".firstColumn") {
+          $( ".firstColumn" ).prepend($(el))
+        } else if(lastEL === ".secondColumn") {
+          $( ".secondColumn" ).prepend($(el))
+        } else {
+          $( el ).insertAfter($(lastEL))
+        }
+        // switch (i) {
+        //   case 1:
+        //     $( ".firstColumn" ).prepend($(".colEl1")); break;
+        //   case 2:
+        //     $( ".colEl2" ).insertAfter($(".colEl1")); break;
+        //   case 3:
+        //     $( ".colEl3" ).insertAfter($(".colEl"+lastEL)); break;
+        //   case 4:
+        //     $( ".secondColumn" ).prepend($(".colEl4")); break;
+        //   case 5:
+        //     $( ".colEl5" ).insertAfter($(".colEl4")); break;
+        //   case 6:
+        //     $( ".colEl6" ).insertAfter($(".colEl5")); break;
+        //   case 7:
+        //     $( ".colEl7" ).insertAfter($(".colEl6")); break;
+        //   case 8:
+        //     $( ".colEl8" ).insertAfter($(".colEl7")); break;
+        //   default:break;
+        // }
+      },
       reAdjust() {
         // this.isScreenReadjusted = true;
-        // this.$emit('page-loaded',true);
         // setTimeout(() => {
         //   this.isScreenReadjusted = false;
-        //   this.$emit('page-loaded',false);
-        // }, 100)
+        // }, 50)
         this.clientWidth = document.documentElement.clientWidth;
         if(this.isSmallScreenDevice === true) {
           for(let i = 1; i < 9; i++) {
             this.checkElement('.colEl'+i).then((element) => {
-                $(".colEl"+i).insertBefore($( ".firstColumn" ));
-              });
+              $(".colEl"+i).insertBefore($( ".firstColumn" ));
+            });
           }
         }
       },
@@ -349,7 +371,7 @@
           date = this.isDefinedAndNotNull(el.attachment__date_created) ?
             "<div>" + this.$t('fancybox.date')+": <strong>"+el.attachment__date_created +"</strong></div>":
             this.isDefinedAndNotNull(el.attachment__date_created_free) ?
-            "<div>" + this.$t('fancybox.date')+": <strong>"+el.attachment__date_created_free +"</strong></div>": "" ,
+              "<div>" + this.$t('fancybox.date')+": <strong>"+el.attachment__date_created_free +"</strong></div>": "" ,
           licence = this.isDefinedAndNotNull(el.attachment__licence__licence) ?
             "<div>" + this.$t('fancybox.licence')+": <strong>"+el.attachment__licence__licence +"</strong></div>":"" ,
           detailView = this.isDefinedAndNotNull(el.attachment__id) ?
@@ -372,7 +394,6 @@
       },
       currentRockDoNotHaveAnyImageFetchImagesByParentString() {
         if(this.rock.images.length === 0) {
-
           fetchPhotoGallery(this.currentClf.parent_string, this.mode).then((response) => {
             this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
               this.composeImageUrls(response.results) : [];
@@ -381,7 +402,6 @@
         }
       },
       setMetaInfo(){
-
         this.meta = {
           title : `${this.capitalizeFirstLetter(this.rock.name)} | ${this.capitalizeFirstLetter(this.rock.name_en)}`,
           url: `${this.kividUrl}${this.$route.fullPath}`,
@@ -413,11 +433,10 @@
             });
             vm.rock.elComposition = `${vm.rock.elComposition.substring(0,vm.rock.elComposition.length-2)}`
           }
-
         });
         fetchRockImages(this.rock.id, this.mode).then((response) => {
           this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
-           this.composeImageUrls(response.results) : [];
+            this.composeImageUrls(response.results) : [];
           if(this.rock.images.length > 0) this.meta.image = this.rock.images[0].src
         });
         fetchRockProperties(this.rock.id, this.mode).then((response) => {
@@ -440,7 +459,6 @@
           if(this.rock.classifications.length === 0) return;
           this.setActiveClfTab(this.rock.classifications[0].rock_classification_id);
           this.currentRockDoNotHaveAnyImageFetchImagesByParentString();
-
         });
         fetchRockLocalities(this.rock.id, this.mode).then((response) => {
           this.rock.localities = this.handleResponse(response);
@@ -457,7 +475,6 @@
           return val.rock_classification_id === itemID;
         }, this);
       },
-
       setActiveTab: function(tab) {
         this.activeTab = tab
       },
@@ -491,13 +508,11 @@
       setLeftPosi:function() {
         this.tabListLeftPosi = $('.list').position().left;
       }
-
     },
     watch: {
       'activeClfTab': {
         handler: function (value) {
           if(value)this.composeTree()
-
         },
         deep: true
       },
@@ -512,7 +527,6 @@
         },
         deep: true
       }
-
     },
     metaInfo() {
       return {
@@ -523,12 +537,10 @@
           {'property': 'og:description', 'content': this.meta.description, 'vmid': 'og:description'},
           {'property': 'og:image', 'content': this.meta.image, 'vmid': 'og:image'},
           {'property': 'og:type', 'content': 'website','vmid': 'og:type'},
-
         ]
       }
       // set a title
     },
-
   }
 </script>
 <style scope>
@@ -539,17 +551,17 @@
     margin-right: auto;
   }
   .item-page h1 {
-  	font-weight: bold;
-  	color: #2A68A5;
-  	opacity: 0.9;
+    font-weight: bold;
+    color: #2A68A5;
+    opacity: 0.9;
   }
   .navbar-toggler {
-  	margin: 0 !important;
-  	padding: 3px 6px;
+    margin: 0 !important;
+    padding: 3px 6px;
   }
   .navbar-toggler-icon {
-  	width: 25px;
-  }  
+    width: 25px;
+  }
   .basicInfoTable {
     width: 100%;
     max-width: 1024px;
@@ -558,9 +570,11 @@
   .col-lg-12 {
     padding: 0 !important;
   }
+  .col-md-3,
   .col-md-8 {
     padding-right:0.1rem !important;
-  }	
+  }
+  .col-md-3,
   .col-md-4 {
     padding-left:0.1rem !important;
   }
@@ -581,7 +595,6 @@
   .card {
     margin-bottom: 4px;
   }
-
   div.card.rounded-0 {
     width: 100%
   }
@@ -610,5 +623,4 @@
     background-color:#26a69a  !important;
     color:#ffffff  !important;
   }
-
 </style>

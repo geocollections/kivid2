@@ -134,7 +134,7 @@
           <br>
           <div style="padding: 5px 0; font-size: 0.8em;" v-if="lastChangedRocks && lastChangedRocks.length > 0">{{$t('main.lastChanged')}}:
             <span v-for="item in lastChangedRocks">
-              <router-link :to="'/'+item.id" v-translate="{ et: item.name, en: item.name_en, en: item.name_ru }"></router-link>  |
+              <router-link :to="'/'+item.id" v-translate="{ et: item.name, en: item.name_en, ru: item.name_ru }"></router-link>  |
             </span></div>
         </div>
       </div>
