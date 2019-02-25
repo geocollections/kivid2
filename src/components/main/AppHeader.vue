@@ -15,9 +15,12 @@
           <!-- Right aligned nav items -->
 
           <b-navbar-nav class="ml-auto">
-            <form class="form-inline my-lg-0 mr-5" style="width: 300px">
-              <rock-search></rock-search>
-            </form>
+            <b-nav-item>
+              <form class="form-inline my-lg-0 mr-5" style="width: 300px">
+                <rock-search></rock-search>
+              </form>
+            </b-nav-item>
+
             <!--<b-nav-item-dropdown  right v-if="isMounted">-->
               <!--<template slot="button-content" >{{$t(mode)}}</template>-->
               <!--<b-dropdown-item @click="changeMode('in_estonia')" :class="currentMode === 'in_estonia'? 'font-weight-bold' : ''">{{$t('header.in_estonia_mode')}}</b-dropdown-item>-->
@@ -96,5 +99,12 @@
   }
   .multiselect__tags {
   border: solid 2px #ccc;
+  }
+
+  .nav-link {
+    padding: 0 !important;
+  }
+  .dropdown-toggle {
+    margin-top:10px !important;
   }
 </style>

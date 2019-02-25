@@ -178,7 +178,8 @@
             <div class="card-body">
               <ul  class="ast-content-ul-list">
                 <li class="mb-1" v-for="item in rock.mineralsByRock">
-                  <button type="button" class="btn btn-outline-primary btn-circle" style="font-size: xx-small;" v-on:click.prevent="navigate(item.rock__id)"><font-awesome-icon :icon="icon" /></button>
+                  <button type="button" class="btn btn-outline-primary btn-circle" style="font-size: xx-small;" v-on:click.prevent="navigate(item.rock__id)"
+                    :title="'go to '+item.rock__name+ ' page'" area-label="go to next page" ><font-awesome-icon :icon="icon" /></button>
                   <span class="ml-2" v-translate="{ et: capitalizeFirstLetter(item.rock__name), en: capitalizeFirstLetter(item.rock__name_en), ru: capitalizeFirstLetter(item.rock__name_ru) }"></span>
                 </li>
               </ul>
