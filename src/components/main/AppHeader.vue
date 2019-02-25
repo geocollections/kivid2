@@ -101,7 +101,7 @@
   border: solid 2px #ccc;
   }
 
-  .nav-link {
+  #mainNav .nav-link {
     padding: 0 !important;
   }
   .dropdown-toggle {
