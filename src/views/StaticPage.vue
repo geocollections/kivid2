@@ -1,10 +1,12 @@
 <template>
-  <section class="container-fluid mt-2">
-    <div class="card-body" v-if="content" v-html="currentContent"></div>
-    <div class="card-body" v-else>
-     <h5>Oops! Page does not exist.</h5>
-    </div>
-  </section>
+  <div class="page-container item-page">
+  <div class="col"> 
+	        <div class="card-body" v-if="content" v-html="currentContent"></div>
+		    <div class="card-body" v-else>
+	          <h5>Oops! Page does not exist.</h5>
+	        </div>
+        </div>
+	</div>
 </template>
 
 <script>
@@ -39,3 +41,15 @@ export default {
 
 
 </script>
+<style scope>
+.item-page {
+  max-width: 1280px !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+.item-page h1 {
+	font-weight: bold;
+	color: #2A68A5;
+	opacity: 0.9;
+}
+</style>
