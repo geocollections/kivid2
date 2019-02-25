@@ -1,28 +1,17 @@
 <template>
-    <vue-multiselect class="align-middle" deselect-label="Can't remove this value"
-                     select-label=""
+  <label>
+    <vue-multiselect :name="'rockSearch'" class="align-middle" deselect-label="Can't remove this value"
                      :custom-label="displayResults"
-                     track-by="id" label="taxon"  :placeholder="$t('header.search')"
+                     track-by="id" :placeholder="$t('header.search')"
                      :options="searchResults" :searchable="true" @search-change="doSearch" @select="onSelect"
                      :allow-empty="true"  :show-no-results="false" :loading="isLoading" :max-height="600"
+                     :show-labels="false"
                      :open-direction="'bottom'">
       <template slot="noResult"><b>NoResults</b></template>
       <template slot="clear" slot-scope="props">
         <div class="multiselect__clear" v-if="true" @mousedown.prevent.stop="clearAll(props.search)"></div></template>
     </vue-multiselect>
-    <!--<vue-multiselect class="align-middle" style=" width: 20em !important;"-->
-                     <!--id="search"-->
-                     <!--:custom-label="displayResults" track-by="code"-->
-                     <!--:placeholder="$t('header.search')"-->
-                     <!--:options="searchResults"-->
-                     <!--:searchable="true"-->
-                     <!--:loading="isLoading"-->
-                     <!--:max-height="600"-->
-                     <!--:show-no-results="false"-->
-                     <!--:show-labels="false"-->
-                     <!--@select="onSelect" @search-change="doSearch">-->
-      <!--<template slot="noResult"><b>NoRes</b></template>-->
-    <!--</vue-multiselect> &ensp;-->
+  </label>
 </template>
 
 <script>
@@ -69,6 +58,8 @@
 
 <style scoped>
 
-
+  label {
+    display: inline !important;
+  }
 
 </style>

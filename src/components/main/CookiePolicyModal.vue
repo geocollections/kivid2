@@ -6,7 +6,8 @@
         <span style="margin-left: -10px"><button type="button" class="btn btn-link"  data-toggle="modal" data-target="#myModal" >üldtingimustega</button></span>
         <span  class="pl-2"  ><button type="button" class="btn btn-outline-primary btn-cookie-agree" @click.prevent="agreePolicy()">{{$t('main.policyAgreeBtn')}}</button></span>
         <span class="pb-3" style=" position: fixed;bottom: 0;right:0;">
-          <button class="btn btn-link" style="color:white;font-size: small" @click.prevent="$parent.cookiePolicy = false"><font-awesome-icon :icon="icon"/></button></span>
+          <button type="button" class="btn btn-xs btn-link" style="color:white;font-size: small" @click.prevent="$parent.cookiePolicy = false"
+                  aria-pressed="true" area-label="close cookie" title="close cookie"><font-awesome-icon :icon="icon"/></button></span>
       </div>
     </div>
     <!--&lt;!&ndash; Button to Open the Modal &ndash;&gt;-->

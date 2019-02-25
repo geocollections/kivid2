@@ -15,8 +15,7 @@
       <div class="col-md-10"  style="text-align: center">
         <div class="col-lg-12 ml-auto mr-auto" style="max-width: 30rem">
           <rock-search/>
-          <!--<button class="btn btn-xs btn-link pt-0" v-b-toggle.collapseA><font-awesome-icon :icon="searchIcon"/>{{$t('main.advanceSearch')}}</button>-->
-          <button class="btn btn-xs btn-link pt-0" @click="showCollapse = !showCollapse"
+          <button type="button" class="btn btn-xs btn-link pt-0" @click="showCollapse = !showCollapse"
                   :class="showCollapse ? 'collapsed' : null"
                   aria-controls="collapseA"
                   :aria-expanded="showCollapse"><font-awesome-icon :icon="searchIcon" v-if="!showCollapse"/>&ensp;{{showCollapse ? $t('main.advanceSearchHide') : $t('main.advanceSearch')}}</button>
@@ -79,7 +78,7 @@
               </div>
               <div class="row" v-if="searchType === 3">
                 <div class="col-lg-2 label">
-                  <label class="typo__label" style="padding: 10px 5px;" v-if="false">{{$t('main.search.mineral')}}:</label>
+                  <label style="padding: 10px 5px;" v-if="false">{{$t('main.search.mineral')}}:</label>
                 </div>
                 <div class="col-lg-8">
                   <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'" @select="onSelect"
@@ -366,7 +365,8 @@
 .btn-search {
   color:#ffffff  !important;
   border-color:#eb3812  !important;
-  background-color:#f05f40  !important;
+  background-color:#AE4040  !important;
+  /*background-color:#f05f40  !important;*/
 }
 .btn-search:hover {
   background-color:#eb3812  !important;
