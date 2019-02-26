@@ -8,7 +8,10 @@ body {
   min-height: 100%;
   display: table;
 }
-html{overflow-x: hidden;}
+html{
+  font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
+  overflow-x: hidden;
+}
 body {
   font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
   overflow-x:hidden;

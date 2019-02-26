@@ -84,17 +84,11 @@
         },
         setArrows: function() {
 
-          setTimeout(() => {
-            // console.log( $('#id_'+this.activeClfTab).offset().left)
-            // $(".list").delay(1000).animate({left: - $('#id_'+this.activeClfTab).offset().left }, 1000);
-            // console.log(this.widthOfHidden)
-            // console.log('outer ' + $('.wrapper').outerWidth())
-            // console.log('width of list '+this.widthOfList)
-            // console.log('left pos '+this.tabListLeftPosi)
+          this.$parent.rafAsync().then(() => {
             this.widthOfHidden < 0 ? $('.scroller-right').fadeIn('fast') : $('.scroller-right').fadeOut('fast');
             this.$props.tabListLeftPosi < 0 ? $('.scroller-left').fadeIn('fast') : $('.scroller-left').fadeOut('fast');
 
-          }, 100)
+          })
 
         },
 

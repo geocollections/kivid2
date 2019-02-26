@@ -335,7 +335,9 @@
         // }
       },
       reAdjust() {
-        // this.isScreenReadjusted = true;
+        this.isScreenReadjusted = true;
+        this.rafAsync().then(() => {this.isScreenReadjusted = false});
+        //
         // setTimeout(() => {
         //   this.isScreenReadjusted = false;
         // }, 50)

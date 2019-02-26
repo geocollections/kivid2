@@ -17,87 +17,98 @@
           <rock-search/>
           <button type="button" class="btn btn-xs btn-link pt-0" @click="showCollapse = !showCollapse"
                   :class="showCollapse ? 'collapsed' : null"
-                  aria-controls="collapseA"
+                  aria-controls="collapseSearch"
                   :aria-expanded="showCollapse"><font-awesome-icon :icon="searchIcon" v-if="!showCollapse"/>&ensp;{{showCollapse ? $t('main.advanceSearchHide') : $t('main.advanceSearch')}}</button>
         </div>
-        <b-collapse v-model="showCollapse" id="collapseA"  class="col-lg-12 border border-light medium p-4"  v-if="rockPropertyTypes.length > 0">
-          <div class="col-lg-12 pb-3"><mode-buttons/></div>
-          <div>
-            <div class="row">
-              <div class="input-group" role="group" aria-label="Basic example">
-                <button type="button" class="btn form-control btn-secondary" @click="searchType = 1;clearSearch()" :class="searchType === 1 ? 'active': ''">{{$t('search.property')}}</button>
-                <button type="button" class="btn form-control btn-secondary" @click="searchType = 2;clearSearch()" :class="searchType === 2 ? 'active': ''">{{$t('search.element')}}</button>
-                <button type="button" class="btn form-control btn-secondary" @click="searchType = 3;clearSearch()" :class="searchType === 3 ? 'active': ''">{{$t('search.mineral')}}</button>
-              </div>
+        <b-collapse v-model="showCollapse" id="collapseSearch"  class="col-lg-12  border border-light medium p-3"  v-if="rockPropertyTypes.length > 0">
+          <div class="col-lg-12 p-0 pb-3"><mode-buttons/></div>
+          <div class="col-lg-12 p-0">
+            <div class="input-group ml-auto mr-auto" role="group" aria-label="Basic example">
+              <button title="Basic example" type="button" class="btn form-control btn-secondary" @click="searchType = 1;clearSearch()" :class="searchType === 1 ? 'active': ''">
+                <span v-if="isSmallScreenDevice === false">{{$t('search.property')}}</span>
+                <font-awesome-icon :icon="wheelIcon" v-if="isSmallScreenDevice === true"/>
+              </button>
+              <button type="button" class="btn form-control btn-secondary" @click="searchType = 2;clearSearch()" :class="searchType === 2 ? 'active': ''">
+                <font-awesome-icon :icon="atomIcon" v-if="isSmallScreenDevice === true"/>
+                <span v-if="isSmallScreenDevice === false">{{$t('search.element')}}</span>
+              </button>
+              <button type="button" class="btn form-control btn-secondary" @click="searchType = 3;clearSearch()" :class="searchType === 3 ? 'active': ''">
+                <font-awesome-icon :icon="gemIcon" v-if="isSmallScreenDevice === true"/>
+                <span v-if="isSmallScreenDevice === false">{{$t('search.mineral')}}</span>
+              </button>
             </div>
+            <div class="col-lg-12">
+              <form v-on:submit.prevent="searchByAdditionalCriteria" class="well"  style="text-align: right;" >
+                <div class="row pt-1 pb-1" style="border-bottom: solid 1px #ccc !important;"  v-for="property,idx in searchParameters.properties"   v-if="searchType === 1">
+                  <div class="col-lg-7 propertyParam" >
+                    <select class="col-lg-6 searchCriterionType" v-model="property.propertyType" v-on:change="setDefaultOperand(property)">
+                      <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en, ru: item.property_ru }"></option>
+                    </select>
+                    <span class="col-lg-6 emptyDiv" v-if="property.propertyOperand === 'number'"></span>
+                    <span class="col-lg-6 label-check" v-if="property.propertyOperand !== 'number'">
+                      <input type="checkbox" class="form-control"  :id="idx+'_checkbox'" v-model="property.checked"
+                             v-on:change="property.propertyOperand = property.checked ? 'iexact' : 'text' ">
+                      <label class="label" :for="idx+'_checkbox'">{{$t('search.exact')}}</label>
 
-            <form v-on:submit.prevent="searchByAdditionalCriteria" class="col-lg-12 well"  style="text-align: right;">
-              <div class="row"  v-for="property,idx in searchParameters.properties"   v-if="searchType === 1">
-                <div class="col-lg-5">
-                  <select class="searchCriterionType" v-model="property.propertyType" v-on:change="setDefaultOperand(property)">
-                    <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en, ru: item.property_ru }"></option>
-                  </select>
-                </div>
-                <div class="col-lg-2 searchCriterionType label-check">
-                  <div v-if="property.propertyOperand !== 'number'">
-                    <input type="checkbox" class="form-control"  :id="idx+'_checkbox'" v-model="property.checked"
-                           v-on:change="property.propertyOperand = property.checked ? 'iexact' : 'text' ">
-                    <label class="label" :for="idx+'_checkbox'">{{$t('search.exact')}}</label>
+                      <!--<select class="searchCriterionType"  v-model="property.propertyOperand">-->
+                      <!--<option v-bind:value="item.value" v-for="item in onlyAllowedOperands(property)">{{$t('search.operand.'+item.name)}}</option>-->
+                      <!--</select>-->
+                    </span>
                   </div>
 
-                  <!--<select class="searchCriterionType"  v-model="property.propertyOperand">-->
-                    <!--<option v-bind:value="item.value" v-for="item in onlyAllowedOperands(property)">{{$t('search.operand.'+item.name)}}</option>-->
-                  <!--</select>-->
-                </div>
-                <div class="col-lg-4" v-if="property.propertyOperand !== 'number'">
-                  <input type="text" class="form-control" v-model="property.propertyValue"/>
-                </div>
+                  <div class="col-lg-4" v-if="property.propertyOperand !== 'number'">
+                    <input type="text" class="form-control" v-model="property.propertyValue"/>
+                  </div>
 
-                <div class="col-lg-2" v-if="property.propertyOperand === 'number'">
-                  <input type="number" class="form-control" v-model="property.propertyValueFrom"/>
+                  <div class="col-lg-2 numberField" v-if="property.propertyOperand === 'number'">
+                    <input type="number" class="form-control" v-model="property.propertyValueFrom"/>
+                  </div>
+                  <div class="col-lg-2 numberField" v-if="property.propertyOperand === 'number'">
+                    <input type="number" class="form-control" v-model="property.propertyValueTo"/>
+                  </div>
+                  <div class="col-lg-1" style="text-align: right;">
+                    <button v-if="searchParameters.properties.length > 1" type="button" class="btn btn-xs btn-link" aria-pressed="true" @click="removeProperty(idx)" title="Remove property">
+                      <font-awesome-icon class="mr-1" :icon="removeRow"/></button>
+                  </div>
                 </div>
-                <div class="col-lg-2" v-if="property.propertyOperand === 'number'">
-                  <input type="number" class="form-control" v-model="property.propertyValueTo"/>
+                <div class="row" v-if="searchType === 2">
+                  <div class="col-lg-2 label" ><label style="padding: 10px 5px;" v-if="false">{{$t('main.search.chemicalEl')}}:</label></div>
+                  <div class="col-lg-8">
+                    <vue-multiselect :open-direction="'bottom'" label="element__element" @select="onSelect"
+                                     v-model="searchParameters.selectedChemicalElements" :placeholder="$t('main.search.chemicalElPlaceholder')" track-by="element" :options="chemicalElList" :multiple="true" :taggable="true">
+                    </vue-multiselect>
+                    <!--<input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>-->
+                  </div>
+                  <div class="col-lg-2">
+                    <search-button v-on:search-btn-pressed="searchByAdditionalCriteria"/>
+                  </div>
                 </div>
-                <div class="col-lg-1" style="text-align: right">
-                  <button v-if="searchParameters.properties.length > 1" type="button" class="btn btn-xs btn-link" aria-pressed="true" @click="removeProperty(idx)" title="Remove property">
-                    <font-awesome-icon class="mr-1" :icon="removeRow"/></button>
+                <div class="row" v-if="searchType === 3">
+                  <div class="col-lg-2 label">
+                    <label style="padding: 10px 5px;" v-if="false">{{$t('main.search.mineral')}}:</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'" @select="onSelect"
+                                      v-model="searchParameters.selectedMinerals" :placeholder="$t('main.search.mineralPlaceholder')"  track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true"></vue-multiselect>
+                    <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en, en: searchParameters.selectedMinerals.mineral__name_ru }"></span>
+                  </div>
+                  <div class="col-lg-2">
+                    <search-button  v-on:search-btn-pressed="searchByAdditionalCriteria"/>
+                  </div>
                 </div>
-              </div>
-              <div class="row" v-if="searchType === 2">
-                <div class="col-lg-2 label" ><label style="padding: 10px 5px;" v-if="false">{{$t('main.search.chemicalEl')}}:</label></div>
-                <div class="col-lg-8">
-                  <vue-multiselect :open-direction="'bottom'" label="element__element" @select="onSelect"
-                                    v-model="searchParameters.selectedChemicalElements" :placeholder="$t('main.search.chemicalElPlaceholder')" track-by="element" :options="chemicalElList" :multiple="true" :taggable="true">
-                  </vue-multiselect>
-                  <!--<input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>-->
+                <div class="row pt-2" v-if="searchType === 1">
+                  <div class="col-lg-6" style="text-align: left;">
+                    <button type="button" aria-pressed="true" title="Add new property" class="btn btn-xs btn-link" @click="addProperty">
+                      <font-awesome-icon :icon="addRow"></font-awesome-icon>&ensp;{{$t('main.search.addRow')}}
+                    </button>
+                  </div>
+                  <div class="col-lg-6">
+                    <search-button  v-on:search-btn-pressed="searchByAdditionalCriteria"/>
+                  </div>
                 </div>
-                <div class="col-lg-1">
-                  <search-button v-on:search-btn-pressed="searchByAdditionalCriteria"/>
-                </div>
-              </div>
-              <div class="row" v-if="searchType === 3">
-                <div class="col-lg-2 label">
-                  <label style="padding: 10px 5px;" v-if="false">{{$t('main.search.mineral')}}:</label>
-                </div>
-                <div class="col-lg-8">
-                  <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'" @select="onSelect"
-                                    v-model="searchParameters.selectedMinerals" :placeholder="$t('main.search.mineralPlaceholder')"  track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true"></vue-multiselect>
-                  <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en, en: searchParameters.selectedMinerals.mineral__name_ru }"></span>
-                </div>
-                <div class="col-lg-1">
-                  <search-button  v-on:search-btn-pressed="searchByAdditionalCriteria"/>
-                </div>
-              </div>
-              <div class="row" v-if="searchType === 1">
-                <div class="col-lg-6" style="text-align: left;">
-                  <search-button  v-on:search-btn-pressed="searchByAdditionalCriteria"/>
-                </div>
-                <div class="col-lg-6">
+              </form>
+            </div>
 
-                </div>
-              </div>
-            </form>
             <div class="col-lg-12" style="text-align: left;">
               <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
               <h3 v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
@@ -161,11 +172,16 @@
   import RockSearch from "../components/main/RockSearch";
   import LangButtons from "../components/main/LangButtons";
   import ModeButtons from "../components/main/ModeButtons";
-  import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+  // import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
   import faSearchPlus from '@fortawesome/fontawesome-free-solid/faSearchPlus';
   import faPlus from '@fortawesome/fontawesome-free-solid/faPlus';
   import faTrash from '@fortawesome/fontawesome-free-solid/faTrash';
+  import faGem from '@fortawesome/fontawesome-free-solid/faGem';
+  import faWheel from '@fortawesome/fontawesome-free-solid/faCog';
   import SearchButton from "../components/main/SearchButton";
+  import { faAtom } from '@fortawesome/free-solid-svg-icons'
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 
   export default {
     name: "front-page",
@@ -173,15 +189,20 @@
 
     data() {
       return {
+        clientWidth : 800,
         searchParameters: this.setDefaultSearchParams(), mineralList:[], chemicalElList:[], loading:false, searchType: 1, showCollapse:false,
         searchResults:[], noSearchResults : false, lastChangedRocks: [],rockPropertyTypes: [],isAdvancedSearch:false,
       }
     },
     computed: {
       lang() {return this.$i18n.locale},
+      isSmallScreenDevice () {return this.clientWidth < 650},
       searchIcon() { return faSearchPlus },
       addRow() { return faPlus},
       removeRow() { return faTrash},
+      gemIcon() { return faGem},
+      atomIcon() { return faAtom},
+      wheelIcon() { return faWheel},
       getValue() {
         if (!this.multiple && !Array.isArray(this.value)) {
           this.value = [this.value];
@@ -209,7 +230,17 @@
       });
 
     },
+    mounted() { this.reAdjust()},
+    beforeMount() {
+      window.addEventListener('resize', this.reAdjust);
+    },
+    beforeDestroy () {
+      window.addEventListener('resize', this.reAdjust);
+    },
     methods: {
+      reAdjust() {
+        this.clientWidth = document.documentElement.clientWidth;
+      },
       onSelect () {
         document.getElementById('searchBtn').focus()
       },
@@ -362,16 +393,7 @@
   	color: #2A68A5;
   	opacity: 0.9;
   }
-.btn-search {
-  color:#ffffff  !important;
-  border-color:#eb3812  !important;
-  background-color:#AE4040  !important;
-  /*background-color:#f05f40  !important;*/
-}
-.btn-search:hover {
-  background-color:#eb3812  !important;
-  color:#ffffff  !important;
-}
+
 
 .searchCriterionType {
   padding: 5px 10px;
@@ -379,11 +401,10 @@
   background-color: #f5f5f5;
   /*margin-bottom: 2px;*/
 }
-#collapseA {
+#collapseSearch {
   background-color: #f5f5f5;
-  border-radius: 6px;
-  border: solid 2px #ccc !important; 
-  
+  border-radius: 2px;
+  border: solid 2px #ccc !important;
 }
 .well {
   padding: 10px;
@@ -403,6 +424,9 @@
 .btn-link:hover {
   color:#eb3812;
   font-weight: bold;
+}
+.propertyParam {
+  text-align: left;
 }
 .label-check input {  display:none; }
 
@@ -424,4 +448,35 @@
 
 .label-check [type='checkbox']         + label::before {  content: "\2610";}
 .label-check [type='checkbox']:checked + label::before {  content: "\2611";}
+
+@media screen and (min-width : 0px) and (max-width : 640px) {
+  .btn-group {
+    margin-top: 5px;
+  }
+  .input-group {
+    width: 15rem !important;
+  }
+
+  .col-lg-1, .col-lg-12, .col-lg-2, .col-lg-4, .col-lg-6, .col-lg-7, .col-lg-8, .col-md-1, .col-md-10{
+    width: auto !important;
+    padding-right: 0!important;
+    padding-left: 0!important;
+  }
+  .col-lg-4 {
+    width: 85% !important;
+  }
+  .emptyDiv {
+    padding-right: 10rem!important;
+  }
+  .propertyParam {
+    padding-top: 5px!important;
+  }
+  .col-lg-2 {
+    width: 43% !important;
+  }
+  .row{
+     margin-right: -5px!important;
+     margin-left: -5px!important;
+  }
+}
 </style>

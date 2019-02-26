@@ -109,5 +109,6 @@
     color: #fff;
     background: #82858c;
     box-shadow: 0 0px 4px rgba(0,0,0,.3);
+    z-index: 99999 !important;
   }
 </style>
