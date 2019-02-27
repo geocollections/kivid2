@@ -20,8 +20,8 @@
                   aria-controls="collapseSearch"
                   :aria-expanded="showCollapse"><font-awesome-icon :icon="searchIcon" v-if="!showCollapse"/>&ensp;{{showCollapse ? $t('main.advanceSearchHide') : $t('main.advanceSearch')}}</button>
         </div>
-        <b-collapse v-model="showCollapse" id="collapseSearch"  class="col-lg-12  border border-light medium p-3"  v-if="rockPropertyTypes.length > 0">
-          <div class="col-lg-12 p-0 pb-3"><mode-buttons/></div>
+        <b-collapse v-model="showCollapse" id="collapseSearch"  class="col-lg-12  border border-light medium pt-3"  v-if="rockPropertyTypes.length > 0">
+          <div class="col-lg-12 pb-3 modeBtns"><mode-buttons/></div>
           <div class="col-lg-12 p-0">
             <div class="input-group ml-auto mr-auto" role="group" aria-label="Basic example">
               <button title="Basic example" type="button" class="btn form-control btn-secondary" @click="searchType = 1;clearSearch()" :class="searchType === 1 ? 'active': ''">
@@ -38,48 +38,44 @@
               </button>
             </div>
             <div class="col-lg-12">
-              <form v-on:submit.prevent="searchByAdditionalCriteria" class="well"  style="text-align: right;" >
-                <div class="row pt-1 pb-1" style="border-bottom: solid 1px #ccc !important;"  v-for="property,idx in searchParameters.properties"   v-if="searchType === 1">
-                  <div class="col-lg-7 propertyParam" >
-                    <select class="col-lg-6 searchCriterionType" v-model="property.propertyType" v-on:change="setDefaultOperand(property)">
-                      <option :value="item.id" v-for="item in rockPropertyTypes" v-translate="{ et: item.property, en: item.property_en, ru: item.property_ru }"></option>
-                    </select>
-                    <span class="col-lg-6 emptyDiv" v-if="property.propertyOperand === 'number'"></span>
-                    <span class="col-lg-6 label-check" v-if="property.propertyOperand !== 'number'">
+              <form v-on:submit.prevent="searchByAdditionalCriteria" class="well" >
+                <div class="row pt-2 pb-2" style="border-bottom: solid 1px #ccc !important;"  v-for="property,idx in searchParameters.properties"   v-if="searchType === 1">
+                  <div  class="col-lg-7">
+                    <div class="dropdown" id="property" :style="property.propertyOperand === 'number' && property.propertyType === 2 ? 'margin-right:110px':''">
+                      <button v-on:change="setDefaultOperand(property)" style="margin-top: -2px!important;" class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{getProperty(property)}}
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="property">
+                        <span @click="property.propertyType = item.id; property.propertyOperand = item.default_search" v-for="item in rockPropertyTypes" :key="item.id" :value="item.id" class="dropdown-item" v-translate="{ et: item.property, en: item.property_en, ru: item.property_ru }"></span>
+                      </div>
+                    </div>
+                    <span style="margin-top: 5px !important;" class="label-check" v-if="property.propertyOperand !== 'number'">
                       <input type="checkbox" class="form-control"  :id="idx+'_checkbox'" v-model="property.checked"
                              v-on:change="property.propertyOperand = property.checked ? 'iexact' : 'text' ">
                       <label class="label" :for="idx+'_checkbox'">{{$t('search.exact')}}</label>
-
-                      <!--<select class="searchCriterionType"  v-model="property.propertyOperand">-->
-                      <!--<option v-bind:value="item.value" v-for="item in onlyAllowedOperands(property)">{{$t('search.operand.'+item.name)}}</option>-->
-                      <!--</select>-->
                     </span>
                   </div>
-
-                  <div class="col-lg-4" v-if="property.propertyOperand !== 'number'">
+                  <span :class="searchParameters.properties.length > 1 ? 'col-lg-4': 'col-lg-5  pr-0'" :style="searchParameters.properties.length > 1 ? 'width: 85% !important;':'width: 100% !important;'"  v-if="property.propertyOperand !== 'number'">
                     <input type="text" class="form-control" v-model="property.propertyValue"/>
-                  </div>
-
-                  <div class="col-lg-2 numberField" v-if="property.propertyOperand === 'number'">
+                  </span>
+                  <span class="col-lg-2" :style="searchParameters.properties.length > 1 ? 'width: 42% !important;':'width: 50% !important;'" v-if="property.propertyOperand === 'number'">
                     <input type="number" class="form-control" v-model="property.propertyValueFrom"/>
-                  </div>
-                  <div class="col-lg-2 numberField" v-if="property.propertyOperand === 'number'">
+                  </span>
+                  <span class="col-lg-2" :style="searchParameters.properties.length > 1 ? 'width: 42% !important;':'width: 50% !important;'" v-if="property.propertyOperand === 'number'">
                     <input type="number" class="form-control" v-model="property.propertyValueTo"/>
-                  </div>
-                  <div class="col-lg-1" style="text-align: right;">
-                    <button v-if="searchParameters.properties.length > 1" type="button" class="btn btn-xs btn-link" aria-pressed="true" @click="removeProperty(idx)" title="Remove property">
-                      <font-awesome-icon class="mr-1" :icon="removeRow"/></button>
-                  </div>
+                  </span>
+                  <button v-if="searchParameters.properties.length > 1" type="button" style="padding-left:0.5em !important;" class="btn btn-xs btn-link" aria-pressed="true" @click="removeProperty(idx)" title="Remove property">
+                    <font-awesome-icon class="mr-1" :icon="removeRow"/></button>
                 </div>
                 <div class="row" v-if="searchType === 2">
                   <div class="col-lg-2 label" ><label style="padding: 10px 5px;" v-if="false">{{$t('main.search.chemicalEl')}}:</label></div>
-                  <div class="col-lg-8">
+                  <div class="col-lg-8 pb-1">
                     <vue-multiselect :open-direction="'bottom'" label="element__element" @select="onSelect"
                                      v-model="searchParameters.selectedChemicalElements" :placeholder="$t('main.search.chemicalElPlaceholder')" track-by="element" :options="chemicalElList" :multiple="true" :taggable="true">
                     </vue-multiselect>
                     <!--<input type="text" class="form-control" v-model="searchParameters.chemicalElement"/>-->
                   </div>
-                  <div class="col-lg-2">
+                  <div class="col-lg-2  ml-auto pl-lg-0 pr-md-3"   style="text-align: right">
                     <search-button v-on:search-btn-pressed="searchByAdditionalCriteria"/>
                   </div>
                 </div>
@@ -87,22 +83,22 @@
                   <div class="col-lg-2 label">
                     <label style="padding: 10px 5px;" v-if="false">{{$t('main.search.mineral')}}:</label>
                   </div>
-                  <div class="col-lg-8">
+                  <div class="col-lg-8 pb-1">
                     <vue-multiselect  :custom-label="displayMineralResults" :open-direction="'bottom'" @select="onSelect"
                                       v-model="searchParameters.selectedMinerals" :placeholder="$t('main.search.mineralPlaceholder')"  track-by="mineral__id" :options="mineralList" :multiple="true" :taggable="true"></vue-multiselect>
                     <span  v-translate="{ et: searchParameters.selectedMinerals.mineral__name , en: searchParameters.selectedMinerals.mineral__name_en, en: searchParameters.selectedMinerals.mineral__name_ru }"></span>
                   </div>
-                  <div class="col-lg-2">
+                  <div class="col-lg-2 ml-auto pl-lg-0 pr-md-3" style="text-align: right">
                     <search-button  v-on:search-btn-pressed="searchByAdditionalCriteria"/>
                   </div>
                 </div>
                 <div class="row pt-2" v-if="searchType === 1">
-                  <div class="col-lg-6" style="text-align: left;">
+                  <div class="mr-auto" style="text-align: left;">
                     <button type="button" aria-pressed="true" title="Add new property" class="btn btn-xs btn-link" @click="addProperty">
                       <font-awesome-icon :icon="addRow"></font-awesome-icon>&ensp;{{$t('main.search.addRow')}}
                     </button>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="ml-auto pr-0" style="text-align: right">
                     <search-button  v-on:search-btn-pressed="searchByAdditionalCriteria"/>
                   </div>
                 </div>
@@ -111,8 +107,8 @@
 
             <div class="col-lg-12" style="text-align: left;">
               <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
-              <h3 v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
-              <h3 v-if="noSearchResults">{{$t('main.noSearchResults')}}</h3>
+              <h3 class="pl-3" v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
+              <h3 class="pl-3" v-if="noSearchResults">{{$t('main.noSearchResults')}}</h3>
               <div class="row" v-if="searchResults.length > 0">
                 <div class="col-md-3 pb-2 "  v-for="item in searchResults">
                   <router-link v-if="item.rock_id" :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en, ru: item.rock__name_ru }"></router-link>
@@ -122,7 +118,7 @@
             </div>
           </div>
         </b-collapse>
-        <div class="col-lg-12">
+        <div class="col-lg-12 pt-5">
           <router-link :to="'/'+232">
             <img src="https://files.geocollections.info/img/kivid/kivid2.jpg" alt="kaltsiit" title="Kaltsiit | Calcite" style="max-width: 600px; width: 100%;"/>
           </router-link>
@@ -150,9 +146,6 @@
       </div>
       <div class="col-md-1"></div>
     </div>
-
-
-
   </div>
 </template>
 
@@ -249,6 +242,17 @@
           return val.id === property.propertyType;
         }, this);
         property.propertyOperand = prop[0].default_search
+        console.log(property)
+        property.fieldName = this.$parent.translate(prop[0].property_en,prop[0].property,prop[0].property_ru)
+        return property
+      },
+      getProperty(property) {
+        let prop = this.rockPropertyTypes.filter(function (val, i) {
+          return val.id === property.propertyType;
+        }, this);
+
+
+        return this.$parent.translate(prop[0].property_en,prop[0].property,prop[0].property_ru)
       },
       isValidForm() {
         // return !((this.searchParameters.propertyOperand !== 'range' && (this.searchParameters.propertyValue === null || this.searchParameters.propertyValue.length === 0))
@@ -388,13 +392,19 @@
   margin-left: auto;
   margin-right: auto;
 }
-  .front-page h1 {
-  	font-weight: bold;
-  	color: #2A68A5;
-  	opacity: 0.9;
-  }
-
-
+.front-page h1 {
+  font-weight: bold;
+  color: #2A68A5;
+  opacity: 0.9;
+}
+#property {
+  display: inline!important;
+}
+#property .btn-link{
+  color:#212529 !important;
+  font-size: 1rem!important;
+  letter-spacing: 0.05em;
+}
 .searchCriterionType {
   padding: 5px 10px;
   border: none;
@@ -428,7 +438,9 @@
 .propertyParam {
   text-align: left;
 }
-.label-check input {  display:none; }
+.label-check input {
+  display:none;
+}
 
 .label-check label::before {
   width: 1.4em;
@@ -436,7 +448,7 @@
   display: inline-block;
   cursor: pointer;
   color: black;
-  transition: color .3s ease;
+  transition: color .5s ease;
   text-shadow: 0px 0px 1px #cccccc;
 }
 .label-check label:hover::before {
@@ -450,33 +462,26 @@
 .label-check [type='checkbox']:checked + label::before {  content: "\2611";}
 
 @media screen and (min-width : 0px) and (max-width : 640px) {
-  .btn-group {
-    margin-top: 5px;
-  }
+
   .input-group {
     width: 15rem !important;
   }
 
   .col-lg-1, .col-lg-12, .col-lg-2, .col-lg-4, .col-lg-6, .col-lg-7, .col-lg-8, .col-md-1, .col-md-10{
-    width: auto !important;
+    /*width: auto !important;*/
     padding-right: 0!important;
     padding-left: 0!important;
   }
-  .col-lg-4 {
-    width: 85% !important;
-  }
-  .emptyDiv {
-    padding-right: 10rem!important;
-  }
-  .propertyParam {
-    padding-top: 5px!important;
-  }
+
   .col-lg-2 {
     width: 43% !important;
   }
   .row{
      margin-right: -5px!important;
      margin-left: -5px!important;
+  }
+  .modeBtns {
+    padding-bottom: 10px !important;
   }
 }
 </style>
