@@ -1,14 +1,12 @@
 <template>
   <div id="app">
-
     <spinner v-show="showSpinner" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
     <app-header v-if="$router.currentRoute.name !== 'FrontPage'"/>
-    <section class="container-fluid mt-4 mb-5" >
+    <section class="container-fluid mt-4 mb-5" style="padding-bottom: 50px!important;">
       <router-view class="page-container" v-on:page-loaded="isSpinnerShown" v-on:throw-error="handleError"/>
     </section>
     <app-footer/>
     <cookie-policy-modal v-if="cookiePolicy" :cookie-policy="cookiePolicy"/>
-
   </div>
 </template>
 

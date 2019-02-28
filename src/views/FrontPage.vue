@@ -107,10 +107,10 @@
 
             <div class="col-lg-12" style="text-align: left;">
               <spinner v-show="loading" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
-              <h3 class="pl-3" v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
-              <h3 class="pl-3" v-if="noSearchResults">{{$t('main.noSearchResults')}}</h3>
+              <h3 class="pl-2" v-if="searchResults.length > 0">{{$t('main.searchResults')}}</h3>
+              <h3 class="pl-2" v-if="noSearchResults">{{$t('main.noSearchResults')}}</h3>
               <div class="row" v-if="searchResults.length > 0">
-                <div class="col-md-3 pb-2 "  v-for="item in searchResults">
+                <div class="col-sm-3 pb-2  pl-3"  v-for="item in searchResults">
                   <router-link v-if="item.rock_id" :to="'/'+item.rock_id" v-translate="{ et: item.rock__name, en: item.rock__name_en, ru: item.rock__name_ru }"></router-link>
                   <router-link v-if="!item.rock_id" :to="'/'+item.id" v-translate="{ et: item.name, en: item.name_en, ru: item.name_ru }"></router-link>
                 </div>
@@ -165,15 +165,14 @@
   import RockSearch from "../components/main/RockSearch";
   import LangButtons from "../components/main/LangButtons";
   import ModeButtons from "../components/main/ModeButtons";
-  // import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+  import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
   import faSearchPlus from '@fortawesome/fontawesome-free-solid/faSearchPlus';
   import faPlus from '@fortawesome/fontawesome-free-solid/faPlus';
   import faTrash from '@fortawesome/fontawesome-free-solid/faTrash';
   import faGem from '@fortawesome/fontawesome-free-solid/faGem';
   import faWheel from '@fortawesome/fontawesome-free-solid/faCog';
   import SearchButton from "../components/main/SearchButton";
-  import { faAtom } from '@fortawesome/free-solid-svg-icons'
-  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+  import { faAtom } from '@fortawesome/free-solid-svg-icons';
 
 
   export default {
@@ -297,7 +296,6 @@
       getSelectedChemicalElementQuery() {
         let query = '';
         this.searchParameters.selectedChemicalElements.forEach(function(el){
-          console.log(el)
           query += `rockelement__element__element=${el.element__element}&`
         });
         return query.substring(0,query.length-1)
@@ -396,6 +394,9 @@
   font-weight: bold;
   color: #2A68A5;
   opacity: 0.9;
+}
+.col-lg-12 {
+  padding: 5px!important;
 }
 #property {
   display: inline!important;

@@ -235,7 +235,7 @@
         return this.isCurrentClfSistersLoaded === true && this.isCurrenClfHierarchyLoaded === true && this.isCurrentClfSiblingsLoaded === true},
       icon() { return faExternalLink },
       isWideScreenDevice () {return this.clientWidth >= 1600},
-      isSmallScreenDevice () {return this.clientWidth < 439},
+      isSmallScreenDevice () {return this.clientWidth < 767},
       isThirdColumnCreated() {
         return this.rock && this.isWideScreenDevice === true && (this.isDefinedAndNotEmpty(this.rock.properties) || this.isDefinedAndNotNull(this.rock.in_estonia) || this.isDefinedAndNotEmpty(this.rock.localities)
               || this.isDefinedAndNotEmpty(this.rock.synonyms) || this.isDefinedAndNotEmpty(this.rock.mineralsByRock))
@@ -304,40 +304,10 @@
           return Promise.resolve(true);
         }
       },
-      appendElement(i,el,lastEL) {
-        console.log(el)
-        console.log(lastEL)
-        if(lastEL === ".firstColumn") {
-          $( ".firstColumn" ).prepend($(el))
-        } else if(lastEL === ".secondColumn") {
-          $( ".secondColumn" ).prepend($(el))
-        } else {
-          $( el ).insertAfter($(lastEL))
-        }
-        // switch (i) {
-        //   case 1:
-        //     $( ".firstColumn" ).prepend($(".colEl1")); break;
-        //   case 2:
-        //     $( ".colEl2" ).insertAfter($(".colEl1")); break;
-        //   case 3:
-        //     $( ".colEl3" ).insertAfter($(".colEl"+lastEL)); break;
-        //   case 4:
-        //     $( ".secondColumn" ).prepend($(".colEl4")); break;
-        //   case 5:
-        //     $( ".colEl5" ).insertAfter($(".colEl4")); break;
-        //   case 6:
-        //     $( ".colEl6" ).insertAfter($(".colEl5")); break;
-        //   case 7:
-        //     $( ".colEl7" ).insertAfter($(".colEl6")); break;
-        //   case 8:
-        //     $( ".colEl8" ).insertAfter($(".colEl7")); break;
-        //   default:break;
-        // }
-      },
+
       reAdjust() {
         this.isScreenReadjusted = true;
         this.rafAsync().then(() => {this.isScreenReadjusted = false});
-        //
         // setTimeout(() => {
         //   this.isScreenReadjusted = false;
         // }, 50)
@@ -349,6 +319,7 @@
             });
           }
         }
+
       },
       capitalizeFirstLetter(string) {
         return string ? string.charAt(0).toUpperCase() + string.slice(1):undefined;
