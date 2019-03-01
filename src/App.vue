@@ -2,7 +2,7 @@
   <div id="app">
     <spinner v-show="showSpinner" class="loading-overlay" size="massive" :message="$t('main.overlay')"></spinner>
     <app-header v-if="$router.currentRoute.name !== 'FrontPage'"/>
-    <section class="container-fluid mt-4 pb-5" style="padding-bottom: 15vh!important;">
+    <section class="container-fluid mt-4 pb-5">
       <router-view class="page-container" v-on:page-loaded="isSpinnerShown" v-on:throw-error="handleError"/>
     </section>
     <app-footer/>

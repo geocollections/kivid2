@@ -1,11 +1,11 @@
 <template>
   <div class="page-container item-page">
-  <div class="col"> 
-	        <div class="card-body" v-if="content" v-html="currentContent"></div>
-		    <div class="card-body" v-else>
-	          <h5>Oops! Page does not exist.</h5>
-	        </div>
-        </div>
+    <div class="col  pt-3">
+      <div class="card-body" v-if="content && content.content_et !== null" v-html="currentContent"></div>
+      <div class="card-body" v-else>
+          <h5>Oops! Page does not exist.</h5>
+      </div>
+    </div>
 	</div>
 </template>
 
