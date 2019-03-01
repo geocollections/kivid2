@@ -279,7 +279,7 @@
         let query = '', vm = this;
         this.searchParameters.properties.forEach(function(prop){
           if(prop.propertyOperand === 'text') query += `(rp.property_type_id=${prop.propertyType} AND rp.value_txt like '%${prop.propertyValue}%') OR`;
-          else if(prop.propertyOperand === 'iexact') query += `(rp.property_type_id=${prop.propertyType} AND rp.value_txt like '${prop.propertyValue}') OR`;
+          else if(prop.propertyOperand === 'iexact') query += `(rp.property_type_id=${prop.propertyType} AND rp.value_txt = '${prop.propertyValue}') OR`;
           else if(prop.propertyOperand === 'number') {
             console.log(prop.propertyValueFrom +' ' +prop.propertyValueTo)
             let val = '';
@@ -290,6 +290,7 @@
           }
 
         });
+        console.log(query)
         query = query.substring(0,query.length-3);
         return query
       },

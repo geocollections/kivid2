@@ -16,10 +16,12 @@
     </div>
 
     <tab-specimens :search-parameters="searchParameters" v-if="activeTab === 'specimens'" v-on:specimen-filter-applied="setSpecimenCollectionCnt"/>
-    <!--1,x,-->
+
     <div id="parent" class="row" v-if="activeTab  === 'overview' && isScreenReadjusted === false">
       <div class="firstColumn col-md-8">
-        <div class="colEl1 col-lg-12 m-1 order-1 order-lg-1">
+        <!-- v-if="isClassificationTreeLoaded === true" is a hack to solve rendering problem.
+        Otherwise div colEl1 cannot be moved to outside of div firstColumn-->
+        <div class="colEl1 col-lg-12 m-1 order-1 order-lg-1" v-if="isClassificationTreeLoaded === true">
           <div class="card rounded-0">
             <div class="card-body">
               <table class='table basicInfoTable' v-if="basicInfoLoaded" id="basic-info">
@@ -312,9 +314,11 @@
         //   this.isScreenReadjusted = false;
         // }, 50)
         this.clientWidth = document.documentElement.clientWidth;
+        $(".colEl1").insertBefore($( ".firstColumn" ));
         if(this.isSmallScreenDevice === true) {
-          for(let i = 1; i < 9; i++) {
+          for(let i = 0; i < 11; i++) {
             this.checkElement('.colEl'+i).then((element) => {
+              console.log(i)
               $(".colEl"+i).insertBefore($( ".firstColumn" ));
             });
           }
