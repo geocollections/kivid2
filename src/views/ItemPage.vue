@@ -52,7 +52,7 @@
                 </tr>
                 <tr v-if="isDefinedAndNotNull(rock.name)">
                   <th>SARV</th><td>
-                  <a :href="'http://geocollections.info/specimen?name_geology_1=1&name_geology='+rock.name+'&currentTable=specimen&paginateBy=25&sort=id&sortdir=DESC'" target='_blank' rel='noopener'>{{$t('item.sarv')}}</a> | <a :href="'http://geocollections.info/specimen?name_geology_1=1&name_geology='+rock.name+'&search_images=1&currentTable=specimen&paginateBy=25&sort=id&sortdir=DESC'" target='_blank'  rel='noopener'>{{$t('item.sarvPics')}}</a>
+                      <a :href="`http://geocollections.info/specimen?rockHierarchy=${rockHierarchyQueryParam}`" target='_blank' rel='noopener'>{{$t('item.sarv')}}</a> | <a :href="`http://geocollections.info/specimen?rockHierarchy=${rockHierarchyQueryParam}`" target='_blank'  rel='noopener'>{{$t('item.sarvPics')}}</a>
                 </td>
                 </tr>
                 <tr v-if="isDefinedAndNotNull(rock.mindat_id)">
@@ -194,81 +194,112 @@
 </template>
 
 <script>
-  import moment from 'moment'
-  import Vue from 'vue'
-  import {
-    fetchRock,
-    fetchRockElement,
-    fetchRockImages,
-    fetchRockProperties,
-    fetchRockSynonyms,
-    fetchRockReferences,
-    fetchRockTreeByRockId,
-    fetchRockTree,
-    fetchHierarchy,
-    fetchRockLocalities,
-    cntSpecimenCollection,
-    fetchPhotoGallery,
-    fetchMinerals,
-    fetchMineralsByRock,
-    fetchRockSiblings
-  } from '../api'
-  import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-  import faExternalLink from '@fortawesome/fontawesome-free-solid/faExternalLinkAlt'
-  import Lingallery from "../components/main/Lingallery";
-  import TaxonomicalTree from "../components/main/TaxonomicalTree";
-  import MapComponent from "../components/main/MapComponent";
-  import Tabs from "../components/main/Tabs";
-  import TabSpecimens from "../components/main/TabSpecimens";
-  export default {
-    name: "item-page",
-    components: {TabSpecimens, Tabs, MapComponent, TaxonomicalTree, Lingallery,FontAwesomeIcon},
-    data() {
-      return this.initialData()
+import moment from "moment";
+import Vue from "vue";
+import {
+  fetchRock,
+  fetchRockElement,
+  fetchRockImages,
+  fetchRockProperties,
+  fetchRockSynonyms,
+  fetchRockReferences,
+  fetchRockTreeByRockId,
+  fetchRockTree,
+  fetchHierarchy,
+  fetchRockLocalities,
+  cntSpecimenCollection,
+  fetchPhotoGallery,
+  fetchMinerals,
+  fetchMineralsByRock,
+  fetchRockSiblings
+} from "../api";
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
+import faExternalLink from "@fortawesome/fontawesome-free-solid/faExternalLinkAlt";
+import Lingallery from "../components/main/Lingallery";
+import TaxonomicalTree from "../components/main/TaxonomicalTree";
+import MapComponent from "../components/main/MapComponent";
+import Tabs from "../components/main/Tabs";
+import TabSpecimens from "../components/main/TabSpecimens";
+export default {
+  name: "item-page",
+  components: {
+    TabSpecimens,
+    Tabs,
+    MapComponent,
+    TaxonomicalTree,
+    Lingallery,
+    FontAwesomeIcon
+  },
+  data() {
+    return this.initialData();
+  },
+  // beforeMount() {
+  //   window.addEventListener('resize', this.reAdjust);
+  // },
+  // beforeDestroy () {
+  //   window.addEventListener('resize', this.reAdjust);
+  // },
+  computed: {
+    isClassificationTreeLoaded() {
+      return (
+        this.isCurrentClfSistersLoaded === true &&
+        this.isCurrenClfHierarchyLoaded === true &&
+        this.isCurrentClfSiblingsLoaded === true
+      );
     },
-    // beforeMount() {
-    //   window.addEventListener('resize', this.reAdjust);
-    // },
-    // beforeDestroy () {
-    //   window.addEventListener('resize', this.reAdjust);
-    // },
-    computed: {
-      isClassificationTreeLoaded() {
-        return this.isCurrentClfSistersLoaded === true && this.isCurrenClfHierarchyLoaded === true && this.isCurrentClfSiblingsLoaded === true},
-      icon() { return faExternalLink },
-      isWideScreenDevice () {return this.clientWidth >= 1600},
-      isSmallScreenDevice () {return this.clientWidth < 767},
-      isThirdColumnCreated() {
-        return this.rock && this.isWideScreenDevice === true && (this.isDefinedAndNotEmpty(this.rock.properties) || this.isDefinedAndNotNull(this.rock.in_estonia) || this.isDefinedAndNotEmpty(this.rock.localities)
-              || this.isDefinedAndNotEmpty(this.rock.synonyms) || this.isDefinedAndNotEmpty(this.rock.mineralsByRock))
-      }
+    icon() {
+      return faExternalLink;
     },
-    created() {
-      this.$emit('page-loaded',true);
-      this.loadFullRockInfo()
+    isWideScreenDevice() {
+      return this.clientWidth >= 1600;
     },
-    mounted() {
-      this.reAdjust();
+    isSmallScreenDevice() {
+      return this.clientWidth < 767;
     },
-    filters: {
-      moment: function (date) {
-        return moment(date).format('YYYY-MM-DD');
-        // return moment(date).format('MMMM Do YYYY, h:mm:ss a');
-      }
+    isThirdColumnCreated() {
+      return (
+        this.rock &&
+        this.isWideScreenDevice === true &&
+        (this.isDefinedAndNotEmpty(this.rock.properties) ||
+          this.isDefinedAndNotNull(this.rock.in_estonia) ||
+          this.isDefinedAndNotEmpty(this.rock.localities) ||
+          this.isDefinedAndNotEmpty(this.rock.synonyms) ||
+          this.isDefinedAndNotEmpty(this.rock.mineralsByRock))
+      );
     },
-    methods: {
-      initialData() {return {
+    rockHierarchyQueryParam() {
+      return `${this.rock.id}:${this.rock.classifications
+        .map(classification => classification.parent_string)
+        .join("|")}`;
+    }
+  },
+  created() {
+    this.$emit("page-loaded", true);
+    this.loadFullRockInfo();
+  },
+  mounted() {
+    this.reAdjust();
+  },
+  filters: {
+    moment: function(date) {
+      return moment(date).format("YYYY-MM-DD");
+      // return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    }
+  },
+  methods: {
+    initialData() {
+      return {
         meta: {},
-        kividUrl: 'https://dev.kivid.info',
-        fossilsUrl: 'http://fossiilid.info',
-        fileUrl:'https://files.geocollections.info',
+        kividUrl: "https://dev.kivid.info",
+        fossilsUrl: "http://fossiilid.info",
+        fileUrl: "https://files.geocollections.info",
         geocollectionUrl: "http://geocollections.info",
-        error : false,
-        clientWidth : 800,
-        isScreenReadjusted:false,
-        tabListLeftPosi : 0,
-        mode: this.$localStorage.get('kivid_mode'),
-        rock : {
+        error: false,
+        clientWidth: 800,
+        isScreenReadjusted: false,
+        tabListLeftPosi: 0,
+        mode: this.$localStorage.get("kivid_mode"),
+        rock: {
           id: this.$router.currentRoute.params.id,
           images: [],
           properties: [],
@@ -276,329 +307,459 @@
           minerals: [],
           synonyms: [],
           classifications: [],
-          tree: {nodes: []},
+          tree: { nodes: [] },
           specimenCollectionCnt: 1,
           specimenCollectionCntFiltered: -1
         },
         basicInfoLoaded: false,
-        activeTab: 'overview',
-        activeClfTab: '',
+        activeTab: "overview",
+        activeClfTab: "",
         currentClf: {},
         isCurrentClfSistersLoaded: false,
         isCurrenClfHierarchyLoaded: false,
         isCurrentClfSiblingsLoaded: false,
         searchParameters: {
-          specimens: { page: 1, paginateBy: 25, sortBy: 'specimen_number',  sortByAsc: true, order: "ASCENDING",
-            onlyImgs: false,git: false,tug: false,elm: false, hackToFixComponentReload: ''},
-        },
-      }},
-      isDefinedAndNotNull(value) { return !!value && value !== null },
-      isDefinedAndNotEmpty(value) { return !!value && value.length > 0 },
-      rafAsync() {
-        return new Promise(resolve => {
-          requestAnimationFrame(resolve); //faster than set time out
+          specimens: {
+            page: 1,
+            paginateBy: 25,
+            sortBy: "specimen_number",
+            sortByAsc: true,
+            order: "ASCENDING",
+            onlyImgs: false,
+            git: false,
+            tug: false,
+            elm: false,
+            hackToFixComponentReload: ""
+          }
+        }
+      };
+    },
+    isDefinedAndNotNull(value) {
+      return !!value && value !== null;
+    },
+    isDefinedAndNotEmpty(value) {
+      return !!value && value.length > 0;
+    },
+    rafAsync() {
+      return new Promise(resolve => {
+        requestAnimationFrame(resolve); //faster than set time out
+      });
+    },
+    checkElement(selector) {
+      if (document.querySelector(selector) === null) {
+        return this.rafAsync().then(() => this.checkElement(selector));
+      } else {
+        return Promise.resolve(true);
+      }
+    },
+
+    reAdjust() {
+      this.isScreenReadjusted = true;
+      this.rafAsync().then(() => {
+        this.isScreenReadjusted = false;
+      });
+      // setTimeout(() => {
+      //   this.isScreenReadjusted = false;
+      // }, 50)
+      this.clientWidth = document.documentElement.clientWidth;
+      $(".colEl1").insertBefore($(".firstColumn"));
+      if (this.isSmallScreenDevice === true) {
+        for (let i = 0; i < 11; i++) {
+          this.checkElement(".colEl" + i).then(element => {
+            console.log(i);
+            $(".colEl" + i).insertBefore($(".firstColumn"));
+          });
+        }
+      }
+    },
+    capitalizeFirstLetter(string) {
+      return string
+        ? string.charAt(0).toUpperCase() + string.slice(1)
+        : undefined;
+    },
+    navigate: function(id) {
+      this.$router.push({ path: `/${id}` });
+    },
+    openUrl: function(params) {
+      window.open(
+        params.parent_url + "/" + params.object,
+        "",
+        "width=" + params.width + ",height=" + params.height,
+        scrollbars
+      );
+    },
+    translate: function(value_en, value_et, value_ru) {
+      return this.$parent.translate(value_en, value_et, value_ru);
+    },
+    setFancyBoxCaption: function(el) {
+      let text = "",
+        rock =
+          this.isDefinedAndNotNull(el.rock_id) && el.rock_id !== this.rock.id
+            ? '<a href="/' +
+              el.rock_id +
+              '" style="color:#c82333 !important" \')">' +
+              "<h5>" +
+              el.name
+              ? this.$parent.translate(el.name_en, el.name, el.name_ru)
+              : this.$parent.translate(
+                  el.rock__name_en,
+                  el.rock__name,
+                  el.rock__name_ru
+                ) + "</h5></a>"
+            : " ",
+        autor = this.isDefinedAndNotNull(el.attachment__author__agent)
+          ? this.$t("fancybox.author") +
+            ": <strong>" +
+            el.attachment__author__agent +
+            "</strong>"
+          : "",
+        agent = this.isDefinedAndNotNull(el.attachment__copyright_agent__agent)
+          ? " / <strong>" + el.attachment__copyright_agent__agent + "</strong>"
+          : "",
+        date = this.isDefinedAndNotNull(el.attachment__date_created)
+          ? "<div>" +
+            this.$t("fancybox.date") +
+            ": <strong>" +
+            el.attachment__date_created +
+            "</strong></div>"
+          : this.isDefinedAndNotNull(el.attachment__date_created_free)
+            ? "<div>" +
+              this.$t("fancybox.date") +
+              ": <strong>" +
+              el.attachment__date_created_free +
+              "</strong></div>"
+            : "",
+        licence = this.isDefinedAndNotNull(el.attachment__licence__licence)
+          ? "<div>" +
+            this.$t("fancybox.licence") +
+            ": <strong>" +
+            el.attachment__licence__licence +
+            "</strong></div>"
+          : "",
+        detailView = this.isDefinedAndNotNull(el.attachment__id)
+          ? '<div><button type="button" class="btn btn-sm btn-danger" onclick="window.open(\'' +
+            this.geocollectionUrl +
+            "/file/" +
+            el.attachment__id +
+            "')\">" +
+            this.$t("fancybox.detailView") +
+            "</button></div>"
+          : this.isDefinedAndNotNull(el.attachment__specimen_id)
+            ? '<div><button type="button" class="btn btn-sm btn-danger" onclick="window.open(\'' +
+              this.geocollectionUrl +
+              "/specimen/" +
+              el.attachment__specimen_id +
+              "')\">" +
+              this.$t("fancybox.detailView") +
+              "</button></div>"
+            : "";
+      text +=
+        "<div>" + rock + autor + agent + "</div>" + date + licence + detailView;
+      return text;
+    },
+    composeImageUrls(images) {
+      if (images === undefined || images === {} || images.length === 0) return;
+      if (images.length > 0) {
+        let this_ = this;
+        images.forEach(function(el) {
+          el.thumbnail = el.preview
+            ? el.preview
+            : this_.fileUrl +
+              "/small/" +
+              el.attachment__filename.substring(0, 2) +
+              "/" +
+              el.attachment__filename.substring(2, 4) +
+              "/" +
+              el.attachment__filename;
+          el.src = el.large
+            ? el.large
+            : this_.fileUrl +
+              "/large/" +
+              el.attachment__filename.substring(0, 2) +
+              "/" +
+              el.attachment__filename.substring(2, 4) +
+              "/" +
+              el.attachment__filename;
+          el.caption = this_.setFancyBoxCaption(el);
         });
-      },
-      checkElement(selector) {
-        if (document.querySelector(selector) === null) {
-          return this.rafAsync().then(() => this.checkElement(selector));
+        return images;
+      }
+    },
+    currentRockDoNotHaveAnyImageFetchImagesByParentString() {
+      if (this.rock.images.length === 0) {
+        fetchPhotoGallery(this.currentClf.parent_string, this.mode).then(
+          response => {
+            this.rock.images = this.isDefinedAndNotEmpty(response.results)
+              ? this.composeImageUrls(response.results)
+              : [];
+            if (this.rock.images.length > 0)
+              this.meta.image = this.rock.images[0].src;
+          }
+        );
+      }
+    },
+    setMetaInfo() {
+      this.meta = {
+        title: `${this.capitalizeFirstLetter(
+          this.rock.name
+        )} | ${this.capitalizeFirstLetter(this.rock.name_en)}`,
+        url: `${this.kividUrl}${this.$route.fullPath}`,
+        description: this.rock.description
+      };
+      document.title = `${this.capitalizeFirstLetter(
+        this.rock.name
+      )} | ${this.capitalizeFirstLetter(this.rock.name_en)}`;
+    },
+    loadFullRockInfo() {
+      fetchRock(this.rock.id, this.mode).then(response => {
+        this.$emit("page-loaded", false);
+        if (this.isDefinedAndNotEmpty(response.results)) {
+          this.rock = Object.assign(this.rock, response.results[0]);
+          this.setMetaInfo();
+          this.basicInfoLoaded = true;
         } else {
-          return Promise.resolve(true);
+          this.error = true;
+          let id = this.$router.currentRoute.params.id;
+          this.$emit(
+            "throw-error",
+            `This rock with id <strong>${id}</strong> is not existing or not available `
+          );
+          this.$router.push({ name: "FrontPage" });
         }
-      },
-
-      reAdjust() {
-        this.isScreenReadjusted = true;
-        this.rafAsync().then(() => {this.isScreenReadjusted = false});
-        // setTimeout(() => {
-        //   this.isScreenReadjusted = false;
-        // }, 50)
-        this.clientWidth = document.documentElement.clientWidth;
-        $(".colEl1").insertBefore($( ".firstColumn" ));
-        if(this.isSmallScreenDevice === true) {
-          for(let i = 0; i < 11; i++) {
-            this.checkElement('.colEl'+i).then((element) => {
-              console.log(i)
-              $(".colEl"+i).insertBefore($( ".firstColumn" ));
-            });
-          }
-        }
-
-      },
-      capitalizeFirstLetter(string) {
-        return string ? string.charAt(0).toUpperCase() + string.slice(1):undefined;
-      },
-      navigate: function(id) {
-        this.$router.push({ path: `/${id}`});
-      },
-      openUrl: function (params) {
-        window.open(params.parent_url + '/' + params.object, '', 'width=' + params.width +
-          ',height=' + params.height, scrollbars)
-      },
-      translate: function(value_en,value_et,value_ru) {return this.$parent.translate(value_en,value_et,value_ru)},
-      setFancyBoxCaption: function(el) {
-        let text = "",
-          rock = this.isDefinedAndNotNull(el.rock_id) && el.rock_id !== this.rock.id ?
-            "<a href=\"/"+el.rock_id+"\" style=\"color:#c82333 !important\" ')\">" +
-            "<h5>"+el.name ? (this.$parent.translate(el.name_en,el.name,el.name_ru)) : (this.$parent.translate(el.rock__name_en,el.rock__name,el.rock__name_ru))+"</h5></a>"
-            :" " ,
-          autor = this.isDefinedAndNotNull(el.attachment__author__agent) ?
-            this.$t('fancybox.author')+": <strong>"+el.attachment__author__agent +"</strong>":"" ,
-          agent = this.isDefinedAndNotNull(el.attachment__copyright_agent__agent) ?
-            " / <strong>"+el.attachment__copyright_agent__agent +"</strong>":"" ,
-          date = this.isDefinedAndNotNull(el.attachment__date_created) ?
-            "<div>" + this.$t('fancybox.date')+": <strong>"+el.attachment__date_created +"</strong></div>":
-            this.isDefinedAndNotNull(el.attachment__date_created_free) ?
-              "<div>" + this.$t('fancybox.date')+": <strong>"+el.attachment__date_created_free +"</strong></div>": "" ,
-          licence = this.isDefinedAndNotNull(el.attachment__licence__licence) ?
-            "<div>" + this.$t('fancybox.licence')+": <strong>"+el.attachment__licence__licence +"</strong></div>":"" ,
-          detailView = this.isDefinedAndNotNull(el.attachment__id) ?
-            "<div><button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/file/"+el.attachment__id+"')\">"+this.$t('fancybox.detailView')+"</button></div>":
-            this.isDefinedAndNotNull(el.attachment__specimen_id) ? "<div><button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"window.open('"+this.geocollectionUrl+"/specimen/"+el.attachment__specimen_id+"')\">"+this.$t('fancybox.detailView')+"</button></div>":"" ;
-        text += "<div>"+rock+autor+agent+"</div>"+date+licence+detailView;
-        return text;
-      },
-      composeImageUrls(images){
-        if(images === undefined || images === {} || images.length === 0) return ;
-        if (images.length > 0) {
-          let this_ = this;
-          images.forEach(function(el) {
-            el.thumbnail = el.preview ? el.preview : this_.fileUrl + '/small/' + el.attachment__filename.substring(0, 2) + '/' + el.attachment__filename.substring(2, 4) + '/' + el.attachment__filename;
-            el.src = el.large ? el.large : this_.fileUrl + '/large/' + el.attachment__filename.substring(0, 2) + '/' + el.attachment__filename.substring(2, 4) + '/' + el.attachment__filename;
-            el.caption = this_.setFancyBoxCaption(el);
+      });
+      fetchRockElement(this.rock.id).then(response => {
+        let vm = this;
+        let elements = this.handleResponse(response);
+        if (elements.length > 0) {
+          this.rock.elComposition = "";
+          elements.forEach(function(el) {
+            vm.rock.elComposition += `${el.element__element}=${el.content}%, `;
           });
-          return images
+          vm.rock.elComposition = `${vm.rock.elComposition.substring(
+            0,
+            vm.rock.elComposition.length - 2
+          )}`;
         }
-      },
-      currentRockDoNotHaveAnyImageFetchImagesByParentString() {
-        if(this.rock.images.length === 0) {
-          fetchPhotoGallery(this.currentClf.parent_string, this.mode).then((response) => {
-            this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
-              this.composeImageUrls(response.results) : [];
-            if(this.rock.images.length > 0) this.meta.image = this.rock.images[0].src
-          });
-        }
-      },
-      setMetaInfo(){
-        this.meta = {
-          title : `${this.capitalizeFirstLetter(this.rock.name)} | ${this.capitalizeFirstLetter(this.rock.name_en)}`,
-          url: `${this.kividUrl}${this.$route.fullPath}`,
-          description: this.rock.description
-        };
-        document.title = `${this.capitalizeFirstLetter(this.rock.name)} | ${this.capitalizeFirstLetter(this.rock.name_en)}`
-      },
-      loadFullRockInfo() {
-        fetchRock(this.rock.id, this.mode).then((response) => {
-          this.$emit('page-loaded',false);
-          if(this.isDefinedAndNotEmpty(response.results)) {
-            this.rock = Object.assign(this.rock,response.results[0])
-            this.setMetaInfo();
-            this.basicInfoLoaded = true;
-          } else {
-            this.error = true;
-            let id = this.$router.currentRoute.params.id
-            this.$emit('throw-error',`This rock with id <strong>${ id }</strong> is not existing or not available `);
-            this.$router.push({name:'FrontPage'})
-          }
-        });
-        fetchRockElement(this.rock.id).then((response) => {
-          let vm = this;
-          let elements = this.handleResponse(response);
-          if(elements.length > 0) {
-            this.rock.elComposition = ''
-            elements.forEach(function (el)  {
-              vm.rock.elComposition += `${el.element__element}=${el.content}%, `
-            });
-            vm.rock.elComposition = `${vm.rock.elComposition.substring(0,vm.rock.elComposition.length-2)}`
-          }
-        });
-        fetchRockImages(this.rock.id, this.mode).then((response) => {
-          this.rock.images = this.isDefinedAndNotEmpty(response.results) ?
-            this.composeImageUrls(response.results) : [];
-          if(this.rock.images.length > 0) this.meta.image = this.rock.images[0].src
-        });
-        fetchRockProperties(this.rock.id, this.mode).then((response) => {
-          this.rock.properties = this.handleResponse(response);
-        });
-        fetchMinerals(this.rock.id, this.mode).then((response) => {
-          this.rock.minerals = this.handleResponse(response);
-        });
-        fetchMineralsByRock(this.rock.id, this.mode).then((response) => {
-          this.rock.mineralsByRock = this.handleResponse(response);
-        });
-        fetchRockSynonyms(this.rock.id, this.mode).then((response) => {
-          this.rock.synonyms = this.handleResponse(response);
-        });
-        fetchRockReferences(this.rock.id, this.mode).then((response) => {
-          this.rock.references = this.handleResponse(response);
-        });
-        fetchRockTreeByRockId(this.rock.id, this.mode).then((response) => {
-          this.rock.classifications = this.handleResponse(response);
-          if(this.rock.classifications.length === 0) return;
-          this.setActiveClfTab(this.rock.classifications[0].rock_classification_id);
-          this.currentRockDoNotHaveAnyImageFetchImagesByParentString();
-        });
-        fetchRockLocalities(this.rock.id, this.mode).then((response) => {
-          this.rock.localities = this.handleResponse(response);
-        });
-        cntSpecimenCollection(this.rock.id).then((response) => {
-          this.rock.specimenCollectionCnt = response.count;
-        });
-      },
-      handleResponse: function(response) {
-        return this.isDefinedAndNotEmpty(response.results) ? response.results : [];
-      },
-      getCurrentClassification: function (list, itemID) {
-        return list.filter(function (val, i) {
-          return val.rock_classification_id === itemID;
-        }, this);
-      },
-      setActiveTab: function(tab) {
-        this.activeTab = tab
-      },
-      setActiveClfTab: function(tab) {
-        this.activeClfTab = tab;
-        this.currentClf = this.getCurrentClassification(this.rock.classifications,tab)[0]
-      },
-      formatHierarchyString: function(value) { return value ? value.replace(/-/g, ',') : value;},
-      composeTree: function () {
-        this.isCurrenClfHierarchyLoaded = false;
-        fetchHierarchy(this.rock.id,this.formatHierarchyString(this.currentClf.parent_string),this.activeClfTab).then((response) => {
-          this.currenClfHierarchy = this.handleResponse(response);
-          this.isCurrenClfHierarchyLoaded = true;
-        });
-        //sisters
-        this.isCurrentClfSistersLoaded = false;
-        fetchRockTree(this.activeClfTab, this.currentClf.parent_id, this.mode).then((response) => {
-          this.currentClfSisters = this.handleResponse(response);
-          this.isCurrentClfSistersLoaded = true;
-        });
-        //siblings
-        this.isCurrentClfSiblingsLoaded = false;
-        fetchRockSiblings(this.activeClfTab, this.currentClf.rock_id, this.mode).then((response) => {
-          this.currentClfSiblings = this.handleResponse(response);
-          this.isCurrentClfSiblingsLoaded = true;
-        });
-      },
-      setSpecimenCollectionCnt: function(specimentAmount) {
-        this.rock.specimenCollectionCntFiltered = specimentAmount;
-      },
-      setLeftPosi:function() {
-        this.tabListLeftPosi = $('.list').position().left;
-      }
+      });
+      fetchRockImages(this.rock.id, this.mode).then(response => {
+        this.rock.images = this.isDefinedAndNotEmpty(response.results)
+          ? this.composeImageUrls(response.results)
+          : [];
+        if (this.rock.images.length > 0)
+          this.meta.image = this.rock.images[0].src;
+      });
+      fetchRockProperties(this.rock.id, this.mode).then(response => {
+        this.rock.properties = this.handleResponse(response);
+      });
+      fetchMinerals(this.rock.id, this.mode).then(response => {
+        this.rock.minerals = this.handleResponse(response);
+      });
+      fetchMineralsByRock(this.rock.id, this.mode).then(response => {
+        this.rock.mineralsByRock = this.handleResponse(response);
+      });
+      fetchRockSynonyms(this.rock.id, this.mode).then(response => {
+        this.rock.synonyms = this.handleResponse(response);
+      });
+      fetchRockReferences(this.rock.id, this.mode).then(response => {
+        this.rock.references = this.handleResponse(response);
+      });
+      fetchRockTreeByRockId(this.rock.id, this.mode).then(response => {
+        this.rock.classifications = this.handleResponse(response);
+        if (this.rock.classifications.length === 0) return;
+        this.setActiveClfTab(
+          this.rock.classifications[0].rock_classification_id
+        );
+        this.currentRockDoNotHaveAnyImageFetchImagesByParentString();
+      });
+      fetchRockLocalities(this.rock.id, this.mode).then(response => {
+        this.rock.localities = this.handleResponse(response);
+      });
+      cntSpecimenCollection(this.rock.id).then(response => {
+        this.rock.specimenCollectionCnt = response.count;
+      });
     },
-    watch: {
-      'activeClfTab': {
-        handler: function (value) {
-          if(value)this.composeTree()
+    handleResponse: function(response) {
+      return this.isDefinedAndNotEmpty(response.results)
+        ? response.results
+        : [];
+    },
+    getCurrentClassification: function(list, itemID) {
+      return list.filter(function(val, i) {
+        return val.rock_classification_id === itemID;
+      }, this);
+    },
+    setActiveTab: function(tab) {
+      this.activeTab = tab;
+    },
+    setActiveClfTab: function(tab) {
+      this.activeClfTab = tab;
+      this.currentClf = this.getCurrentClassification(
+        this.rock.classifications,
+        tab
+      )[0];
+    },
+    formatHierarchyString: function(value) {
+      return value ? value.replace(/-/g, ",") : value;
+    },
+    composeTree: function() {
+      this.isCurrenClfHierarchyLoaded = false;
+      fetchHierarchy(
+        this.rock.id,
+        this.formatHierarchyString(this.currentClf.parent_string),
+        this.activeClfTab
+      ).then(response => {
+        this.currenClfHierarchy = this.handleResponse(response);
+        this.isCurrenClfHierarchyLoaded = true;
+      });
+      //sisters
+      this.isCurrentClfSistersLoaded = false;
+      fetchRockTree(
+        this.activeClfTab,
+        this.currentClf.parent_id,
+        this.mode
+      ).then(response => {
+        this.currentClfSisters = this.handleResponse(response);
+        this.isCurrentClfSistersLoaded = true;
+      });
+      //siblings
+      this.isCurrentClfSiblingsLoaded = false;
+      fetchRockSiblings(
+        this.activeClfTab,
+        this.currentClf.rock_id,
+        this.mode
+      ).then(response => {
+        this.currentClfSiblings = this.handleResponse(response);
+        this.isCurrentClfSiblingsLoaded = true;
+      });
+    },
+    setSpecimenCollectionCnt: function(specimentAmount) {
+      this.rock.specimenCollectionCntFiltered = specimentAmount;
+    },
+    setLeftPosi: function() {
+      this.tabListLeftPosi = $(".list").position().left;
+    }
+  },
+  watch: {
+    activeClfTab: {
+      handler: function(value) {
+        if (value) this.composeTree();
+      },
+      deep: true
+    },
+    "$route.params.id": {
+      handler: function(id) {
+        this.$router.push({ path: `/${id}` });
+        this.$emit("page-loaded", true);
+        Object.assign(this.$data, this.initialData());
+        this.loadFullRockInfo();
+        // reload
+        // this.$router.go(this.$router.currentRoute)
+      },
+      deep: true
+    }
+  },
+  metaInfo() {
+    return {
+      title: this.meta.title,
+      meta: [
+        {
+          property: "og:title",
+          content: this.meta.title,
+          template: chunk => `${chunk}`,
+          vmid: "og:title"
         },
-        deep: true
-      },
-      '$route.params.id': {
-        handler: function (id) {
-          this.$router.push({ path: `/${id}`});
-          this.$emit('page-loaded',true);
-          Object.assign(this.$data, this.initialData())
-          this.loadFullRockInfo()
-          // reload
-          // this.$router.go(this.$router.currentRoute)
+        { property: "og:url", content: this.meta.url, vmid: "og:url" },
+        {
+          property: "og:description",
+          content: this.meta.description,
+          vmid: "og:description"
         },
-        deep: true
-      }
-    },
-    metaInfo() {
-      return {
-        title : this.meta.title,
-        meta: [
-          {'property': 'og:title', 'content': this.meta.title, 'template': chunk => `${chunk}`, 'vmid': 'og:title'},
-          {'property': 'og:url', 'content': this.meta.url, 'vmid': 'og:url'},
-          {'property': 'og:description', 'content': this.meta.description, 'vmid': 'og:description'},
-          {'property': 'og:image', 'content': this.meta.image, 'vmid': 'og:image'},
-          {'property': 'og:type', 'content': 'website','vmid': 'og:type'},
-        ]
-      }
-      // set a title
-    },
+        { property: "og:image", content: this.meta.image, vmid: "og:image" },
+        { property: "og:type", content: "website", vmid: "og:type" }
+      ]
+    };
+    // set a title
   }
+};
 </script>
 <style scope>
-  .item-page {
-    max-width: 1280px !important;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .item-page h1 {
-    font-weight: bold;
-    color: #2A68A5;
-    opacity: 0.9;
-  }
-  .navbar-toggler {
-    margin: 0 !important;
-    padding: 3px 6px;
-  }
-  .navbar-toggler-icon {
-    width: 25px;
-  }
-  .basicInfoTable {
-    width: 100%;
-    max-width: 1024px;
-    text-align: left;
-  }
-  .col-lg-12 {
-    padding: 0 !important;
-  }
-  .col-md-3,
-  .col-md-8 {
-    padding-right:0.1rem !important;
-  }
-  .col-md-3,
-  .col-md-4 {
-    padding-left:0.1rem !important;
-  }
-  .row {
-    margin-top:20px;
-  }
-  .no-padding {
-    padding: 0;
-  }
-  .card-header {
-    color: #999;
-    font-size: smaller;
-    font-weight: bold;
-  }
-  .card-footer {
-    background-color: transparent;
-  }
-  .card {
-    margin-bottom: 4px;
-  }
-  div.card.rounded-0 {
-    width: 100%
-  }
-  div.card-body {
-    text-align: left
-  }
-  /* Unordered list style */
-  ul.ast-content-ul-list {
-    margin-left:-3rem;
-  }
-  ul.ast-content-ul-list li {
-    position: relative;
-    padding-left: 10px;
-    list-style: none;
-  }
-  .btn-circle {
-    width: 25px;
-    height: 25px;
-    padding: 5px 8px;
-    font-size: 12px;
-    border-radius: 50%;
-    color:#26a69a  !important;
-    border-color:#26a69a  !important;
-  }
-  .btn-circle:hover {
-    background-color:#26a69a  !important;
-    color:#ffffff  !important;
-  }
+.item-page {
+  max-width: 1280px !important;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.item-page h1 {
+  font-weight: bold;
+  color: #2a68a5;
+  opacity: 0.9;
+}
+.navbar-toggler {
+  margin: 0 !important;
+  padding: 3px 6px;
+}
+.navbar-toggler-icon {
+  width: 25px;
+}
+.basicInfoTable {
+  width: 100%;
+  max-width: 1024px;
+  text-align: left;
+}
+.col-lg-12 {
+  padding: 0 !important;
+}
+.col-md-3,
+.col-md-8 {
+  padding-right: 0.1rem !important;
+}
+.col-md-3,
+.col-md-4 {
+  padding-left: 0.1rem !important;
+}
+.row {
+  margin-top: 20px;
+}
+.no-padding {
+  padding: 0;
+}
+.card-header {
+  color: #999;
+  font-size: smaller;
+  font-weight: bold;
+}
+.card-footer {
+  background-color: transparent;
+}
+.card {
+  margin-bottom: 4px;
+}
+div.card.rounded-0 {
+  width: 100%;
+}
+div.card-body {
+  text-align: left;
+}
+/* Unordered list style */
+ul.ast-content-ul-list {
+  margin-left: -3rem;
+}
+ul.ast-content-ul-list li {
+  position: relative;
+  padding-left: 10px;
+  list-style: none;
+}
+.btn-circle {
+  width: 25px;
+  height: 25px;
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 50%;
+  color: #26a69a !important;
+  border-color: #26a69a !important;
+}
+.btn-circle:hover {
+  background-color: #26a69a !important;
+  color: #ffffff !important;
+}
 </style>
