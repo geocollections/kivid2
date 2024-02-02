@@ -27,7 +27,6 @@
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "npm": "^6.8.0",
-    "sw-precache-webpack-plugin": "^0.11.5",
     "vue": "^2.6.7",
     "vue-cookie": "^1.1.4",
     "vue-dragscroll": "^1.8.3",
