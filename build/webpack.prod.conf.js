@@ -15,10 +15,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
 const glob = require('glob-all')
 
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
-// const PrerenderSpaPlugin = require('prerender-spa-plugin')
-// const Renderer = PrerenderSpaPlugin.PuppeteerRenderer
-
 const env = require('../config/prod.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -36,30 +32,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
-    // service worker caching
-    new SWPrecacheWebpackPlugin({
-      cacheId: 'my-vue-app',
-      filename: 'service-worker.js',
-      // staticFileGlobs: ['dist/**/*.{js,html,css}'],
-      minify: true,
-      // stripPrefix: 'dist/',
-      dontCacheBustUrlsMatching: /./,
-      staticFileGlobsIgnorePatterns: [/\.map$/, /\.json$/],
-      runtimeCaching: [
-        {
-          urlPattern: '/',
-          handler: 'networkFirst'
-        },
-        {
-          urlPattern: '/page/:id',
-          handler: 'networkFirst'
-        },
-        {
-          urlPattern: '/:id',
-          handler: 'networkFirst'
-        }
-      ]
-    }),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
