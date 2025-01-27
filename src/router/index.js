@@ -23,6 +23,7 @@ const router = new Router({
 
 router.afterEach((to, from) => {
   if (window._paq) {
+    window._paq.push(["setCustomUrl", to.fullPath]);
     window._paq.push(["trackPageView"]);
   }
 });
