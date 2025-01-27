@@ -1,67 +1,91 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta name="description" content="Mineraalide, kivimite ja maavarade portaal">
-    <meta name="author" content="Tallinna Tehnikaülikool Geoloogia Instituut, OS">
+    <meta
+      name="description"
+      content="Mineraalide, kivimite ja maavarade portaal"
+    />
+    <meta
+      name="author"
+      content="Tallinna Tehnikaülikool Geoloogia Instituut, OS"
+    />
     <!-- Meta tags for social networks -->
-    <meta property="og:url" content="https://kivid.info/">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Mineraalid, kivimid ja maavarad">
-    <meta property="og:description" content="Mineraalide, kivimite ja maavarade portaal">
-    <meta property="og:image" content="https://files.geocollections.info/img/kivid/kivid2.jpg">
+    <meta property="og:url" content="https://kivid.info/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mineraalid, kivimid ja maavarad" />
+    <meta
+      property="og:description"
+      content="Mineraalide, kivimite ja maavarade portaal"
+    />
+    <meta
+      property="og:image"
+      content="https://files.geocollections.info/img/kivid/kivid2.jpg"
+    />
 
-    <meta property="twitter:title" content="Mineraalide, kivimite ja maavarade portaal">
-    <meta property="twitter:description" content="Mineraalide, kivimite ja maavarade portaal">
-    <meta property="twitter:image" content="https://files.geocollections.info/img/kivid/kivid2.jpg">
+    <meta
+      property="twitter:title"
+      content="Mineraalide, kivimite ja maavarade portaal"
+    />
+    <meta
+      property="twitter:description"
+      content="Mineraalide, kivimite ja maavarade portaal"
+    />
+    <meta
+      property="twitter:image"
+      content="https://files.geocollections.info/img/kivid/kivid2.jpg"
+    />
 
     <!-- Chrome, Firefox OS and Opera address bar color -->
-    <meta name="theme-color" content="#004393">
+    <meta name="theme-color" content="#004393" />
     <!-- Windows Phone address bar color -->
-    <meta name="msapplication-navbutton-color" content="#004393">
+    <meta name="msapplication-navbutton-color" content="#004393" />
     <!-- iOS Safari address bar color -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="#004393">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#004393" />
 
     <base href="/" />
     <title>Mineraalid, kivimid, maavarad</title>
-    <link rel="preconnect" href="https://api.geocollections.info">
+    <link rel="preconnect" href="https://api.geocollections.info" />
     <!--  <link rel="preconnect" href="https://geocollections.info"> -->
-    <link rel="preconnect" href="https://files.geocollections.info">
-    <link rel="preconnect" href="https://kivid.info">
-    <link rel="preconnect" href="https://api.tiles.mapbox.com">
-    <link rel="manifest" href="static/manifest.json">
+    <link rel="preconnect" href="https://files.geocollections.info" />
+    <link rel="preconnect" href="https://kivid.info" />
+    <link rel="preconnect" href="https://api.tiles.mapbox.com" />
+    <link rel="manifest" href="static/manifest.json" />
 
     <!--  <link rel="preconnect" href="http://geokogud.info"> -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" />
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="static/css/jquery.fancybox.min.css" />
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />-->
   </head>
   <body>
-
     <noscript>This web page needs Javascript to work properly!</noscript>
 
     <div id="app"></div>
     <!-- built files will be auto injected -->
 
     <!-- Matomo -->
-    <script type="text/javascript">
-      var _paq = _paq || [];
+    <script>
+      var _paq = (window._paq = window._paq || []);
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-      _paq.push(['trackPageView']);
-      _paq.push(['enableLinkTracking']);
-      (function() {
-        var u="//geocollections.info/statistikat/";
-        _paq.push(['setTrackerUrl', u+'piwik.php']);
-        _paq.push(['setSiteId', '19']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
+      (function () {
+        var u = "https://matomo.geoloogia.info/";
+        _paq.push(["setTrackerUrl", u + "matomo.php"]);
+        _paq.push(["setSiteId", "16"]);
+        var d = document,
+          g = d.createElement("script"),
+          s = d.getElementsByTagName("script")[0];
+        g.async = true;
+        g.src = u + "matomo.js";
+        s.parentNode.insertBefore(g, s);
       })();
     </script>
     <!-- End Matomo Code -->
